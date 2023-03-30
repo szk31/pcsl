@@ -144,7 +144,7 @@ $(document).ready(async function() {
 		// if key para exist and sha384 hash matches
 		if (key !== "" && await getSHA384Hash(key) === key_hash) {
 			// save to cookie
-			setCookie("pcsl_content_key", key, 137036);	// long enough
+			setCookie("pcsl_content_key", key, 3650);
 			// reload
 			window.location = window.location.href.split("?")[0];
 		}

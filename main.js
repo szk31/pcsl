@@ -495,6 +495,9 @@ function jump2page(target) {
 			$(window).scrollTop(0);
 			rep_search();
 			break;
+		default :
+			// error
+			return -1;
 	}
 }
 

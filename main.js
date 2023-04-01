@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.2.11";
+var version = "1.2.12";
 
 var key_hash = "3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410";
 
@@ -151,8 +151,15 @@ $(document).ready(async function() {
 			window.location = window.location.href.split("?")[0];
 		}
 	}
-
+	var url_para = new URLSearchParams(window.location.search);
+	var target_page = url_para.get("page");
 	init();
+	if (target_page === "home") {
+	} else {
+		if (jump2page(target_page) === -1) {
+			jump2page("home");
+		}
+	}
 });
 
 $(function() {
@@ -247,38 +254,7 @@ $(function() {
 			current_page = target;
 			$(".menu2page_selected").removeClass("menu2page_selected");
 			$("#" + $(e.target).attr("id")).addClass("menu2page_selected");
-			
-			// show / hide section
-			$(".section_container").addClass("hidden");
-			$("#" + target + "_section").removeClass("hidden");
-			$("#nav_dummy").addClass("hidden");
-			switch (target) {
-				case "home" : 
-					// show section
-					$("#nav_search_random").addClass("hidden");
-					$("#nav_share_rep").addClass("hidden");
-					$("#nav_title").html("ホーム");
-					$("#nav_dummy").removeClass("hidden");
-					break;
-				case "search" :
-					// show section
-					$("#nav_search_random").removeClass("hidden");
-					$("#nav_share_rep").addClass("hidden");
-					$("#nav_title").html("曲検索");
-					// reset input -> reload
-					$("#input").val("");
-					search();
-					break;
-				case "repertoire" : 
-					// show section
-					$("#nav_search_random").addClass("hidden");
-					$("#nav_share_rep").removeClass("hidden");
-					$("#nav_title").html("レパートリー");
-					// do whatever needed
-					$(window).scrollTop(0);
-					rep_search();
-					break;
-			}
+			jump2page(target);
 			
 			// close menu
 			$("#menu_container").addClass("hidden");
@@ -486,6 +462,40 @@ function get_attr(id) {
 		return "aca";
 	}
 	return "oke";
+}
+
+function jump2page(target) {
+	// show / hide section
+	$(".section_container").addClass("hidden");
+	$("#" + target + "_section").removeClass("hidden");
+	$("#nav_dummy").addClass("hidden");
+	switch (target) {
+		case "home" : 
+			// show section
+			$("#nav_search_random").addClass("hidden");
+			$("#nav_share_rep").addClass("hidden");
+			$("#nav_title").html("ホーム");
+			$("#nav_dummy").removeClass("hidden");
+			break;
+		case "search" :
+			// show section
+			$("#nav_search_random").removeClass("hidden");
+			$("#nav_share_rep").addClass("hidden");
+			$("#nav_title").html("曲検索");
+			// reset input -> reload
+			$("#input").val("");
+			search();
+			break;
+		case "repertoire" : 
+			// show section
+			$("#nav_search_random").addClass("hidden");
+			$("#nav_share_rep").removeClass("hidden");
+			$("#nav_title").html("レパートリー");
+			// do whatever needed
+			$(window).scrollTop(0);
+			rep_search();
+			break;
+	}
 }
 
 var copy_popup_is_displaying = false;

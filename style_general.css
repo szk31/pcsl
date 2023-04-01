@@ -377,7 +377,7 @@ body.post_switch {
 
 
 
-.twitter, .youtube, .deleted {
+.twitter, .youtube, .deleted, .google_sheets {
 	color : White;
 	border: none;
 	border-radius: 2vw;
@@ -396,6 +396,10 @@ body.post_switch {
 
 .deleted {
 	background-color : #666666;
+}
+
+.google_sheets {
+	background-color : #00AC47;
 }
 
 .ext_link {

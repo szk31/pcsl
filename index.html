@@ -17,6 +17,7 @@
 		<script type="text/javascript" src="search.js"></script>
 		<script type="text/javascript" src="rep.js"></script>
 		<link rel="stylesheet" href="style_general.css">
+		<link rel="stylesheet" href="style_home.css">
 		<link rel="stylesheet" href="style_search.css">
 		<link rel="stylesheet" href="style_repertoire.css">
 	</head>
@@ -27,14 +28,56 @@
 				<div id="nav_menu"></div>
 				<div class="hidden"></div>
 			</div>
-			<div id="nav_title">曲検索</div>
+			<div id="nav_title">ホーム</div>
 			<div id="nav_control_group">
-				<div id="nav_search_random"></div>
+				<div id="nav_dummy"></div>
+				<div id="nav_search_random" class="hidden"></div>
 				<div id="nav_share_rep" class="hidden disabled"></div>
 				<div id="nav_to_top"></div>
 			</div>
 		</div>
-		<div id="search_section" class="section_container">
+		<div id="home_section" class="section_container">
+			<h2 class="home_title">ポータル</h2>
+			<div class="home_member_block singer_4">
+				<div id="home_member_kirara_bg" class="home_member_icon_bg">
+					<span id="home_member_kirara"></span>
+				</div>
+				<div class="home_member_right_section">
+					<div class="home_member_name">逢魔きらら</div>
+					<div class="home_member_social">
+						<a href="https://www.youtube.com/@omakirara" class="youtube" target="_blank">YouTube</a>
+						<a href="https://twitter.com/omakirara" class="twitter" target="_blank">twitter</a>
+					</div>
+				</div>
+			</div>
+			<div class="home_member_block singer_2">
+				<div id="home_member_momo_bg" class="home_member_icon_bg">
+					<span id="home_member_momo"></span>
+				</div>
+				<div class="home_member_right_section">
+					<div class="home_member_name">胡桃澤もも</div>
+					<div class="home_member_social">
+						<a href="https://www.youtube.com/@kurumizawamomo" class="youtube" target="_blank">YouTube</a>
+						<a href="https://twitter.com/kurumizawamomo" class="twitter" target="_blank">twitter</a>
+					</div>
+				</div>
+			</div>
+			<div class="home_member_block singer_1">
+				<div id="home_member_nia_bg" class="home_member_icon_bg">
+					<span id="home_member_nia"></span>
+				</div>
+				<div class="home_member_right_section">
+					<div class="home_member_name">看谷にぃあ</div>
+					<div class="home_member_social">
+						<a class="deleted" target="_blank">YouTube</a>
+						<a href="https://twitter.com/mirutani_nia" class="twitter" target="_blank">twitter</a>
+					</div>
+				</div>
+			</div>
+			<div id="home_extra"></div>
+			<div id="home_key_stat" class="hidden">キー入力済み</div>
+		</div>
+		<div id="search_section" class="section_container hidden">
 			<div id="input_container">
 				<input id="input" type="text" placeholder="曲名/読みで検索" autocomplete="off">
 				<div id="search_options_button_container">
@@ -276,7 +319,8 @@
 			<div id="menu_panel" class="defog">
 				<span id="menu2page_title">ページ選択</span>
 				<div id="menu2page_container">
-					<div id="menu2page_search" class="menu2page menu2page_selected">曲検索</div>
+					<div id="menu2page_home" class="menu2page menu2page_selected">ホーム</div>
+					<div id="menu2page_search" class="menu2page">曲検索</div>
 					<div id="menu2page_repertoire" class="menu2page">レパートリー一覧</div>
 				</div>
 				<div id="menu_bottom">
@@ -335,6 +379,11 @@
 				<div id="memcount_rep_defog" class="memcount_subblock hidden">
 					<h3>レパートリー曲数</h3>
 					<div id="memcount_rep_content"></div>
+				</div>
+			</div>
+			<div id="tag_selector" class="hidden">
+				<div id="tag_selector_defog">
+					<!-- nah i bet no one uses this, or sees this -->
 				</div>
 			</div>
 		</div>

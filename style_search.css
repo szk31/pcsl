@@ -1,9 +1,6 @@
 /* nav plug-in */
 #nav_search_random {
-	padding: 1vw 2vw 1vw 1vw;
 	content : url("icon/random.png");
-	width : 8vw;
-	height : 8vw;
 }
 
 #nav_search_random.disabled {

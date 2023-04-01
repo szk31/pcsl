@@ -86,7 +86,7 @@ body.post_switch {
 /* The navigation bar */
 #navbar {
 	display : grid;
-	overflow: hidden;
+	overflow : hidden;
 	background-color: #333;
 	position: fixed; /* Set the navbar to fixed position */
 	top: 0; /* Position the navbar at the top of the page */
@@ -132,10 +132,12 @@ body.post_switch {
 	text-align : right;
 }
 
-#nav_search_random ,#nav_share_rep {
+#nav_search_random ,#nav_share_rep, #nav_dummy {
 	grid-column : 1;
 	grid-row : 1;
-	
+	padding: 1vw 2vw 1vw 1vw;
+	width : 8vw;
+	height : 8vw;
 }
 
 #nav_to_top {
@@ -322,16 +324,6 @@ body.post_switch {
 	transform: translate(-50%, 0);
 }
 
-.twitter {
-	color : White;
-	background-color : #1DA1F2;
-	border: none;
-	border-radius: 2vw;
-	padding : 0.5vw 2vw;
-	font-weight : bold;
-	width: fit-content;
-}
-
 #copy_popup {
 	position : fixed;
 	padding : 2vw 4vw;
@@ -381,4 +373,36 @@ body.post_switch {
 	background-color : #C6BED8;
 	border-radius: 2vw;
 	border : 1vw solid MediumPurple;
+}
+
+
+
+.twitter, .youtube, .deleted {
+	color : White;
+	border: none;
+	border-radius: 2vw;
+	padding : 0.5vw 2vw;
+	font-weight : bold;
+	width: fit-content;
+}
+
+.twitter {
+	background-color : #1DA1F2;
+}
+
+.youtube {
+	background-color : #FF0000;
+}
+
+.deleted {
+	background-color : #666666;
+}
+
+.ext_link {
+	margin : -2vw 0;
+	padding : 1vw 0.6vw;
+	position : relative;
+	content : url("icon/link.png");
+	width : 6vw;
+	height : 6vw;
 }

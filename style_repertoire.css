@@ -1,8 +1,5 @@
 #nav_share_rep {
-	padding: 1vw 2vw 1vw 1vw;
 	content : url("icon/share.png");
-	width : 8vw;
-	height : 8vw;
 	filter : invert(1);
 }
 

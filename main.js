@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.2.12";
+var version = "1.2.13";
 
 var key_hash = "3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410";
 
@@ -154,12 +154,13 @@ $(document).ready(async function() {
 	var url_para = new URLSearchParams(window.location.search);
 	var target_page = url_para.get("page");
 	init();
-	if (target_page === "home") {
-	} else {
+	if (target_page !== ("home" || null)) {
 		if (jump2page(target_page) === -1) {
 			jump2page("home");
 		}
 	}
+	// remove loading screen
+	$("#loading_overlay").addClass("hidden");
 });
 
 $(function() {

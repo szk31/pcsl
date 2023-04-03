@@ -96,3 +96,65 @@
 	text-shadow: #000 0px 0px 0.8vw;
 	-webkit-font-smoothing: antialiased;
 }
+
+#home_key_reset {
+	background-color : Red;
+	color : White;
+	border-radius : 2vw;
+	width : 16vw;
+	margin : 0 auto;
+	padding : 2vw;
+	font-size : 3.6vw;
+	font-weight : bold;
+	text-align : center;
+}
+
+#remove_key {
+	top : 10vw;
+	height : 100%;
+	background-color : rgba(0, 0, 0, 0.5);
+}
+
+#remove_key_defog {
+	position : fixed;
+	left : 50%;
+	top : 50%;
+	transform: translate(-50%, -50%);
+	width : 80vw;
+	height : 30vh;
+	background-color : MediumPurple;
+	border-radius : 2vw;
+	color : GhostWhite;
+	font-weight : bold;
+	text-align : center;
+}
+
+#remove_key_text {
+	margin : 8vh auto 0 auto;
+	font-size : 5.2vw;
+}
+
+#remove_key_options {
+	position : absolute;
+	bottom : 0;
+	display : grid;
+	grid-template-columns: 50% 50%;
+	height : 10vh;
+	width : 100%;
+	vertical-align : center;
+}
+
+#remove_key_options>div {
+	display : flex;
+	justify-content : center;
+	align-items : center;
+	border-top : 0.4vw solid GhostWhite;
+}
+
+#remove_key_nah {
+	border-right : 0.2vw solid GhostWhite;
+}
+
+#remove_key_yes {
+	border-left : 0.2vw solid GhostWhite;
+}

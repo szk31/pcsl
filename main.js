@@ -253,8 +253,6 @@ $(function() {
 				return;
 			}
 			current_page = target;
-			$(".menu2page_selected").removeClass("menu2page_selected");
-			$("#" + $(e.target).attr("id")).addClass("menu2page_selected");
 			jump2page(target);
 			
 			// close menu
@@ -466,6 +464,8 @@ function get_attr(id) {
 }
 
 function jump2page(target) {
+	$(".menu2page_selected").removeClass("menu2page_selected");
+	$("#menu2page_" + target).addClass("menu2page_selected");
 	// show / hide section
 	$(".section_container").addClass("hidden");
 	$("#" + target + "_section").removeClass("hidden");

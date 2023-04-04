@@ -574,5 +574,5 @@ function getCookie(cname) {
 }
 
 function removeCookie(cname) {
-	document.cookie = cname + "=; Max-Age=-99999999;";
+	document.cookie = cname + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
 }

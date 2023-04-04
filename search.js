@@ -139,6 +139,7 @@ $(function() {
 			$("#search_options_count_input").val(e);
 			max_display = e;
 			update_display();
+			setCookie("pcsl_settings_display", e, 400);
 		});
 		
 		// search - options - others - max display - blur
@@ -156,13 +157,16 @@ $(function() {
 				case "displayHidden" :
 					do_display_hidden ^= 1;
 					update_display();
+					setCookie("pcsl_settings_hidden" , do_display_hidden ? 1 : 0, 400);
 					break;
 				case "reset" :
 					do_clear_input ^= 1;
+					setCookie("pcsl_settings_clear" , do_clear_input ? 1 : 0, 400);
 					break;
 				case "randomAnyway" :
 					do_random_anyway ^= 1;
 					$("#nav_search_random").toggleClass("disabled", searching_song_name ? (do_random_anyway ? false : loading !== "") : true);
+					setCookie("pcsl_settings_random" , do_random_anyway ? 1 : 0, 400);
 					break;
 			}
 		});

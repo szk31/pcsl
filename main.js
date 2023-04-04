@@ -163,9 +163,15 @@ $(document).ready(async function() {
 		setCookie("pcsl_settings_random" , 0, 400);
 	} else {
 		max_display       = parseInt(getCookie("pcsl_settings_display"));
-		do_display_hidden = parseInt(getCookie("pcsl_settings_hidden"));
-		do_clear_input    = parseInt(getCookie("pcsl_settings_clear"));
-		do_random_anyway  = parseInt(getCookie("pcsl_settings_random"));
+		do_display_hidden = (getCookie("pcsl_settings_hidden")) === "1";
+		do_clear_input    = (getCookie("pcsl_settings_clear")) === "1";
+		do_random_anyway  = (getCookie("pcsl_settings_random")) === "1";
+		
+		// update display
+		$("#search_options_count_input").val(max_display);
+		$("#search_options_btn_displayHidden").toggleClass("selected", do_display_hidden);
+		$("#search_options_btn_reset").toggleClass("selected", do_clear_input);
+		$("#search_options_btn_randomAnyway").toggleClass("selected", do_random_anyway);
 	}
 	var url_para = new URLSearchParams(window.location.search);
 	var target_page = url_para.get("page");

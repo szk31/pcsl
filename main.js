@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.2.14";
+var version = "1.2.15";
 
 var key_hash = "3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410";
 
@@ -155,7 +155,7 @@ $(document).ready(async function() {
 		}
 	}
 	// get settings from cookie
-	if (getCookie("pcsl_settings_max_display").length() === 0) {
+	if (getCookie("pcsl_settings_display") === "") {
 		// cookie not set
 		setCookie("pcsl_settings_display", 100, 400);
 		setCookie("pcsl_settings_hidden" , 1, 400);

@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.2.15";
+var version = "1.2.16";
 
 var key_hash = "3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410";
 
@@ -105,6 +105,9 @@ var do_clear_input = false;
 // if random requirement is ignored (input being blank)
 var do_random_anyway = false;
 
+// hidden hard filter
+var hard_filter = 0b111;
+
 // ram for searching (entry_processed)
 var entry_proc = [];
 
@@ -123,6 +126,7 @@ $(document).ready(async function() {
 			// hide original page
 			$("body > div").addClass("post_switch");
 			$("body").addClass("post_switch");
+			window.history.replaceState(null, null, "?inner=1");
 			return;
 		}
 	}
@@ -151,7 +155,7 @@ $(document).ready(async function() {
 			// save to cookie
 			setCookie("pcsl_content_key", key, 400);
 			// reload
-			window.location = window.location.href.split("?")[0];
+			window.location = window.location.href.split("?")[0] + "?" + url_para.delete("pcsl_content_key");
 		}
 	}
 	// get settings from cookie
@@ -180,6 +184,16 @@ $(document).ready(async function() {
 		if (jump2page(target_page) === -1) {
 			jump2page("home");
 		}
+	}
+	if (url_para.get("hfilter") !== null) {
+		// get url para and store
+		hard_filter = parseInt(url_para.get("hfilter"));
+		setCookie("pcsl_settings_hfilter", hard_filter, 400);
+	} else if (getCookie("pcsl_settings_hfilter") !== ""){
+		// read from cookie and renew
+		hard_filter = parseInt(getCookie("pcsl_settings_hfilter"));
+		removeCookie("pcsl_settings_hfilter");
+		setCookie("pcsl_settings_hfilter", hard_filter, 400);
 	}
 	// remove loading screen
 	$("#loading_overlay").addClass("hidden");
@@ -452,7 +466,7 @@ function bold(org, selc) {
 
 function get_last_sang(id, mask = 7) {
 	for (var i = entry_proc[id].length - 1; i >= 0; --i) {
-		if (mask & entry[entry_proc[id][i]][entry_idx.type]) {
+		if (entry[entry_proc[id][i]][entry_idx.type] & (mask & hard_filter)) {
 			return new Date(video[entry[entry_proc[id][i]][entry_idx.video]][video_idx.date]);
 		}
 	}
@@ -483,7 +497,7 @@ function get_sang_count(id, mask = 7) {
 	var count = 0,
 		mem_count = 0;
 	for (var i in entry_proc[id]) {
-		if (entry[entry_proc[id][i]][entry_idx.type] & mask) {
+		if (entry[entry_proc[id][i]][entry_idx.type] & (mask & hard_filter)) {
 			count++;
 			if (entry[entry_proc[id][i]][entry_idx.note].includes("【メン限")) {
 				mem_count++;
@@ -532,6 +546,7 @@ function jump2page(target) {
 			$("#input").val("");
 			search();
 			break;
+		case "rep" :
 		case "repertoire" : 
 			// show section
 			$("#nav_search_random").addClass("hidden");

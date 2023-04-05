@@ -444,6 +444,7 @@ function update_display() {
 			sel_member -= 1 << i;
 		}
 	}
+	sel_member &= hard_filter;
 	// record loaded song (for un-hiding song thats no longer loaded)
 	var loaded_song = [];
 	var loaded_count = 0;

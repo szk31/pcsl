@@ -525,6 +525,7 @@ function rep_display() {
 	for (var i in rep_singer) {
 		selected_member += rep_singer[i] << i;
 	}
+	selected_member &= hard_filter;
 	// sort record
 	switch (rep_sort) {
 		case "50" :

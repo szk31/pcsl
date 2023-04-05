@@ -155,7 +155,7 @@ $(document).ready(async function() {
 			// save to cookie
 			setCookie("pcsl_content_key", key, 400);
 			// reload
-			window.location = window.location.href.split("?")[0] + "?" + url_para.delete("pcsl_content_key");
+			window.location = window.location.href.split("?")[0] + "?" + url_para.delete("key");
 		}
 	}
 	// get settings from cookie
@@ -217,47 +217,6 @@ $(function() {
 			$("#menu_container").toggleClass("hidden");
 			$("#nav_menu").toggleClass("menu_opened");
 			$(document.body).toggleClass("no_scroll");
-		});
-		
-		// nav - random
-		$(document).on("click", "#nav_search_random", function() {
-			if($(this).hasClass("disabled") && !do_random_anyway) {
-				return;
-			}
-			if (prevent_menu_popup) {
-				return;
-			}
-			// check if the song has any visibile record
-			var random_song,
-				found = trial = 0,
-				sel_member = 7;
-			for (var i in singer_chosen) {
-				if (!singer_chosen[i]) {
-					sel_member -= 1 << i;
-				}
-			}
-			if (sel_member === 0) {
-				// no body got selected so
-				return;
-			}
-			do {
-				random_song = Math.floor(Math.random() * song.length);
-				for (var i in entry_proc[random_song]) {
-					// check if all member
-					if (sel_member !== 7) {
-						if (!(sel_member & entry[entry_proc[random_song][i]][entry_idx.type])) {
-							continue;
-						}
-					}
-					if ((!do_display_hidden) && is_private(entry_proc[random_song][i])) {
-						continue;
-					}
-					found++;
-					break;
-				}
-			} while (found === 0);
-			$("#input").val(song[random_song][song_idx.name]);
-			search();
 		});
 		
 		// nav - to_top

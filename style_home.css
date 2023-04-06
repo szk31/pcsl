@@ -18,13 +18,13 @@
 
 .home_member_icon_bg {
 	margin : 0.5vw 2vw;
-	border-width :  0.5vw;
-	border-radius : 6vw;
-	width : 19vw;
-	height : 19vw;
+	border-radius : 3.5vw;
+	width : 21.705vw;
+	height : 21.705vw;
 }
 
-.home_member_icon_bg>span {
+.home_member_icon_bg>div {
+	margin : 0.5vw;
 	border-radius : 3vw;
 	width : 20vw;
 	height : 20vw;
@@ -42,6 +42,20 @@
 	background-color : DarkBlue;
 }
 
+#home_member_chui_bg {
+	background-color : #814B41;
+}
+
+#home_member_shiro_bg {
+	background-color : #CC2455;
+}
+
+#home_member_yuco_bg {
+	background-color : MediumBlue;
+}
+
+
+
 #home_member_kirara {
 	content : url("icon/kirara.jpg");
 	border : 0.5vw solid #670000;
@@ -55,6 +69,21 @@
 #home_member_nia {
 	content : url("icon/nia.jpg");
 	border : 0.5vw solid DarkBlue;
+}
+
+#home_member_chui {
+	content : url("https://yt3.googleusercontent.com/LpNKgI0PNKzHI3RcTzfHcqRPIrxPvkkU7jek8sybYsIIZTUz4_cyVKhXWKR_c-ZCgGBPrzzHKeM");
+	border : 0.5vw solid #814B41;
+}
+
+#home_member_shiro {
+	content : url("https://yt3.googleusercontent.com/o8GYT-bJt7fUXAs-jwyCXgt5IANbz1wWL8opnwi5McN7SYI3TD5-fIjbwFEGSGnRTG04vQdl");
+	border : 0.5vw solid #CC2455;
+}
+
+#home_member_yuco {
+	content : url("https://yt3.googleusercontent.com/EQIvOcnF0onnRN1-FkMgd0jg6eNkBVWiwCUVEXHhXPUyjlHtWxPbxc3cCdrdLqnz9DFKdpg2Lg");
+	border : 0.5vw solid MediumBlue;
 }
 
 .home_member_name {

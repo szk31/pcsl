@@ -18,7 +18,7 @@
 
 .home_member_icon_bg {
 	margin : 0.5vw 2vw;
-	border-radius : 3.5vw;
+	border-radius : 3.6vw;
 	width : 22vw;
 	height : 22vw;
 }
@@ -147,7 +147,7 @@
 	width : 80vw;
 	height : 30vh;
 	background-color : MediumPurple;
-	border-radius : 2vw;
+	border-radius : 3.2vw;
 	color : GhostWhite;
 	font-weight : bold;
 	text-align : center;
@@ -172,13 +172,18 @@
 	display : flex;
 	justify-content : center;
 	align-items : center;
-	border-top : 0.4vw solid GhostWhite;
+	border-top : 0.8vw solid #c4b0eb;
+	font-size : 4.8vw;
 }
 
 #remove_key_nah {
-	border-right : 0.2vw solid GhostWhite;
+	border-right : 0.4vw solid #c4b0eb;
+	background-color : #679b99;
+	border-bottom-left-radius : 3.2vw;
 }
 
 #remove_key_yes {
-	border-left : 0.2vw solid GhostWhite;
+	border-left : 0.4vw solid #c4b0eb;
+	background-color : #b9498e;
+	border-bottom-right-radius : 3.2vw;
 }

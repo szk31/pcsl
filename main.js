@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.2.16";
+var version = "1.2.17";
 
 var key_hash = "3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410";
 
@@ -107,6 +107,9 @@ var do_random_anyway = false;
 
 // hidden hard filter
 var hard_filter = 0b111;
+
+// (currently hidden) do add the link to this website when sharing
+var do_share_web = false;
 
 // ram for searching (entry_processed)
 var entry_proc = [];
@@ -177,6 +180,8 @@ $(document).ready(async function() {
 		$("#search_options_btn_reset").toggleClass("selected", do_clear_input);
 		$("#search_options_btn_randomAnyway").toggleClass("selected", do_random_anyway);
 	}
+	
+	// processing url para
 	var url_para = new URLSearchParams(window.location.search);
 	var target_page = url_para.get("page");
 	init();
@@ -195,17 +200,19 @@ $(document).ready(async function() {
 		removeCookie("pcsl_settings_hfilter");
 		setCookie("pcsl_settings_hfilter", hard_filter, 400);
 	}
+	if (url_para.get("search") !== null) {
+		if (current_page !== "search") {
+			jump2page("search");
+		}
+		$("#input").val(decodeURIComponent(url_para.get("search")));
+		$("#input").blur();
+	}
+	
 	// remove loading screen
 	$("#loading_overlay").addClass("hidden");
 });
 
 $(function() {
-	// revert pop-up
-	$(document).on("click", "#popup_remnant", function() {
-		$("body > div").removeClass("post_popup");
-		init();
-	});
-	
 	{ // nav
 		// nav - menu
 		$(document).on("click", "#nav_menu", function(e) {
@@ -344,6 +351,7 @@ $(function() {
 		$("#remove_key").removeClass("hidden");
 		$("#menu_container").addClass("hidden");
 		$("#nav_menu").removeClass("menu_opened");
+		$(document.body).addClass("no_scroll");
 		prevent_menu_popup = true;
 	});
 	

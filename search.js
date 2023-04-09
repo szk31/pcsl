@@ -258,6 +258,9 @@ $(function() {
 					} else {
 						tweet = song[entry[entry_id][entry_idx.song_id]][song_idx.name].trim() + " / " + song[entry[entry_id][entry_idx.song_id]][song_idx.artist] + " @" + data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + timestamp(entry_id) + ")";
 					}
+					if (do_share_web) {
+						tweet += ("\n\nszk31.github.io/pcsl/?search=" + encodeURIComponent(song[entry[entry_id][entry_idx.song_id]][song_idx.name]) + "より");
+					}
 					window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweet), "_blank");
 			  });
 		});

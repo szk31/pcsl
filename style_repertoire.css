@@ -171,22 +171,39 @@
 }
 
 .rep_song_title {
-	height : 1.04em;
-	line-height : 1.04em;
+	height : 1.25em;
+	line-height : 1.25em;
 	overflow : hidden;
 	overflow-inline : hidden;
 }
 
+.rep_song_info {
+	margin-top : 0.4vw;
+}
+
+.rep_song_singer {
+	display : grid;
+	grid-template-columns: 33.3% 33.3% 33.3%;
+}
+
+.rep_song_singer div {
+	margin : 0 0.2vw;
+	border-radius : 1vw;
+}
+
 .rep_song_kirara {
-	background-color : #AC424A;
+	background-color : LightCoral;
+	border : max(2px, 0.4vw) solid #670000;
 }
 
 .rep_song_momo {
-	background-color : #FDCCD3;
+	background-color : LightPink;
+	border : max(2px, 0.4vw) solid DarkMagenta;
 }
 
 .rep_song_nia {
-	background-color : #C2CAF3;
+	background-color : PaleTurquoise;
+	border : max(2px, 0.4vw) solid DarkBlue;
 }
 
 .rep_extra_info {
@@ -219,7 +236,6 @@
 .rep_list_title_container {
 	display : grid;
 	grid-template-columns: 30% 40% 30%;
-	
 }
 
 .rep_list_delete_container {

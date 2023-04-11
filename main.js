@@ -1,6 +1,6 @@
 // display string, refered in entry[].type
 var singer_lookup = [
-	"-empty-",		// 0b 0000 0x 0
+	"reserved",		// 0b 0000 0x 0
 	"看谷にぃあ",		//    0001    1
 	"胡桃澤もも",		//    0010    2
 	"ももにぃあ",		//    0011    3
@@ -81,7 +81,10 @@ var video_idx = {
 
 var version = "1.2.17";
 
-var key_hash = "3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410";
+var key_hash = [
+	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410",
+	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194" //thereIsNoPassword
+];
 
 /* control / memories */
 
@@ -133,34 +136,70 @@ $(document).ready(async function() {
 			return;
 		}
 	}
-	// if have valid key in cookie
-	if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash) {
-		// get key value
-		var key = getCookie("pcsl_content_key");
-		// decrypt data then delete enc data
-		entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc, key).toString(CryptoJS.enc.Utf8));
-		entry_enc = null;
-		video = JSON.parse(CryptoJS.AES.decrypt(video_enc, key).toString(CryptoJS.enc.Utf8));
-		video_enc = null;
-		// update rep display
-		member_display_order = [7, 6, 5, 3, 4, 12, 2, 10, 1, 9];
-		$("#home_extra").removeClass("hidden");
-		$("#home_key").removeClass("hidden");
-		// update expire day
-		removeCookie("pcsl_content_key");
-		setCookie("pcsl_content_key", key, 400);
-	} else {
+	do {
+		// private key
+		// if have valid key in cookie
+		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[0]) {
+			// get key value
+			var key = getCookie("pcsl_content_key");
+			// decrypt data then delete enc data
+			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc, key).toString(CryptoJS.enc.Utf8));
+			entry_enc = null;
+			entry_enc_pub = null;
+			video = JSON.parse(CryptoJS.AES.decrypt(video_enc, key).toString(CryptoJS.enc.Utf8));
+			video_enc = null;
+			vidoe_enc_pub = null;
+			// update rep display
+			member_display_order = [7, 6, 5, 3, 4, 12, 2, 10, 1, 9];
+			$("#home_extra").removeClass("hidden");
+			$("#home_key").removeClass("hidden");
+			// update expire day
+			removeCookie("pcsl_content_key");
+			setCookie("pcsl_content_key", key, 400);
+			break;
+		}
 		// scan for url para
 		var url_para = new URLSearchParams(window.location.search);
 		var key = url_para.get("key");
 		// if key para exist and sha384 hash matches
-		if (key !== "" && await getSHA384Hash(key) === key_hash) {
+		if (key !== "" && await getSHA384Hash(key) === key_hash[0]) {
+			// save to cookie
+			setCookie("pcsl_content_key", key, 400);
+			// reload
+			window.location = window.location.href.split("?")[0] + "?" + url_para.delete("key");
+			break;
+		}
+		
+		// public key
+		// scan for public in cookie
+		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[1]) {
+			// get key value
+			key = getCookie("pcsl_content_key");
+			// decrypt data then delete enc data
+			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc_pub, key).toString(CryptoJS.enc.Utf8));
+			entry_enc_pub = null;
+			video = JSON.parse(CryptoJS.AES.decrypt(video_enc_pub, key).toString(CryptoJS.enc.Utf8));
+			video_enc_pub = null;
+			// update rep display
+			member_display_order = [7, 6, 5, 3, 4, 12, 2, 10, 1, 9];
+			$("#home_extra").removeClass("hidden");
+			$("#home_key").removeClass("hidden");
+			// update expire day
+			removeCookie("pcsl_content_key");
+			setCookie("pcsl_content_key", key, 400);
+			break;
+		}
+		// scan for url para
+		key = url_para.get("key");
+		// if key para exist and sha384 hash matches
+		if (key !== "" && await getSHA384Hash(key) === key_hash[1]) {
 			// save to cookie
 			setCookie("pcsl_content_key", key, 400);
 			// reload
 			window.location = window.location.href.split("?")[0] + "?" + url_para.delete("key");
 		}
-	}
+	} while (0);
+	
 	// get settings from cookie
 	if (getCookie("pcsl_settings_display") === "") {
 		// cookie not set

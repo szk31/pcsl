@@ -602,7 +602,7 @@ function rep_display() {
 		// count
 		new_html += ("<div>" + sang_count[0] + "回" + (sang_count[1] > 0 ? (sang_count[0] === sang_count[1] ? " (メン限のみ)" : " (" + sang_count[1] + "回メン限)") : "") + "</div>");
 		// type
-		new_html += ("<div class=\"grid_block-3\"><div class=\"" + (rep_list[rep_hits[i]] & 4 ? "rep_song_kirara" : "rep_song_empty") + "\"></div><div class=\"" + (rep_list[rep_hits[i]] & 2 ? "rep_song_momo" : "rep_song_empty") + "\"></div><div class=\"" + (rep_list[rep_hits[i]] & 1 ? "rep_song_nia" : "rep_song_empty") + "\"></div></div>");
+		new_html += ("<div class=\"rep_song_singer\"><div class=\"" + (rep_list[rep_hits[i]] & 4 ? "rep_song_kirara" : "rep_song_empty") + "\"></div><div class=\"" + (rep_list[rep_hits[i]] & 2 ? "rep_song_momo" : "rep_song_empty") + "\"></div><div class=\"" + (rep_list[rep_hits[i]] & 1 ? "rep_song_nia" : "rep_song_empty") + "\"></div></div>");
 		// extra info
 		switch (rep_info) {
 			case "release" : 

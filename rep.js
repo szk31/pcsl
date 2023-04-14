@@ -104,7 +104,7 @@ $(function() {
 		// filter - singer - inter
 		$(document).on("click", ".filter_singer_group", function() {
 			var e = $(this).attr("id").replace(/(filter_icon_)/, "");
-			if ((e === "union") === rep_is_union) {
+			if ($("#singer_" + e).hasClass("selected")) {
 				return;
 			}
 			rep_is_union ^= 1;
@@ -200,38 +200,19 @@ $(function() {
 			if (rep_sort === e) {
 				return;
 			}
-			// update asd, des text
-			switch (e) {
-				case "50" : 
-					$("#sort_name_asd").html("正順");
-					$("#sort_name_des").html("逆順");
-					break;
-				case "count" : 
-					$("#sort_name_asd").html("多い順");
-					$("#sort_name_des").html("少ない順");
-					break;
-				case "date" : 
-				case "release" : 
-					$("#sort_name_asd").html("新しい順");
-					$("#sort_name_des").html("古い順");
-					break;
-			}
 			$(".sort_checkbox").removeClass("selected");
 			$("#sort_" + e).addClass("selected");
 			rep_sort = e;
+			update_rep_sort_display();
 			rep_display();
 		});
 		
-		// filter - sort - asd
+		// filter - sort - asd/des
 		$(document).on("click", ".filter_sort2_item", function() {
-			var e = $(this).attr("id").replace(/(sort_container_)/, "");
-			// check if clicking on the same item
-			if (rep_sort_asd === (e === "asd")) {
-				return;
-			}
-			$(".sort2_checkbox").removeClass("selected");
-			$("#sort_" + e).addClass("selected");
-			rep_sort_asd = (e === "asd");
+			// swap sort way
+			rep_sort_asd ^= 1;
+			// update text
+			update_rep_sort_display();
 			rep_display();
 		});
 		
@@ -674,3 +655,20 @@ function rep_update_leftbar() {
 
 }
 
+function update_rep_sort_display() {
+	switch (rep_sort) {
+		case "50" : 
+			$("#sort_name_sort").html(rep_sort_asd ? "正順 (⇌逆順)" : "逆順 (⇌正順)");
+			break;
+		case "count" : 
+			$("#sort_name_sort").html(rep_sort_asd ? "多い順 (⇌少ない順)" : "少ない順 (⇌多い順)");
+			break;
+		case "date" : 
+		case "release" : 
+			$("#sort_name_sort").html(rep_sort_asd ? "新しい順 (⇌古い順)" : "古い順 (⇌新しい順)");
+			break;
+		default : 
+			// error
+			return 1;
+	}
+}

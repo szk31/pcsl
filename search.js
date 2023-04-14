@@ -163,7 +163,6 @@ $(function() {
 		// search - options - sort - asd/des
 		$(document).on("click", ".search_option_group3", function() {
 			search_sort_asd　^= 1;
-			$("#search_options_btn_asd").toggleClass("selected");
 			$("#search_options_asd>.attr_name").html(search_sort_by_date ? 
 			(search_sort_asd ? "古い順&nbsp;(⇌新しい順)" : "新しい順&nbsp;(⇌古い順)") : 
 			(search_sort_asd ? "正順&nbsp;(⇌逆順)" : "逆順&nbsp;(⇌正順)"));
@@ -182,7 +181,7 @@ $(function() {
 			$("#search_options_count_input").val(e);
 			max_display = e;
 			update_display();
-			setCookie("pcsl_settings_display", e, 400);
+			setCookie("pcsl_settings_display", e);
 		});
 		
 		// search - options - others - max display - blur
@@ -200,17 +199,20 @@ $(function() {
 				case "displayHidden" :
 					do_display_hidden ^= 1;
 					update_display();
-					setCookie("pcsl_settings_hidden" , do_display_hidden ? 1 : 0, 400);
+					setCookie("pcsl_settings_hidden" , do_display_hidden ? 1 : 0);
 					break;
 				case "reset" :
 					do_clear_input ^= 1;
-					setCookie("pcsl_settings_clear" , do_clear_input ? 1 : 0, 400);
+					setCookie("pcsl_settings_clear" , do_clear_input ? 1 : 0);
 					break;
 				case "randomAnyway" :
 					do_random_anyway ^= 1;
 					$("#nav_search_random").toggleClass("disabled", searching_song_name ? (do_random_anyway ? false : loading !== "") : true);
-					setCookie("pcsl_settings_random" , do_random_anyway ? 1 : 0, 400);
+					setCookie("pcsl_settings_random" , do_random_anyway ? 1 : 0);
 					break;
+				case "shareWeb" :
+					do_share_web ^= 1;
+					setCookie("pcsl_settings_share" , do_random_anyway ? 1 : 0);
 			}
 		});
 		
@@ -259,7 +261,7 @@ $(function() {
 						tweet = song[entry[entry_id][entry_idx.song_id]][song_idx.name].trim() + " / " + song[entry[entry_id][entry_idx.song_id]][song_idx.artist] + " @" + data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + timestamp(entry_id) + ")";
 					}
 					if (do_share_web) {
-						tweet += ("\n\nszk31.github.io/pcsl/?search=" + encodeURIComponent(song[entry[entry_id][entry_idx.song_id]][song_idx.name]) + "より");
+						tweet += ("\n\nszk31.github.io/pcsl/?search=" + song_lookup.indexOf(entry[entry_id][entry_idx.song_id]) + "より");
 					}
 					window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweet), "_blank");
 			  });

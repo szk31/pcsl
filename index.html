@@ -9,6 +9,7 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 		<script type="text/javascript" src="data/song.js"></script>
+		<script type="text/javascript" src="data/song_lookup.js"></script>
 		<script type="text/javascript" src="data/entry.js"></script>
 		<script type="text/javascript" src="data/video.js"></script>
 		<script type="text/javascript" src="data/entry_enc.js"></script>
@@ -168,7 +169,7 @@
 						<div class="attr_name">歌い手順</div>
 					</label>
 					<label id="search_options_asd" class="search_option_group3 col-3">
-						<div id="search_options_btn_asd" class="checkbox search_options_checkbox selected"></div>
+						<div id="search_options_btn_asd" class="switch search_options_checkbox selected"></div>
 						<div class="attr_name">古い順&nbsp;(⇌新しい順)</div>
 					</label>
 				</div>
@@ -191,6 +192,10 @@
 					<label id="search_options_randomAnyway" class="search_option_group4 row-2 col-2">
 						<div id="search_options_btn_randomAnyway" class="checkbox search_options_checkbox"></div>
 						<div class="attr_name">ランダム条件無視</div>
+					</label>
+					<label id="search_options_shareWeb" class="search_option_group4 row-3 rowspan-2">
+						<div id="search_options_btn_shareWeb" class="checkbox search_options_checkbox"></div>
+						<div class="attr_name">共有のとき検索用URL付き</div>
 					</label>
 				</div>
 			</div>
@@ -219,11 +224,11 @@
 							<div class="filter_singer_group_container">
 								<label id="filter_icon_union" class="filter_singer_group">
 									<div id="singer_union" class="radio singer_checkbox selected"></div>
-									<div class="attr_name">⋃</div>
+									<div class="attr_name">部分一致</div>
 								</label>
 								<label id="filter_icon_inter" class="filter_singer_group">
 									<div id="singer_inter" class="radio singer_checkbox"></div>
-									<div class="attr_name">⋂</div>
+									<div class="attr_name">完全一致</div>
 								</label>
 							</div>
 						</div>
@@ -235,8 +240,8 @@
 						<div id="filter_genre_close" class="filter_close closed"></div>
 					</div>
 					<div id="filter_genre_content" class="hidden">
-						<div id="filter_genre_anisong_container" class="filter_subblock_content grid_block-2">
-							<p class="filter_subblock_title row-1 rowspan-2">アニソン</p>
+						<div id="filter_genre_anisong_container" class="filter_subblock_content grid_block-3">
+							<p class="filter_subblock_title row-1 rowspan-3">アニソン</p>
 							<label id="genre_container_anisong_all" class="filter_genre_anisong_item row-2 col-1">
 								<div id="anisong_all" class="checkbox genre_anisong_checkbox selected"></div>
 								<div class="genre_name">全部</div>
@@ -245,15 +250,15 @@
 								<div id="anisong_lovelive" class="checkbox genre_anisong_checkbox selected"></div>
 								<div class="genre_name">ラブライブ</div>
 							</label>
-							<label id="genre_container_anisong_imas" class="filter_genre_anisong_item row-3 col-1">
+							<label id="genre_container_anisong_imas" class="filter_genre_anisong_item row-2 col-3">
 								<div id="anisong_imas" class="checkbox genre_anisong_checkbox selected"></div>
 								<div class="genre_name">アイマス</div>
 							</label>
-							<label id="genre_container_anisong_macros" class="filter_genre_anisong_item row-3 col-2">
+							<label id="genre_container_anisong_macros" class="filter_genre_anisong_item row-3 col-1">
 								<div id="anisong_macros" class="checkbox genre_anisong_checkbox selected"></div>
 								<div class="genre_name">マクロス</div>
 							</label>
-							<label id="genre_container_anisong_other" class="filter_genre_anisong_item row-4 col-1">
+							<label id="genre_container_anisong_other" class="filter_genre_anisong_item row-3 col-2">
 								<div id="anisong_other" class="checkbox genre_anisong_checkbox selected"></div>
 								<div class="genre_name">その他</div>
 							</label>
@@ -332,16 +337,12 @@
 								<div class="sort_name">リリース順</div>
 							</label>
 							<p class="filter_subblock_title row-4 rowspan-2"></p>
-							<label id="sort_container_asd" class="filter_sort2_item row-5 col-1">
-								<div id="sort_asd" class="radio sort2_checkbox selected"></div>
-								<div id="sort_name_asd" class="sort_name">正順</div>
-							</label>
-							<label id="sort_container_des" class="filter_sort2_item row-5 col-2">
-								<div id="sort_des" class="radio sort2_checkbox"></div>
-								<div id="sort_name_des" class="sort_name">逆順</div>
+							<label id="sort_container_sort" class="filter_sort2_item row-5 col-1">
+								<div id="sort_sort" class="switch sort2_checkbox selected"></div>
+								<div id="sort_name_sort" class="sort_name">正順 (⇌逆順)</div>
 							</label>
 						</div>
-						<div id="filter_display_container" class="filter_subblock_content grid_block-2">
+						<div id="filter_display_container" class="filter_subblock_content grid_block-3_type2">
 							<p class="filter_subblock_title row-1 rowspan-2">表示アイテム</p>
 							<label id="display_container_attrdata" class="filter_display_item row-2 col-1">
 								<div id="display_attrdata" class="radio display_checkbox"></div>
@@ -351,7 +352,7 @@
 								<div id="display_release" class="radio display_checkbox"></div>
 								<div class="display_name">リリース日付</div>
 							</label>
-							<label id="display_container_none" class="filter_display_item row-3 col-1">
+							<label id="display_container_none" class="filter_display_item row-2 col-3">
 								<div id="display_none" class="radio display_checkbox selected"></div>
 								<div class="display_name">なし</div>
 							</label>

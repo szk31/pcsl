@@ -62,6 +62,7 @@
 .search_options_subblock {
 	display : grid;
 	margin-bottom : 2vw;
+	font-size : 3.2vw;
 }
 
 .search_grid_2 {

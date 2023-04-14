@@ -79,11 +79,11 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.2.17";
+var version = "1.3.0";
 
 var key_hash = [
-	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410",
-	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194" //thereIsNoPassword
+	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
+	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
 ];
 
 /* control / memories */
@@ -118,6 +118,7 @@ var do_share_web = false;
 var entry_proc = [];
 
 $(document).ready(async function() {
+	var url_para = new URLSearchParams(window.location.search);
 	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 		// on mobile, do nothing
 	} else {
@@ -132,96 +133,101 @@ $(document).ready(async function() {
 			// hide original page
 			$("body > div").addClass("post_switch");
 			$("body").addClass("post_switch");
-			window.history.replaceState(null, null, "?inner=1");
+			url_para.delete("key");
+			window.history.replaceState(null, null, "?" + url_para.toString());
 			return;
 		}
 	}
 	do {
-		// private key
-		// if have valid key in cookie
-		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[0]) {
+		// 1.   private key
+		// 1-1. if have valid key in cookie
+		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[1]) {
 			// get key value
 			var key = getCookie("pcsl_content_key");
 			// decrypt data then delete enc data
-			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc, key).toString(CryptoJS.enc.Utf8));
+			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc[1], key).toString(CryptoJS.enc.Utf8));
 			entry_enc = null;
-			entry_enc_pub = null;
-			video = JSON.parse(CryptoJS.AES.decrypt(video_enc, key).toString(CryptoJS.enc.Utf8));
+			video = JSON.parse(CryptoJS.AES.decrypt(video_enc[1], key).toString(CryptoJS.enc.Utf8));
 			video_enc = null;
-			vidoe_enc_pub = null;
 			// update rep display
 			member_display_order = [7, 6, 5, 3, 4, 12, 2, 10, 1, 9];
 			$("#home_extra").removeClass("hidden");
 			$("#home_key").removeClass("hidden");
 			// update expire day
 			removeCookie("pcsl_content_key");
-			setCookie("pcsl_content_key", key, 400);
-			break;
-		}
-		// scan for url para
-		var url_para = new URLSearchParams(window.location.search);
-		var key = url_para.get("key");
-		// if key para exist and sha384 hash matches
-		if (key !== "" && await getSHA384Hash(key) === key_hash[0]) {
-			// save to cookie
-			setCookie("pcsl_content_key", key, 400);
-			// reload
-			window.location = window.location.href.split("?")[0] + "?" + url_para.delete("key");
+			setCookie("pcsl_content_key", key);
 			break;
 		}
 		
-		// public key
-		// scan for public in cookie
-		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[1]) {
+		// 1-2. scan for url para
+		var key = url_para.get("key");
+		// if key para exist and sha384 hash matches
+		if (key !== "" && await getSHA384Hash(key) === key_hash[1]) {
+			// save to cookie
+			setCookie("pcsl_content_key", key);
+			// reload
+			url_para.delete("key");
+			window.location = window.location.href.split("?")[0] + "?" + url_para.toString();
+			break;
+		}
+		
+		
+		// 2.   public key
+		// 2-1. scan for public in cookie
+		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[0]) {
 			// get key value
 			key = getCookie("pcsl_content_key");
 			// decrypt data then delete enc data
-			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc_pub, key).toString(CryptoJS.enc.Utf8));
-			entry_enc_pub = null;
-			video = JSON.parse(CryptoJS.AES.decrypt(video_enc_pub, key).toString(CryptoJS.enc.Utf8));
-			video_enc_pub = null;
+			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc[0], key).toString(CryptoJS.enc.Utf8));
+			entry_enc = null;
+			video = JSON.parse(CryptoJS.AES.decrypt(video_enc[0], key).toString(CryptoJS.enc.Utf8));
+			video_enc = null;
 			// update rep display
-			member_display_order = [7, 6, 5, 3, 4, 12, 2, 10, 1, 9];
+			member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
 			$("#home_extra").removeClass("hidden");
 			$("#home_key").removeClass("hidden");
 			// update expire day
 			removeCookie("pcsl_content_key");
-			setCookie("pcsl_content_key", key, 400);
+			setCookie("pcsl_content_key", key);
 			break;
 		}
-		// scan for url para
+		
+		// 2-2. scan for url para
 		key = url_para.get("key");
 		// if key para exist and sha384 hash matches
-		if (key !== "" && await getSHA384Hash(key) === key_hash[1]) {
+		if (key !== "" && await getSHA384Hash(key) === key_hash[0]) {
 			// save to cookie
-			setCookie("pcsl_content_key", key, 400);
+			setCookie("pcsl_content_key", key);
 			// reload
-			window.location = window.location.href.split("?")[0] + "?" + url_para.delete("key");
+			url_para.delete("key");
+			window.location = window.location.href.split("?")[0] + "?" + url_para.toString();
 		}
 	} while (0);
 	
 	// get settings from cookie
 	if (getCookie("pcsl_settings_display") === "") {
 		// cookie not set
-		setCookie("pcsl_settings_display", 100, 400);
-		setCookie("pcsl_settings_hidden" , 1, 400);
-		setCookie("pcsl_settings_clear"  , 0, 400);
-		setCookie("pcsl_settings_random" , 0, 400);
+		setCookie("pcsl_settings_display", 100);
+		setCookie("pcsl_settings_hidden" , 1);
+		setCookie("pcsl_settings_clear"  , 0);
+		setCookie("pcsl_settings_random" , 0);
+		setCookie("pcsl_settings_share" , 0);
 	} else {
 		max_display       = parseInt(getCookie("pcsl_settings_display"));
 		do_display_hidden = (getCookie("pcsl_settings_hidden")) === "1";
 		do_clear_input    = (getCookie("pcsl_settings_clear")) === "1";
 		do_random_anyway  = (getCookie("pcsl_settings_random")) === "1";
+		do_share_web      = (getCookie("pcsl_settings_share")) === "1";
 		
 		// update display
 		$("#search_options_count_input").val(max_display);
 		$("#search_options_btn_displayHidden").toggleClass("selected", do_display_hidden);
 		$("#search_options_btn_reset").toggleClass("selected", do_clear_input);
 		$("#search_options_btn_randomAnyway").toggleClass("selected", do_random_anyway);
+		$("#search_options_btn_shareWeb").toggleClass("selected", do_share_web);
 	}
 	
 	// processing url para
-	var url_para = new URLSearchParams(window.location.search);
 	var target_page = url_para.get("page");
 	init();
 	if (target_page !== ("home" || null)) {
@@ -229,7 +235,7 @@ $(document).ready(async function() {
 			jump2page("home");
 		}
 	}
-	if (url_para.get("hfilter") !== null) {
+	if (url_para.get("hfilter") !== (null && "")) {
 		// get url para and store
 		hard_filter = parseInt(url_para.get("hfilter"));
 		setCookie("pcsl_settings_hfilter", hard_filter, 400);
@@ -239,11 +245,12 @@ $(document).ready(async function() {
 		removeCookie("pcsl_settings_hfilter");
 		setCookie("pcsl_settings_hfilter", hard_filter, 400);
 	}
-	if (url_para.get("search") !== null) {
+	if (url_para.get("search") !== (null && "")) {
 		if (current_page !== "search") {
 			jump2page("search");
 		}
-		$("#input").val(decodeURIComponent(url_para.get("search")));
+		console.log(url_para, url_para.get("search"));
+		$("#input").val(song[song_lookup[url_para.get("search")]][song_idx.name]);
 		$("#input").blur();
 	}
 	
@@ -535,18 +542,17 @@ function jump2page(target) {
 	$(".section_container").addClass("hidden");
 	$("#" + target + "_section").removeClass("hidden");
 	$("#nav_dummy").addClass("hidden");
+	$("#nav_search_random").addClass("hidden");
+	$("#nav_share_rep").addClass("hidden");
 	switch (target) {
 		case "home" : 
 			// show section
-			$("#nav_search_random").addClass("hidden");
-			$("#nav_share_rep").addClass("hidden");
 			$("#nav_title").html("ホーム");
 			$("#nav_dummy").removeClass("hidden");
 			break;
 		case "search" :
 			// show section
 			$("#nav_search_random").removeClass("hidden");
-			$("#nav_share_rep").addClass("hidden");
 			$("#nav_title").html("曲検索");
 			// reset input -> reload
 			$("#input").val("");
@@ -555,17 +561,17 @@ function jump2page(target) {
 		case "rep" :
 		case "repertoire" : 
 			// show section
-			$("#nav_search_random").addClass("hidden");
+			$("#repertoire_section").removeClass("hidden");
 			$("#nav_share_rep").removeClass("hidden");
 			$("#nav_title").html("レパートリー");
 			// do whatever needed
-			$(window).scrollTop(0);
 			rep_search();
 			break;
 		default :
 			// error
 			return -1;
 	}
+	$(window).scrollTop(0);
 }
 
 var copy_popup_is_displaying = false;
@@ -594,7 +600,7 @@ const getSHA384Hash = async (input) => {
 };
 
 // from w3school
-function setCookie(cname, cvalue, exdays) {
+function setCookie(cname, cvalue, exdays = 400) {
 	const d = new Date();
 	d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 	let expires = "expires="+d.toUTCString();

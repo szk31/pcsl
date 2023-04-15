@@ -146,9 +146,7 @@ $(document).ready(async function() {
 			var key = getCookie("pcsl_content_key");
 			// decrypt data then delete enc data
 			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc[1], key).toString(CryptoJS.enc.Utf8));
-			entry_enc = null;
 			video = JSON.parse(CryptoJS.AES.decrypt(video_enc[1], key).toString(CryptoJS.enc.Utf8));
-			video_enc = null;
 			// update rep display
 			member_display_order = [7, 6, 5, 3, 4, 12, 2, 10, 1, 9];
 			$("#home_extra").removeClass("hidden");
@@ -179,9 +177,7 @@ $(document).ready(async function() {
 			key = getCookie("pcsl_content_key");
 			// decrypt data then delete enc data
 			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc[0], key).toString(CryptoJS.enc.Utf8));
-			entry_enc = null;
 			video = JSON.parse(CryptoJS.AES.decrypt(video_enc[0], key).toString(CryptoJS.enc.Utf8));
-			video_enc = null;
 			// update rep display
 			member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
 			$("#home_extra").removeClass("hidden");
@@ -203,6 +199,10 @@ $(document).ready(async function() {
 			window.location = window.location.href.split("?")[0] + "?" + url_para.toString();
 		}
 	} while (0);
+	
+	// remove encryped data
+	entry_enc = [null, null];
+	video_enc = [null, null];
 	
 	// get settings from cookie
 	if (getCookie("pcsl_settings_display") === "") {

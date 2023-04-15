@@ -17,18 +17,18 @@
 
 YouTube
 
-[逢魔きらら](https://www.youtube.com/@omakirara){:target="_blank"}\
-[胡桃澤もも](https://www.youtube.com/@kurumizawamomo){:target="_blank"}
+[逢魔きらら](https://www.youtube.com/@omakirara)\
+[胡桃澤もも](https://www.youtube.com/@kurumizawamomo)
 
 Twitter
 
-[逢魔きらら](https://twitter.com/omakirara){:target="_blank"}\
-[胡桃澤もも](https://twitter.com/kurumizawamomo){:target="_blank"}
+[逢魔きらら](https://twitter.com/omakirara)\
+[胡桃澤もも](https://twitter.com/kurumizawamomo)
 
 
-[PC用 (google sheets)](https://docs.google.com/spreadsheets/d/1DSU1xBxXEZodMQCCu7hWsvdxWt-K0biXI5tt5_RD_DQ/){:target="_blank"}
+[PC用 (google sheets)](https://docs.google.com/spreadsheets/d/1DSU1xBxXEZodMQCCu7hWsvdxWt-K0biXI5tt5_RD_DQ/)
 
-製作者 : shizuku3158 ( <a href="https://twitter.com/8513ukuzihs" target="_blank">twitter</a> )
+製作者 : shizuku3158 ( [twitter](https://twitter.com/8513ukuzihs) )
 
 # URLパラメータの使い方 <a name="urlpara"></a>
 URLパラメータとは、szk31<area>.github.io/pcsl/?**page=search&hfilter=4**の?以降の部分です。以下はこのページが対応してるURLパラメータの一覧です。
@@ -41,6 +41,7 @@ URLパラメータとは、szk31<area>.github.io/pcsl/?**page=search&hfilter=4**
  - page\
 ページを開いたとき表示するページです。デフォルトは **home** 。\
 有効な値は以下の4つになります。
+
 | 名前 | 飛ぶページ |
 | :---: | :--- |
 | home | デフォルトのページ |
@@ -51,6 +52,7 @@ URLパラメータとは、szk31<area>.github.io/pcsl/?**page=search&hfilter=4**
 *hard_filter*の略で強制フィルターです。デフォルト値は **7** です。\
 bit値が1のメンバーのみ読み込んでいます。\
 以下参考まで。
+
 | 数値 | bitの位置 | メンバー名 |
 | :---: | :---: | :--- |
 | 4 | 0b**1**00 | 逢魔きらら |

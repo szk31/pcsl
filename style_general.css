@@ -402,6 +402,7 @@ body.post_switch {
 	border: none;
 	border-radius: 2vw;
 	padding : 0.5vw 2vw;
+	font-size : 3.6vw;
 	font-weight : bold;
 	width: fit-content;
 }

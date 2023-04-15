@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.3.0";
+var version = "1.3.1";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -229,7 +229,6 @@ $(document).ready(async function() {
 	
 	// processing url para
 	var target_page = url_para.get("page");
-	init();
 	if (target_page !== ("home" || null)) {
 		if (jump2page(target_page) === -1) {
 			jump2page("home");
@@ -253,7 +252,7 @@ $(document).ready(async function() {
 		$("#input").val(song[song_lookup[url_para.get("search")]][song_idx.name]);
 		$("#input").blur();
 	}
-	
+	init();
 	// remove loading screen
 	$("#loading_overlay").addClass("hidden");
 });
@@ -423,7 +422,9 @@ function init() {
 		entry_proc[i] = [];
 	}
 	for (var i = 0; i < entry.length; ++i) {
-		entry_proc[entry[i][0]].push(i);
+		if (entry[i][entry_idx.type] & hard_filter) {
+			entry_proc[entry[i][0]].push(i);
+		}
 	}
 	$("#info_version").html(version);
 	$("#info_last-update").html(video[video.length - 1][video_idx.date]);

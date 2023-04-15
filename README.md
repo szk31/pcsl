@@ -28,7 +28,7 @@ Twitter
 
 [PC用 (google sheets)](https://docs.google.com/spreadsheets/d/1DSU1xBxXEZodMQCCu7hWsvdxWt-K0biXI5tt5_RD_DQ/){:target="_blank"}
 
-製作者 : shizuku3158 ( [twitter](https://twitter.com/8513ukuzihs){:target="_blank"} )
+製作者 : shizuku3158 ( <a href="https://twitter.com/8513ukuzihs" target="_blank">twitter</a> )
 
 # URLパラメータの使い方 <a name="urlpara"></a>
 URLパラメータとは、szk31<area>.github.io/pcsl/?**page=search&hfilter=4**の?以降の部分です。以下はこのページが対応してるURLパラメータの一覧です。
@@ -41,21 +41,21 @@ URLパラメータとは、szk31<area>.github.io/pcsl/?**page=search&hfilter=4**
  - page\
 ページを開いたとき表示するページです。デフォルトは **home** 。\
 有効な値は以下の4つになります。
-|名前|飛ぶページ|
-|:---:|:---|
-|home|デフォルトのページ|
-|search|検索用のページ|
-|repertoire|レパートリー一覧のページ|
-|rep|同上|
+| 名前 | 飛ぶページ |
+| :---: | :--- |
+| home | デフォルトのページ |
+| search | 検索用のページ |
+| repertoire | レパートリー一覧のページ |
+| rep | 同上 |
  - hfilter\
 *hard_filter*の略で強制フィルターです。デフォルト値は **7** です。\
 bit値が1のメンバーのみ読み込んでいます。\
 以下参考まで。
-|数値|bitの位置|メンバー名|
-|:---:|:---:|:---|
-|4|0b**1**00|逢魔きらら|
-|2|0b0**1**0|胡桃澤もも|
-|1|0b00**1**|看谷にぃあ|
+| 数値 | bitの位置 | メンバー名 |
+| :---: | :---: | :--- |
+| 4 | 0b**1**00 | 逢魔きらら |
+| 2 | 0b0**1**0 | 胡桃澤もも |
+| 1 | 0b00**1** | 看谷にぃあ |
 
  例：`?hfilter=3`でアクセスした場合、`3 = 0b011`のため、`0b010`の胡桃澤ももと`0b001`の看谷にぃあか参加しているエントリー**のみ**が読み込まれます。\
 hfilterの値はクッキーで保存していますので、一回入力できたら同じデバイスからのアクセスも同じ設定を引き続きます。リセットしたい場合は`?hfilter=7`をご利用ください。

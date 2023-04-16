@@ -1,21 +1,21 @@
 // display string, refered in entry[].type
 var singer_lookup = [
-	"reserved",		// 0b 0000 0x 0
+	"reserved",			// 0b 0000 0x 0
 	"看谷にぃあ",		//    0001    1
 	"胡桃澤もも",		//    0010    2
 	"ももにぃあ",		//    0011    3
 	"逢魔きらら",		//    0100    4
 	"きらにぃあ",		//    0101    5
-	"ももきら",		//    0110    6
-	"ぷちここ",		//    0111    7
-	"-empty-",		//    1000    8
+	"ももきら",			//    0110    6
+	"ぷちここ",			//    0111    7
+	"-empty-",			//    1000    8
 	"つきみゆこ",  		//    1001    9
 	"愛白ふりる",		//    1010    A
-	"",				//    1011    B
+	"",					//    1011    B
 	"小悪熊ちゅい",		//    1100    C
-	"",				//    1101    D
-	"",				//    1110    E
-	"",				//    1111    F
+	"",					//    1101    D
+	"",					//    1110    E
+	"",					//    1111    F
 ];
 
 // display order of search
@@ -244,15 +244,18 @@ $(document).ready(async function() {
 		removeCookie("pcsl_settings_hfilter");
 		setCookie("pcsl_settings_hfilter", hard_filter, 400);
 	}
+	init();
 	if (url_para.get("search") !== (null && "")) {
 		if (current_page !== "search") {
 			jump2page("search");
 		}
-		console.log(url_para, url_para.get("search"));
-		$("#input").val(song[song_lookup[url_para.get("search")]][song_idx.name]);
-		$("#input").blur();
+		// prevent out of range
+		var song_id = parseInt(url_para.get("search"));
+		if (song_id >= 1 && song_id < song.length) {
+			$("#input").val(song[song_lookup[song_id]][song_idx.name]);
+			$("#input").blur();
+		}
 	}
-	init();
 	// remove loading screen
 	$("#loading_overlay").addClass("hidden");
 });

@@ -111,7 +111,7 @@ var do_random_anyway = false;
 // hidden hard filter
 var hard_filter = 0b111;
 
-// (currently hidden) do add the link to this website when sharing
+// do add the link to this website when sharing
 var do_share_web = false;
 
 // ram for searching (entry_processed)

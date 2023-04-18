@@ -57,6 +57,8 @@ var rep_edit_selected = -1;
  * 0~ : index of the song in rep_selected
  */
 
+var selected_member = 7;
+
 $(function() {
 	{ // repertoire
 		// input - submit
@@ -99,6 +101,13 @@ $(function() {
 			rep_singer[f] ^= 1;
 			$(this).toggleClass("selected");
 			rep_search(true);
+			
+			// update selected member
+			selected_member = 0;
+			for (var i in rep_singer) {
+				selected_member += rep_singer[i] << i;
+			}
+			selected_member &= hard_filter;
 		});
 		
 		// filter - singer - inter
@@ -453,10 +462,6 @@ function rep_search(force = false) {
 		return;
 	}
 	// all singer pre-load
-	var selected_member = 0;
-	for (var i in rep_singer) {
-		selected_member += rep_singer[i] << i;
-	}
 	if (selected_member === 0) {
 		// clear output
 		$("#rep_display").html("");
@@ -499,14 +504,11 @@ function rep_search(force = false) {
 	rep_display();
 }
 
+var reb_display_inter;
+
 function rep_display() {
 	// get member
 	$("#rep_display").html("");
-	var selected_member = 0;
-	for (var i in rep_singer) {
-		selected_member += rep_singer[i] << i;
-	}
-	selected_member &= hard_filter;
 	// sort record
 	switch (rep_sort) {
 		case "50" :
@@ -567,7 +569,13 @@ function rep_display() {
 			return;
 	}
 	// actual displaying
-	for (var i = 0; i < rep_hits.length; ++i) {
+	reb_display_inter = setInterval(rep_display_loop, 10);
+}
+
+var rep_loading_progress = 0;
+function rep_display_loop() {
+	var load_end = Math.min(rep_loading_progress + 20, rep_hits.length);
+	for (var i = rep_loading_progress; i < load_end; ++i) {
 		// sang count
 		var sang_count = get_sang_count(rep_hits[i], selected_member);
 		// container div
@@ -606,6 +614,11 @@ function rep_display() {
 				break;
 		}
 		$("#rep_display").append(new_html + "</div></div>");
+	}
+	// call itself again if not finished
+	load_end += 20;
+	if (load_end >= rep_hits.length) {
+		clearInterval(reb_display_inter);
 	}
 }
 

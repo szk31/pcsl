@@ -166,7 +166,7 @@
 	margin : 1.5vw 1.5vw;
 	text-align : center;
 	display : flex;
-	border : none;
+	border : .2vw solid #b2a58f;
 	border-radius : 1.2vw;
 	position : sticky;
 	position : -webkit-sticky;
@@ -231,7 +231,7 @@
 	font-size : 3.6vw;
 	padding : 1vw;
 	margin : 1.5vw 3.2vw;
-	border : none;
+	border : .2vw solid color-mix(in srgb, currentColor 72%, Black);
 	border-radius : 0.8vw;
 }
 

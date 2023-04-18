@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.3.2";
+var version = "1.3.3";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -228,12 +228,6 @@ $(document).ready(async function() {
 	}
 	
 	// processing url para
-	var target_page = url_para.get("page");
-	if (target_page !== ("home" || null)) {
-		if (jump2page(target_page) === -1) {
-			jump2page("home");
-		}
-	}
 	if (url_para.get("hfilter") !== (null && "")) {
 		// get url para and store
 		hard_filter = parseInt(url_para.get("hfilter"));
@@ -245,6 +239,12 @@ $(document).ready(async function() {
 		setCookie("pcsl_settings_hfilter", hard_filter, 400);
 	}
 	init();
+	var target_page = url_para.get("page");
+	if (target_page !== ("home" || null)) {
+		if (jump2page(target_page) === -1) {
+			jump2page("home");
+		}
+	}
 	if (url_para.get("search") !== (null && "")) {
 		if (current_page !== "search") {
 			jump2page("search");

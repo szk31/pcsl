@@ -101,13 +101,6 @@ $(function() {
 			rep_singer[f] ^= 1;
 			$(this).toggleClass("selected");
 			rep_search(true);
-			
-			// update selected member
-			selected_member = 0;
-			for (var i in rep_singer) {
-				selected_member += rep_singer[i] << i;
-			}
-			selected_member &= hard_filter;
 		});
 		
 		// filter - singer - inter
@@ -462,6 +455,10 @@ function rep_search(force = false) {
 		return;
 	}
 	// all singer pre-load
+	selected_member = 0;
+	for (var i in rep_singer) {
+		selected_member += rep_singer[i] << i;
+	}
 	if (selected_member === 0) {
 		// clear output
 		$("#rep_display").html("");
@@ -508,6 +505,7 @@ var reb_display_inter;
 
 function rep_display() {
 	// get member
+	selected_member &= hard_filter;
 	$("#rep_display").html("");
 	// sort record
 	switch (rep_sort) {
@@ -569,10 +567,12 @@ function rep_display() {
 			return;
 	}
 	// actual displaying
+	rep_loading_progress = 0;
 	reb_display_inter = setInterval(rep_display_loop, 10);
 }
 
 var rep_loading_progress = 0;
+
 function rep_display_loop() {
 	var load_end = Math.min(rep_loading_progress + 20, rep_hits.length);
 	for (var i = rep_loading_progress; i < load_end; ++i) {
@@ -616,8 +616,8 @@ function rep_display_loop() {
 		$("#rep_display").append(new_html + "</div></div>");
 	}
 	// call itself again if not finished
-	load_end += 20;
-	if (load_end >= rep_hits.length) {
+	rep_loading_progress += 20;
+	if (rep_loading_progress >= rep_hits.length) {
 		clearInterval(reb_display_inter);
 	}
 }
@@ -665,7 +665,6 @@ function rep_update_leftbar() {
 		// display delete button
 		$(".rep_list_delete").removeClass("hidden");
 	}
-
 }
 
 function update_rep_sort_display() {

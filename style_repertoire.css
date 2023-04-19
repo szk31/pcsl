@@ -156,9 +156,10 @@
 	font-size : 3.2vw;
 	padding : 1vw;
 	margin : 1.5vw 3.2vw;
-	padding : 2vw 2.4vw;
+	padding : .8vw 1.2vw;
 	border-radius : 0.8vw;
-	border : .2vw solid #b2a58f;
+	border : 1.2vw solid rgba(0, 0, 0, 0);
+	outline : .2vw solid #b2a58f;
 }
 
 .rep_song_container.selected {

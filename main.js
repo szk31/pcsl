@@ -142,18 +142,7 @@ $(document).ready(async function() {
 		// 1.   private key
 		// 1-1. if have valid key in cookie
 		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[1]) {
-			// get key value
-			var key = getCookie("pcsl_content_key");
-			// decrypt data then delete enc data
-			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc[1], key).toString(CryptoJS.enc.Utf8));
-			video = JSON.parse(CryptoJS.AES.decrypt(video_enc[1], key).toString(CryptoJS.enc.Utf8));
-			// update rep display
-			member_display_order = [7, 6, 5, 3, 4, 12, 2, 10, 1, 9];
-			$("#home_extra").removeClass("hidden");
-			$("#home_key").removeClass("hidden");
-			// update expire day
-			removeCookie("pcsl_content_key");
-			setCookie("pcsl_content_key", key);
+			load_encrpyted_data(1);
 			break;
 		}
 		
@@ -169,22 +158,10 @@ $(document).ready(async function() {
 			break;
 		}
 		
-		
 		// 2.   public key
-		// 2-1. scan for public in cookie
+		// 2-1. scan for public key in cookie
 		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[0]) {
-			// get key value
-			key = getCookie("pcsl_content_key");
-			// decrypt data then delete enc data
-			entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc[0], key).toString(CryptoJS.enc.Utf8));
-			video = JSON.parse(CryptoJS.AES.decrypt(video_enc[0], key).toString(CryptoJS.enc.Utf8));
-			// update rep display
-			member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
-			$("#home_extra").removeClass("hidden");
-			$("#home_key").removeClass("hidden");
-			// update expire day
-			removeCookie("pcsl_content_key");
-			setCookie("pcsl_content_key", key);
+			load_encrpyted_data(0);
 			break;
 		}
 		
@@ -451,6 +428,22 @@ function init() {
 	}
 }
 
+// decrypt data and replace
+function load_encrpyted_data(key_id) {
+	// get key value
+	var key = getCookie("pcsl_content_key");
+	// decrypt data then delete enc data
+	entry = JSON.parse(CryptoJS.AES.decrypt(entry_enc[key_id], key).toString(CryptoJS.enc.Utf8));
+	video = JSON.parse(CryptoJS.AES.decrypt(video_enc[key_id], key).toString(CryptoJS.enc.Utf8));
+	// update rep display
+	member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
+	$("#home_extra").removeClass("hidden");
+	$("#home_key").removeClass("hidden");
+	// update expire day
+	removeCookie("pcsl_content_key");
+	setCookie("pcsl_content_key", key);
+}
+
 // functional functions
 
 // display date in yyyy-MM-dd format
@@ -460,9 +453,9 @@ function display_date(input) {
 }
 
 // add 0 in front of a number
-function fill_digit(input, target_length) {
+function fill_digit(input, length) {
 	e = "" + input;
-	while (e.length < target_length) {
+	while (e.length < length) {
 		e = "0" + e;
 	}
 	return e;
@@ -472,6 +465,7 @@ function is_private(index) {
 	return entry[index][entry_idx.note].includes("非公開") || entry[index][entry_idx.note].includes("記録用") || entry[index][entry_idx.note].includes("アーカイブなし");
 }
 
+// rap the `selc` section in bold tag if exist in `org`
 function bold(org, selc) {
 	var e = org.toLowerCase().indexOf(selc.toLowerCase());
 	if (e === -1 || selc === "") {
@@ -493,11 +487,16 @@ function get_last_sang(id, mask = 7) {
 
 // returns a date object for a "dd-mm-yyyy" input
 function to8601(date_string) {
-	return new Date(
-		date_string.substring(6),
-		parseInt(date_string.substring(3, 5)) - 1,
-		date_string.substring(0, 2)
-	);
+	try {
+		return new Date(
+			date_string.substring(6),
+			parseInt(date_string.substring(3, 5)) - 1,
+			date_string.substring(0, 2)
+		);
+	} catch {
+		console.log(date_string + " is not in dd-MM-yyyy format");
+		return -1;
+	}
 }
 
 var today = new Date().setHours(0, 0, 0, 0);
@@ -548,6 +547,9 @@ function jump2page(target) {
 	$("#nav_dummy").addClass("hidden");
 	$("#nav_search_random").addClass("hidden");
 	$("#nav_share_rep").addClass("hidden");
+	// remove previously generated comtent
+	$("#search_display").html("");
+	$("#rep_display").html("");
 	switch (target) {
 		case "home" : 
 			// show section

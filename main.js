@@ -79,7 +79,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.3.3";
+var version = "1.3.4";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -334,6 +334,35 @@ $(function() {
 				new_html += "</tr>";
 			}
 			
+			// total for each member
+			// get numbers
+			var entry_count_total = [[0, 0, 0], [0, 0, 0]];
+			for (var i in entry) {
+				for (var j = 0; j < 3; ++j) {
+					if ((1 << j) & entry[i][entry_idx.type]) {
+						entry_count_total[entry[i][entry_idx.type] > 8 ? 1 : 0][j]++;
+					}
+				}
+			}
+			// display (combined sum)
+			new_html += "</table><div id=\"memcount_sum_combined\" class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
+			for (var i = 2; i >= 0; --i) {
+				new_html += (
+					"<div class=\"singer_" + (1 << i) + "\">" + (entry_count_total[0][i] + entry_count_total[1][i]) + "</div>"
+				);
+			}
+			
+			// display (seperated sum)
+			if (member_display_order.length > 8) {
+				new_html += "<div class=\"memcount_sum_seperate memcount_btn\"></div></div><div id=\"memcount_sum_seperated\" class=\"memcount_sum hidden\"><div class=\"memcount_sum_icon col-1 colspan-2\"></div>";
+				for (var row = 0; row < 2; ++row) {
+					for (var col = 2; col >= 0; --col) {
+						new_html += ("<div class=\"row-" + (row + 1) + " col-" + (4 - col) + " singer_" + ((row ? 8 : 0) + (1 << col)) + "\">" + entry_count_total[row][col] + "</div>");
+					}
+				}
+				new_html += "<div class=\"memcount_sum_combine memcount_btn col-5 colspan-2\"></div>";
+			}
+			new_html += "</div>";
 			$("#memcount_content").html(new_html);
 		});
 		
@@ -347,6 +376,18 @@ $(function() {
 		});
 	}
 	
+	// memcount - sum - swap - sep->com
+	$(document).on("click", ".memcount_sum_seperate", function() {
+		$("#memcount_sum_seperated").removeClass("hidden");
+		$("#memcount_sum_combined").addClass("hidden");
+	});
+	
+	// memcount - sum - swap - com->sep
+	$(document).on("click", ".memcount_sum_combine", function() {
+		$("#memcount_sum_combined").removeClass("hidden");
+		$("#memcount_sum_seperated").addClass("hidden");
+	});
+	
 	// memcount -fog> return, swap content
 	$(document).on("click", "#memcount", function(e) {
 		if ($(e.target).attr("id") === "memcount") {
@@ -356,7 +397,9 @@ $(function() {
 			prevent_menu_popup = false;
 		} else {
 			// pressing on the block
-			$(".memcount_subblock").toggleClass("hidden");
+			if (!$(e.target).hasClass("memcount_btn")) {
+				$(".memcount_subblock").toggleClass("hidden");
+			}
 		}
 	});
 	
@@ -462,7 +505,9 @@ function fill_digit(input, length) {
 }
 
 function is_private(index) {
-	return entry[index][entry_idx.note].includes("非公開") || entry[index][entry_idx.note].includes("記録用") || entry[index][entry_idx.note].includes("アーカイブなし");
+	return entry[index][entry_idx.note].includes("非公開") ||
+		   entry[index][entry_idx.note].includes("記録用") ||
+		   entry[index][entry_idx.note].includes("アーカイブなし");
 }
 
 // rap the `selc` section in bold tag if exist in `org`
@@ -473,6 +518,17 @@ function bold(org, selc) {
 	} else {
 		return (org.substring(0, e) + "<b>" + org.substring(e, e + selc.length) + "</b>" + org.substring(e + selc.length));
 	}
+}
+
+function get_sum(array) {
+	var sum = 0;
+	for (var i in array) {
+		if (isNaN(array[i])) {
+			return NaN;
+		}
+		sum += array[i];
+	}
+	return sum;
 }
 
 function get_last_sang(id, mask = 7) {
@@ -571,6 +627,7 @@ function jump2page(target) {
 			$("#nav_share_rep").removeClass("hidden");
 			$("#nav_title").html("レパートリー");
 			// do whatever needed
+			rep_input_memory = "";
 			rep_search();
 			break;
 		default :

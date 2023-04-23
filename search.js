@@ -97,6 +97,7 @@ $(function() {
 		// search - input - submit
 		$(document).on("blur", "#input", function() {
 			$("#search_auto").addClass("hidden");
+			is_searching_from_rep ? is_searching_from_rep = 0 : $("#nav_share").toggleClass("disabled", !is_searching_from_rep);
 			search();
 		});
 		
@@ -406,6 +407,11 @@ function auto_search() {
 }
 
 function search() {
+	// ignore blank input if search from rep
+	if (is_searching_from_rep) {
+		update_display();
+		return;
+	}
 	var e = $("#input").val().trim();
 	if (e === loading) {
 		return;
@@ -499,11 +505,13 @@ function search() {
 }
 
 function update_display(force = false) {
+	// ignore blank input if search from rep
+	force |= is_searching_from_rep;
+	
 	$("#search_auto").addClass("hidden");
 	if (loading === "" && !force) {
 		return;
 	}
-	is_searching_from_rep ? is_searching_from_rep = 0 : $("#nav_share").toggleClass("disabled", !is_searching_from_rep);
 	var current_song = -1;
 	var sel_member = 7;
 	for (var i in singer_chosen) {

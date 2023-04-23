@@ -72,14 +72,15 @@ var song_idx = {
 	artist : 1,
 	reading : 2,
 	attr : 3,
-	release : 4
+	release : 4,
+	reference : 5
 };
 var video_idx = {
 	id : 0,
 	date : 1
 };
 
-var version = "1.3.4";
+var version = "1.4.0";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -188,7 +189,7 @@ $(document).ready(async function() {
 		setCookie("pcsl_settings_hidden" , 1);
 		setCookie("pcsl_settings_clear"  , 0);
 		setCookie("pcsl_settings_random" , 0);
-		setCookie("pcsl_settings_share" , 0);
+		setCookie("pcsl_settings_share"  , 0);
 	} else {
 		max_display       = parseInt(getCookie("pcsl_settings_display"));
 		do_display_hidden = (getCookie("pcsl_settings_hidden")) === "1";
@@ -227,8 +228,20 @@ $(document).ready(async function() {
 			jump2page("search");
 		}
 		// prevent out of range
-		var song_id = parseInt(url_para.get("search"));
-		if (song_id >= 1 && song_id < song.length) {
+		var song_id = url_para.get("search").split(",");
+		if (song_id.length >= 1) {
+			var added_song = 0;
+			for (var i in song_id) {
+				// check if valid
+				var temp = parseInt(song_id[i]);
+				if (temp >= 1 && temp < song.length) {
+					hits[added_song++] = song_lookup[temp];
+				}
+			}
+			is_searching_from_rep = 1;
+			loading = "!bulk_load_flag";
+			update_display(1);
+		} else if (song_id >= 1 && song_id < song.length) {
 			$("#input").val(song[song_lookup[song_id]][song_idx.name]);
 			$("#input").blur();
 		}
@@ -260,6 +273,10 @@ $(function() {
 			$("html,body").animate({
 				scrollTop: 0
 			}, "fast");
+			
+			if (current_page === "repertoire" && rep_display_selected_first) {
+				rep_display();
+			}
 		});
 	}
 	
@@ -531,6 +548,14 @@ function get_sum(array) {
 	return sum;
 }
 
+function copy_of(input) {
+	if (typeof input === "object") {
+		return JSON.parse(JSON.stringify(input));
+	} else {
+		return input;
+	}
+}
+
 function get_last_sang(id, mask = 7) {
 	for (var i = entry_proc[id].length - 1; i >= 0; --i) {
 		if (entry[entry_proc[id][i]][entry_idx.type] & (mask & hard_filter)) {
@@ -602,7 +627,8 @@ function jump2page(target) {
 	$("#" + target + "_section").removeClass("hidden");
 	$("#nav_dummy").addClass("hidden");
 	$("#nav_search_random").addClass("hidden");
-	$("#nav_share_rep").addClass("hidden");
+	$("#nav_bulk_search").addClass("hidden");
+	$("#nav_share").addClass("hidden");
 	// remove previously generated comtent
 	$("#search_display").html("");
 	$("#rep_display").html("");
@@ -615,6 +641,8 @@ function jump2page(target) {
 		case "search" :
 			// show section
 			$("#nav_search_random").removeClass("hidden");
+			$("#nav_share").removeClass("hidden");
+			$("#nav_share").toggleClass("disabled", !is_searching_from_rep);
 			$("#nav_title").html("曲検索");
 			// reset input -> reload
 			$("#input").val("");
@@ -624,7 +652,9 @@ function jump2page(target) {
 		case "repertoire" : 
 			// show section
 			$("#repertoire_section").removeClass("hidden");
-			$("#nav_share_rep").removeClass("hidden");
+			$("#nav_bulk_search").removeClass("hidden");
+			$("#nav_share").removeClass("hidden");
+			$("#nav_share").toggleClass("disabled", !rep_selected.length);
 			$("#nav_title").html("レパートリー");
 			// do whatever needed
 			rep_input_memory = "";

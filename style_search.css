@@ -1,16 +1,7 @@
-/* nav plug-in */
-#nav_search_random {
-	content : url("icon/random.png");
-}
-
-#nav_search_random.disabled {
-	opacity: 0.4;
-}
-
 #search_section {
 	margin-top : 10vw;
 }
-/* inputs section */
+
 #input_container {
 	display : flex;
 }

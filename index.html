@@ -79,7 +79,8 @@
 			<div id="nav_control_group">
 				<div id="nav_dummy"></div>
 				<div id="nav_search_random" class="hidden"></div>
-				<div id="nav_share_rep" class="hidden disabled"></div>
+				<div id="nav_bulk_search" class="hidden disabled"></div>
+				<div id="nav_share" class="hidden disabled"></div>
 				<div id="nav_to_top"></div>
 			</div>
 		</div>
@@ -174,7 +175,7 @@
 			<div id="input_container">
 				<input id="input" type="text" placeholder="曲名/読みで検索" autocomplete="off">
 				<div id="search_options_button_container">
-					<a href="#" id="search_options_button"></a>
+					<div href="#" id="search_options_button"></div>
 				</div>
 			</div>
 			<div id="search_options_container" class="hidden">
@@ -386,6 +387,10 @@
 							<label id="sort_container_sort" class="filter_sort2_item row-5 col-1">
 								<div id="sort_sort" class="switch sort2_checkbox selected"></div>
 								<div id="sort_name_sort" class="sort_name">正順 (⇌逆順)</div>
+							</label>
+							<label id="sort_container_selected" class="filter_sort3_item row-5 col-2">
+								<div id="sort_selected" class="checkbox sort3_checkbox"></div>
+								<div id="sort_name_selected" class="sort_name">選択済み優先</div>
 							</label>
 						</div>
 						<div id="filter_display_container" class="filter_subblock_content grid_block-3_type2">

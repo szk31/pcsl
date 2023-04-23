@@ -47,6 +47,8 @@ var rep_genre = {
 var rep_sort = "50";
 // sort order
 var rep_sort_asd = true;
+// if display selected first
+var rep_display_selected_first = false;
 // display info
 var rep_info = "none";
 // editing list - selected song
@@ -218,6 +220,14 @@ $(function() {
 			rep_display();
 		});
 		
+		// filter - display selecetd first
+		$(document).on("click", ".filter_sort3_item", function() {
+			rep_display_selected_first ^= 1;
+			$(".sort3_checkbox").toggleClass("selected", rep_display_selected_first);
+			// update
+			rep_display();
+		});
+		
 		// filter - display
 		$(document).on("click", ".filter_display_item", function() {
 			var e = $(this).attr("id").replace(/(display_container_)/, "");
@@ -237,18 +247,33 @@ $(function() {
 			if ($(this).hasClass("selected")) {
 				rep_selected.splice(rep_selected.indexOf(e), 1);
 				if (rep_selected.length === 0) {
-					$("#nav_share_rep").addClass("disabled");
+					$("#nav_share").addClass("disabled");
+					$("#nav_bulk_search").addClass("disabled");
 				}
 			} else {
 				rep_selected.push(e);
-				$("#nav_share_rep").removeClass("disabled");
+				$("#nav_share").removeClass("disabled");
+				$("#nav_bulk_search").removeClass("disabled");
 			}
 			$(this).toggleClass("selected");
 		});
 		
+		// diaplay - bulk search
+		$(document).on("click", "#nav_bulk_search", function() {
+			is_searching_from_rep = 1;
+			jump2page("search");
+			hits = copy_of(rep_selected);
+			// set loading and input display to special value
+			loading = "!bulk_load_flag";
+			$("#input").val("");
+			update_display(1);
+		});
+		
 		// display  - share
-		$(document).on("click", "#nav_share_rep", function(e) {
-			e.preventDefault();
+		$(document).on("click", "#nav_share", function() {
+			if (current_page !== "repertoire") {
+				return;
+			}
 			if ($(this).hasClass("disabled") || prevent_menu_popup) {
 				return;
 			}
@@ -369,7 +394,8 @@ $(function() {
 				$("#rep_list_leftbar").addClass("hidden");
 				$("#rep_list_container").removeClass("editing");
 				rep_edit_selected = -1;
-				$("#nav_share_rep").addClass("disabled");
+				$("#nav_share").addClass("disabled");
+				$("#nav_bulk_search").addClass("disabled");
 			}
 		});
 		
@@ -417,7 +443,7 @@ $(function() {
 			}
 			navigator.clipboard.writeText(content);
 			copy_popup();
-		})
+		});
 	}
 });
 
@@ -504,6 +530,13 @@ function rep_search(force = false) {
 var reb_display_inter;
 
 function rep_display() {
+	if (rep_display_selected_first) {
+		// remove selected item in main array
+		for (var i in rep_selected) {
+			rep_hits.splice(rep_hits.indexOf(rep_selected[i]), 1);
+		}
+	}
+
 	// get member
 	selected_member &= hard_filter;
 	$("#rep_display").html("");
@@ -566,8 +599,13 @@ function rep_display() {
 			console.log("rep_sort of type \"" + rep_sort + "\" not found");
 			return;
 	}
+	if (rep_display_selected_first) {
+		// add selected back into main array
+		rep_hits = rep_selected.concat(rep_hits);
+	}
 	// actual displaying
 	rep_loading_progress = 0;
+	rep_display_loop();
 	reb_display_inter = setInterval(rep_display_loop, 10);
 }
 

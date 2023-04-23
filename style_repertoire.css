@@ -1,12 +1,3 @@
-#nav_share_rep {
-	content : url("icon/share.png");
-	filter : invert(1);
-}
-
-#nav_share_rep.disabled {
-	opacity: 0.4;
-}
-
 #repertoire_section {
 	margin-top : 10vw;
 }
@@ -129,6 +120,7 @@
 .filter_genre_general_item,
 .filter_sort_item,
 .filter_sort2_item,
+.filter_sort3_item,
 .filter_display_item,
 .rep_item {
 	display : flex;
@@ -442,7 +434,9 @@
 	content : url("icon/cbx_minus.png");
 }
 
-.search_grid_2 .checkbox:not(.selected) {
+.search_grid_2 .checkbox:not(.selected),
+.sort3_checkbox:not(.selected),
+#list_artist_cb:not(.selected) {
 	content : url("icon/cbx_cross.png");
 }
 

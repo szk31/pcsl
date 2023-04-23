@@ -19,8 +19,10 @@ var search_sort_asd = true;
 // max display boxes of autocomplete
 var auto_display_max;
 
+// flag : is loading songs from rep selected
+var is_searching_from_rep = false;
+
 $(function() {
-	
 	// nav - random
 	$(document).on("click", "#nav_search_random", function() {
 		if($(this).hasClass("disabled") && !do_random_anyway) {
@@ -63,6 +65,21 @@ $(function() {
 		search();
 	});
 	
+	// nav - share
+	$(document).on("click", "#nav_share", function() {
+		if (current_page !== "search" || $(this).hasClass("disabled")) {
+			return;
+		}
+		// generate url w/ first song
+		var out_url = "szk31.github.io/pcsl/?search=" + song_lookup.indexOf(hits[0]);
+		// then add 2nd to last song
+		for (var i = 1; i < hits.length; ++i) {
+			out_url += ("," + song_lookup.indexOf(hits[i]));
+		}
+		navigator.clipboard.writeText(out_url);
+		copy_popup();
+	});
+	
 	{ // search
 		// search - input - autocomplete
 		$(document).on("input", "#input", function() {
@@ -92,9 +109,10 @@ $(function() {
 		
 		// search - input::focus -> reset, auto complete
 		$(document).on("focus", "#input", function(e) {
-			if (do_clear_input) {
+			if (do_clear_input || loading === "!bulk_load_flag") {
 				$(e.target).val("");
 				$("#nav_search_random").removeClass("disabled");
+				$("#nav_share").addClass("disabled");
 			}
 			auto_search();
 		});
@@ -247,24 +265,24 @@ $(function() {
 			const url = "https://www.youtube.com/watch?v=" + video[entry[entry_id][entry_idx.video]][video_idx.id];
 
 			fetch("https://noembed.com/embed?dataType=json&url=" + url)
-				.then(res => res.json())
-				.then(function(data) {
-					// title of unlisted / private video are returned a 401 error
-					if (data.title === undefined) {
-						alert("再アップ/非公開の動画を共有しないで下さい。");
-						return;
-					}
-					var tweet = "";
-					if (entry[entry_id][entry_idx.time] === 0) {
-						tweet = data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + ")";
-					} else {
-						tweet = song[entry[entry_id][entry_idx.song_id]][song_idx.name].trim() + " / " + song[entry[entry_id][entry_idx.song_id]][song_idx.artist] + " @" + data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + timestamp(entry_id) + ")";
-					}
-					if (do_share_web) {
-						tweet += ("\n\nszk31.github.io/pcsl/?search=" + song_lookup.indexOf(entry[entry_id][entry_idx.song_id]) + "より");
-					}
-					window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweet), "_blank");
-			  });
+			.then(res => res.json())
+			.then(function(data) {
+				// title of unlisted / private video are returned a 401 error
+				if (data.title === undefined) {
+					alert((entry[entry_id][entry_idx.note].includes("【非公開】") ? "非公開" : "再アップの") + "動画を共有しないで下さい。");
+					return;
+				}
+				var tweet = "";
+				if (entry[entry_id][entry_idx.time] === 0) {
+					tweet = data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + ")";
+				} else {
+					tweet = song[entry[entry_id][entry_idx.song_id]][song_idx.name].trim() + " / " + song[entry[entry_id][entry_idx.song_id]][song_idx.artist] + " @" + data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + timestamp(entry_id) + ")";
+				}
+				if (do_share_web) {
+					tweet += ("\n\nszk31.github.io/pcsl/?search=" + song_lookup.indexOf(entry[entry_id][entry_idx.song_id]) + "より");
+				}
+				window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweet), "_blank");
+			});
 		});
 	}
 });
@@ -480,11 +498,12 @@ function search() {
 	update_display();
 }
 
-function update_display() {
+function update_display(force = false) {
 	$("#search_auto").addClass("hidden");
-	if (loading === "") {
+	if (loading === "" && !force) {
 		return;
 	}
+	is_searching_from_rep ? is_searching_from_rep = 0 : $("#nav_share").toggleClass("disabled", !is_searching_from_rep);
 	var current_song = -1;
 	var sel_member = 7;
 	for (var i in singer_chosen) {

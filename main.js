@@ -537,17 +537,6 @@ function bold(org, selc) {
 	}
 }
 
-function get_sum(array) {
-	var sum = 0;
-	for (var i in array) {
-		if (isNaN(array[i])) {
-			return NaN;
-		}
-		sum += array[i];
-	}
-	return sum;
-}
-
 function copy_of(input) {
 	if (typeof input === "object") {
 		return JSON.parse(JSON.stringify(input));

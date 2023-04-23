@@ -244,9 +244,6 @@ $(function() {
 				}else{
 					hide_song.splice(hide_song.indexOf(f), 1);
 				}
-				if (loading === "") {
-					return;
-				}
 				$(".song_" + f).toggleClass("hidden");
 				$("#fold_" + f).toggleClass("closed");
 			}

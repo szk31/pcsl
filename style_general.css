@@ -285,7 +285,8 @@ body.post_switch {
 	border-radius: 2vw;
 }
 
-#memcount_table {
+#memcount_table,
+#memcount_rep_table {
 	margin-left: auto;
 	margin-right: auto;
 	background-color : AliceBlue;
@@ -295,8 +296,13 @@ body.post_switch {
 	font-size : 4vw;
 }
 
-#memcount_table th {
+#memcount_table th,
+#memcount_rep_table th:not(.table_empty_column) {
 	min-width : 13.6vw;
+}
+
+#memcount_rep_table th.table_empty_column {
+	min-width : 8vw;
 }
 
 .memcount_row>td {
@@ -343,19 +349,22 @@ body.post_switch {
 	height : 6vw;
 }
 
-.memcount_sum_seperate {
+.memcount_sum_seperate,
+.memcount_rep_sum_seperate {
 	content : url("icon/arrow_seperate.png");
 	width : 6vw;
 	height : 6vw;
 }
 
-.memcount_sum_combine {
+.memcount_sum_combine,
+.memcount_rep_sum_combine {
 	content : url("icon/arrow_combine.png");
 	width : 6vw;
 	height : 6vw;
 }
 
-#memcount_sum_seperated div:not(.colspan-2) {
+#memcount_sum_seperated div:not(.colspan-2),
+#memcount_rep_sum_seperated div:not(.colspan-2) {
 	transform: translate(0, -3.8vw);
 }
 

@@ -158,7 +158,7 @@
 	text-align : center;
 	display : flex;
 	border : .2vw solid #b2a58f;
-	border-radius : 1.2vw;
+	border-radius : 1.6vw;
 	position : sticky;
 	position : -webkit-sticky;
 	top : 10vw;
@@ -223,7 +223,7 @@
 	padding : 1vw;
 	margin : 1.5vw 3.2vw;
 	border : .2vw solid color-mix(in srgb, currentColor 72%, Black);
-	border-radius : 0.8vw;
+	border-radius : 1.2vw;
 }
 
 .entry_primary {
@@ -259,6 +259,11 @@
 
 
 /* singer colour palette section */
+/* reserved (0) cc : 7.07 */
+.singer_0 {
+	background-color : #DFEFE7;
+	color : #660BCD;
+}
 /* nia (1) cc : 11.86 */
 .singer_1 {
 	background-color : PaleTurquoise;

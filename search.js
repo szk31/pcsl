@@ -62,6 +62,7 @@ $(function() {
 			}
 		} while (found === 0);
 		$("#input").val(song[random_song][song_idx.name]);
+		is_searching_from_rep = 0;
 		search();
 	});
 	

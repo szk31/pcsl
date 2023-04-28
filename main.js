@@ -80,7 +80,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.4.1";
+var version = "1.4.1a";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -235,7 +235,7 @@ $(document).ready(async function() {
 		}
 		// prevent out of range
 		var song_id = url_para.get("search").split(",");
-		if (song_id.length >= 1) {
+		if (song_id.length > 1) {
 			var added_song = 0;
 			for (var i in song_id) {
 				// check if valid
@@ -797,6 +797,7 @@ function jump2page(target) {
 			search();
 			break;
 		case "rep" :
+			current_page = "repertoire";
 		case "repertoire" : 
 			// show section
 			$("#repertoire_section").removeClass("hidden");

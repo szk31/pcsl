@@ -533,6 +533,9 @@ function rep_display() {
 	if (rep_display_selected_first) {
 		// remove selected item in main array
 		for (var i in rep_selected) {
+			if (rep_hits.indexOf(rep_selected[i]) === -1) {
+				continue;
+			}
 			rep_hits.splice(rep_hits.indexOf(rep_selected[i]), 1);
 		}
 	}

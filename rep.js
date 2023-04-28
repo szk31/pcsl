@@ -709,19 +709,21 @@ function rep_update_leftbar() {
 }
 
 function update_rep_sort_display() {
+	var temp = "";
 	switch (rep_sort) {
 		case "50" : 
-			$("#sort_name_sort").html(rep_sort_asd ? "正順 (⇌逆順)" : "逆順 (⇌正順)");
+			temp = rep_sort_asd ? "正順 (⇌逆順)" : "逆順 (⇌正順)";
 			break;
 		case "count" : 
-			$("#sort_name_sort").html(rep_sort_asd ? "多い順 (⇌少ない順)" : "少ない順 (⇌多い順)");
+			temp = rep_sort_asd ? "多い順 (⇌少ない順)" : "少ない順 (⇌多い順)";
 			break;
 		case "date" : 
 		case "release" : 
-			$("#sort_name_sort").html(rep_sort_asd ? "新しい順 (⇌古い順)" : "古い順 (⇌新しい順)");
+			temp = rep_sort_asd ? "新しい順 (⇌古い順)" : "古い順 (⇌新しい順)";
 			break;
 		default : 
 			// error
 			return 1;
 	}
+	$("#sort_name_sort").html(e);
 }

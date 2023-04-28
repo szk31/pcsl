@@ -80,7 +80,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.4.1a";
+var version = "1.4.2";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -223,6 +223,30 @@ $(document).ready(async function() {
 		setCookie("pcsl_settings_hfilter", hard_filter, 400);
 	}
 	init();
+	if (url_para.get("sfilter") !== (null && "")) {
+		// extract member data
+		var ext = parseInt(url_para.get("sfilter"));
+		// bit and = true => default 
+		var member_name = [ext & 1 ? "" : "nia", ext & 2 ? "" : "momo", ext & 4 ? "" : "kirara"];
+		// rep
+		if (url_para.get("page") === ("rep" || "repertoire")) {
+			for (var i in member_name) {
+				if (member_name[i] === "") {
+					continue;
+				}
+				$("#filter_" + member_name[i] + "_icon").click();
+			}
+		}
+		//search
+		if (url_para.get("page") === "search" || url_para.get("search") !== (null && "")) {
+			for (var i in member_name) {
+				if (member_name[i] === "") {
+					continue;
+				}
+				$("#icon_" + member_name[i]).click();
+			}
+		}
+	}
 	var target_page = url_para.get("page");
 	if (target_page !== ("home" || null)) {
 		if (jump2page(target_page) === -1) {

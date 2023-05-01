@@ -725,5 +725,5 @@ function update_rep_sort_display() {
 			// error
 			return 1;
 	}
-	$("#sort_name_sort").html(e);
+	$("#sort_name_sort").html(temp);
 }

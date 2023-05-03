@@ -80,7 +80,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.4.2a";
+var version = "1.4.2b";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -182,6 +182,8 @@ $(document).ready(async function() {
 			load_encrpyted_data(0);
 			break;
 		}
+		// wrong key or no key in cookie, delete anyway
+		removeCookie("pcsl_content_key");
 	} while (0);
 	
 	// remove encryped data
@@ -615,6 +617,9 @@ function memcount_load_rep() {
 					var index = rep_count[(1 << solos)].indexOf(rep_count[target[i]][inner]);
 					if (index !== -1) {
 						rep_count[(1 << solos)].splice(index, 1);
+						if (solos === 0) {
+							console.log(rep_count[inner]);
+						}
 					}
 				}
 			}
@@ -628,7 +633,7 @@ function memcount_load_rep() {
 		for (var i in rep_count) {
 			rep_sum[repeat][i] = rep_count[i].length;
 		}
-		if (repeat === 0) {
+		if (key_valid && repeat === 0) {
 			// is 1st loop
 			// it doesnt hurt if executed 2nd time but
 			for (var i = 0; i < 8; ++i) {
@@ -667,6 +672,7 @@ function memcount_load_rep() {
 			rep_sum[0][9]
 		]
 	];
+	console.log(rep_sum, entry_count_total);
 	// display (combined sum)
 	new_html += "</table><div id=\"memcount_rep_sum_combined\" class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
 	for (var i = 0; i < 3; ++i) {

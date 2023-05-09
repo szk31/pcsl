@@ -80,7 +80,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.4.2b";
+var version = "1.4.2c";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -599,15 +599,17 @@ function memcount_load_rep() {
 		// im going to assume i did the right thing here
 		// im not sure if the numbers are correct
 		
-		var target = [3, 5 ,6];
-		for (var i in target) {
-			// remove 7 from 3, 5 and 6
+		for (var i = 1; i < 7; ++i) {
+			// remove 7 from 1 to 6
 			for (var inner = 0; inner < rep_count[7].length; ++inner) {
-				var index = rep_count[target[i]].indexOf(rep_count[7][inner]);
+				var index = rep_count[i].indexOf(rep_count[7][inner]);
 				if (index !== -1) {
-					rep_count[target[i]].splice(index, 1);
+					rep_count[i].splice(index, 1);
 				}
 			}
+		}
+		var target = [3, 5, 6];
+		for (var i in target) {
 			// remove 3 from 1 and 2, 5 from 1 and 4 and 6 from 2 and 4
 			for (var solos = 0; solos < 3; ++solos) {
 				if (!(1 << solos) & target[i]) {
@@ -617,9 +619,6 @@ function memcount_load_rep() {
 					var index = rep_count[(1 << solos)].indexOf(rep_count[target[i]][inner]);
 					if (index !== -1) {
 						rep_count[(1 << solos)].splice(index, 1);
-						if (solos === 0) {
-							console.log(rep_count[inner]);
-						}
 					}
 				}
 			}
@@ -672,7 +671,6 @@ function memcount_load_rep() {
 			rep_sum[0][9]
 		]
 	];
-	console.log(rep_sum, entry_count_total);
 	// display (combined sum)
 	new_html += "</table><div id=\"memcount_rep_sum_combined\" class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
 	for (var i = 0; i < 3; ++i) {
@@ -797,6 +795,7 @@ function get_attr(id) {
 }
 
 function jump2page(target) {
+	target = target === "rep" ? "repertoire" : target;
 	current_page = target;
 	$(".menu2page_selected").removeClass("menu2page_selected");
 	$("#menu2page_" + target).addClass("menu2page_selected");
@@ -827,7 +826,6 @@ function jump2page(target) {
 			search();
 			break;
 		case "rep" :
-			current_page = "repertoire";
 		case "repertoire" : 
 			// show section
 			$("#repertoire_section").removeClass("hidden");

@@ -448,6 +448,7 @@ $(function() {
 });
 
 var rep_hits = [];
+var rep_hits_solo = [];
 var rep_hits_count = 0;
 
 var rep_selected = [];
@@ -632,7 +633,7 @@ function rep_display_loop() {
 		// count
 		new_html += ("<div>" + sang_count[0] + "回" + (sang_count[1] > 0 ? (sang_count[0] === sang_count[1] ? " (メン限のみ)" : " (" + sang_count[1] + "回メン限)") : "") + "</div>");
 		// type
-		new_html += ("<div class=\"rep_song_singer\"><div class=\"" + (rep_list[rep_hits[i]] & 4 ? "rep_song_kirara" : "rep_song_empty") + "\"></div><div class=\"" + (rep_list[rep_hits[i]] & 2 ? "rep_song_momo" : "rep_song_empty") + "\"></div><div class=\"" + (rep_list[rep_hits[i]] & 1 ? "rep_song_nia" : "rep_song_empty") + "\"></div></div>");
+		new_html += ("<div class=\"rep_song_singer" + (key_valid ? " rep_singer_2rows" : "") + "\"><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(4) ? "rep_song_kirara" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(2) ? "rep_song_momo" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(1) ? "rep_song_nia" : "rep_song_empty") + "\"></div>" + (key_valid ? ("<div class=\"" + (rep_hits_solo[rep_hits[i]].includes(12) ? "rep_song_chui" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(10) ? "rep_song_shiro" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(9) ? "rep_song_yuco" : "rep_song_empty") + "\"></div>") : "") + "</div>");
 		// extra info
 		switch (rep_info) {
 			case "release" : 

@@ -146,9 +146,8 @@
 .rep_song_container {
 	font-weight : bold;
 	font-size : 3.2vw;
-	padding : 1vw;
 	margin : 1.5vw 3.2vw;
-	padding : .8vw 1.2vw;
+	padding : .8vw 1.2vw .2vw 1.2vw;
 	border-radius : 0.8vw;
 	border : 1.2vw solid rgba(0, 0, 0, 0);
 	outline : .2vw solid #b2a58f;
@@ -183,8 +182,12 @@
 }
 
 .rep_song_singer div {
-	margin : 0 0.2vw;
-	border-radius : 1vw;
+	margin : 0.2vw;
+	border-radius : 1.6vw;
+}
+
+.rep_singer_2rows div {
+	aspect-ratio: 1 / 1;
 }
 
 .rep_song_kirara {
@@ -202,8 +205,23 @@
 	border : max(2px, 0.4vw) solid DarkBlue;
 }
 
+.rep_song_chui {
+	background-color : #C4E2FA;
+	border : max(2px, 0.4vw) solid #814B41;
+}
+
+.rep_song_shiro {
+	background-color : #FFF0AB;
+	border : max(2px, 0.4vw) solid #CC2455;
+}
+
+.rep_song_yuco {
+	background-color : #FFC0F9;
+	border : max(2px, 0.4vw) solid MediumBlue;
+}
+
 .rep_extra_info {
-	margin-left : 2vw;
+	margin-left : 1vw;
 }
 
 #rep_list {
@@ -360,7 +378,7 @@
 }
 
 .grid_block-4 {
-	grid-template-columns: 18% 32% 8% 42%;
+	grid-template-columns: 18% 32% 10% 40%;
 }
 
 .grid_block-3_type2 {

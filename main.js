@@ -80,7 +80,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.4.2c";
+var version = "1.4.3";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -516,9 +516,35 @@ function init() {
 	auto_display_max = Math.floor(5 * Math.pow(window.innerHeight / window.innerWidth, 1.41421356237));
 	
 	// rep
+	var rep_solo_temp = [];
+	function split_to_solo(input) {
+		// hard code is easier
+		switch (input) {
+			case 1 : 
+			case 2 : 
+			case 4 : 
+			case 9 : 
+			case 10 : 
+			case 12 : 
+				return [input];
+				break;
+			case 3 : 
+				return [1, 2];
+				break;
+			case 5 : 
+				return [1, 4];
+				break;
+			case 6 : 
+				return [2, 4];
+				break;
+			case 7 : 
+				return [1, 2, 4];
+		}
+	}
+	
 	// get each member's repertoire
 	for (var i = 0; i < song.length; ++i) {
-		rep_list[i] = 0
+		rep_list[i] = 0;
 		for (var j in entry_proc[i]) {
 			// check if all singer bits are filled
 			if ((rep_list[i] & 7) === 7) {
@@ -529,6 +555,13 @@ function init() {
 		}
 		// remove the non-singer bit, not needed.
 		rep_list[i] &= ~8;
+		
+		rep_solo_temp[i] = [...new Set(entry_proc[i])];
+		rep_hits_solo[i] = [];
+		for (var j in rep_solo_temp[i]) {
+			rep_hits_solo[i] = rep_hits_solo[i].concat(split_to_solo(entry[rep_solo_temp[i][j]][entry_idx.type]));
+		}
+		rep_hits_solo[i] = [...new Set(rep_hits_solo[i])].filter(Number);
 	}
 }
 

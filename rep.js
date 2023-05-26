@@ -472,7 +472,7 @@ function rep_search(force = false) {
 			if (entry_proc[i].length === 0) {
 				continue;
 			}
-			if (song[i][song_idx.name].toLowerCase().normalize("NFKC").search(input_value.toLowerCase()) !== -1 ||
+			if (processed_song_name[i].search(input_value.toLowerCase()) !== -1 ||
 				song[i][song_idx.reading].search(input_value) !== -1
 				) {
 				rep_hits[rep_hits_count++] = i;

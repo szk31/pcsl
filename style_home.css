@@ -31,53 +31,53 @@
 	height : 20.4vw;
 }
 
-#home_member_kirara_bg {
+.icon_kirara_bg {
 	background-color : #670000;
 }
 
-#home_member_momo_bg {
+.icon_momo_bg {
 	background-color : DarkMagenta;
 }
 
-#home_member_nia_bg {
+.icon_nia_bg {
 	background-color : DarkBlue;
 }
 
-#home_member_chui_bg {
+.icon_chui_bg {
 	background-color : #814B41;
 }
 
-#home_member_shiro_bg {
+.icon_shiro_bg {
 	background-color : #CC2455;
 }
 
-#home_member_yuco_bg {
+.icon_yuco_bg {
 	background-color : MediumBlue;
 }
 
 
 
-#home_member_kirara {
+.icon_kirara {
 	content : url("icon/kirara.jpg");
 }
 
-#home_member_momo {
+.icon_momo {
 	content : url("icon/momo.jpg");
 }
 
-#home_member_nia {
+.icon_nia {
 	content : url("icon/nia.jpg");
 }
 
-#home_member_chui {
+.icon_chui {
 	content : url("https://yt3.googleusercontent.com/LpNKgI0PNKzHI3RcTzfHcqRPIrxPvkkU7jek8sybYsIIZTUz4_cyVKhXWKR_c-ZCgGBPrzzHKeM");
 }
 
-#home_member_shiro {
+.icon_shiro {
 	content : url("https://yt3.googleusercontent.com/o8GYT-bJt7fUXAs-jwyCXgt5IANbz1wWL8opnwi5McN7SYI3TD5-fIjbwFEGSGnRTG04vQdl");
 }
 
-#home_member_yuco {
+.icon_yuco {
 	content : url("https://yt3.googleusercontent.com/EQIvOcnF0onnRN1-FkMgd0jg6eNkBVWiwCUVEXHhXPUyjlHtWxPbxc3cCdrdLqnz9DFKdpg2Lg");
 }
 

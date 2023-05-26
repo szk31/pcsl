@@ -3,6 +3,9 @@ var loading = "";
 
 // stores enabled singer data
 var singer_chosen = [1, 1, 1];
+// selector for 0b1xxx records
+var part_filter = [1, 1, 1, 1, 1, 1];
+var part_rom = [1, 2, 4, 9, 10, 12];
 
 // store song id (song[id]) of folded up songs
 var hide_song = new Array();
@@ -127,21 +130,14 @@ $(function() {
 		
 		// search - options - singer
 		$(document).on("click", ".singer_icon", function() {
-			var e = $(this).attr("id");
-			var selected = -1;
-			switch (e) {
-				case "icon_kirara":
-					selected = 2;
-					break;
-				case "icon_momo":
-					selected = 1;
-					break;
-				case "icon_nia":
-					selected = 0;
-					break;
+			var e = parseInt($(this).attr('class').split(/\s+/).find(x => x.startsWith("sing_sel_")).replace("sing_sel_", ""));
+			var selected = part_rom.indexOf(e);
+			if (0 <= selected && selected <= 2) {
+				singer_chosen[selected] ^= 1;
 			}
-			singer_chosen[selected] ^= 1;
-			$(".sing_sel_" + selected).toggleClass("selected");
+			part_filter[selected] ^= 1;
+			// just add a new filter[6] to use at displaying
+			$(".sing_sel_" + e).toggleClass("selected");
 			loading = "";
 			search();
 		});
@@ -471,7 +467,7 @@ function search() {
 					}
 				}
 			} else {
-				if (song[i][song_idx.name].normalize("NFKC").toLowerCase().includes(e) ||
+				if (processed_song_name[i].includes(e) ||
 					song[i][song_idx.reading].toLowerCase().includes(e)
 				) {
 					hits.push(i);
@@ -543,14 +539,18 @@ function update_display(force = false) {
 		found_entries += sorted_enrties.length;
 		for (var j = 0; j < sorted_enrties.length; ++j) {
 			var cur_entry = sorted_enrties[j];
-			// check if all member
-			if (sel_member !== 7) {
-				if (!(sel_member & entry[cur_entry][entry_idx.type])) {
-					continue;
+			// get part filter
+			var hit = false;
+			for (var i in part_filter) {
+				if (!part_filter[i] &&
+					((part_rom[i] | 8) & entry[cur_entry][entry_idx.type]) === part_rom[i]
+				){
+					hit = true;
+					break;
 				}
 			}
-			// skip if private
-			if ((!do_display_hidden) && is_private(cur_entry)) {
+			// if hit on previous module or private
+			if (hit || ((!do_display_hidden) && is_private(cur_entry))) {
 				continue;
 			}
 			// if new song
@@ -578,7 +578,7 @@ function update_display(force = false) {
 					song_name = song_name.substring(0, song_name.search(/~/g)) + "<br />" + song_name.substring(song_name.search(/~/g));
 				}
 				new_html += (
-				"<div class=\"song_name_container " + (loaded_count % 2 === 0 ? "odd_colour" : "even_colour") + "\" id=\"" + current_song + "\">" +
+				"<div class=\"song_name_container " + (loaded_count % 2 ? "odd_colour" : "even_colour") + "\" id=\"" + current_song + "\">" +
 					"<div class=\"song_rap\">" +
 						"<div class=\"song_name\">" + song_name + "</div>" +
 						"<div class=\"song_credit" + (show ? "" : " hidden") + (song[current_song][song_idx.artist].length > 30 ? " long_credit" : "") + " song_" + current_song + "\">" + song[current_song][song_idx.artist] + "</div>" +

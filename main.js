@@ -80,7 +80,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.4.3b";
+var version = "1.5.0";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -122,6 +122,9 @@ var entry_proc = [];
 
 // memcount - rep generate interval flag
 var memcount_rep_int;
+
+// pre-process song names
+var processed_song_name = [""];
 
 $(document).ready(async function() {
 	var url_para = new URLSearchParams(window.location.search);
@@ -542,6 +545,11 @@ function init() {
 		}
 	}
 	
+	// process song names
+	for (var i = 1; i < song.length; ++i) {
+		processed_song_name.push(song[i][song_idx.name].toLowerCase().normalize("NFKC"));
+	}
+	
 	// get each member's repertoire
 	for (var i = 0; i < song.length; ++i) {
 		rep_list[i] = 0;
@@ -575,7 +583,7 @@ function load_encrpyted_data(key_id) {
 	video = JSON.parse(CryptoJS.AES.decrypt(video_enc[key_id], key).toString(CryptoJS.enc.Utf8));
 	// update rep display
 	member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
-	$("#home_extra").removeClass("hidden");
+	$(".extra").removeClass("hidden");
 	$("#home_key").removeClass("hidden");
 	// update expire day
 	removeCookie("pcsl_content_key");

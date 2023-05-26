@@ -180,22 +180,22 @@
 				<div class="search_options_title">歌手選択</div>
 				<div class="search_options_underline"></div>
 				<div class="singer_icon_container">
-					<div class="singer_icon_bg selected icon_kirara_bg">
+					<div class="singer_icon_bg selected icon_kirara_frame">
 						<span class="icon_kirara singer_icon selected sing_sel_4"></span>
 					</div>
-					<div class="singer_icon_bg selected icon_momo_bg">
+					<div class="singer_icon_bg selected icon_momo_frame">
 						<span class="icon_momo singer_icon selected sing_sel_2"></span>
 					</div>
-					<div class="singer_icon_bg selected icon_nia_bg">
+					<div class="singer_icon_bg selected icon_nia_frame">
 						<span class="icon_nia singer_icon selected sing_sel_1"></span>
 					</div>
-					<div class="singer_icon_bg selected icon_chui_bg extra hidden">
+					<div class="singer_icon_bg selected icon_chui_frame extra hidden">
 						<span class="icon_chui singer_icon selected sing_sel_12"></span>
 					</div>
-					<div class="singer_icon_bg selected icon_shiro_bg extra hidden">
+					<div class="singer_icon_bg selected icon_shiro_frame extra hidden">
 						<span class="icon_shiro singer_icon selected sing_sel_10"></span>
 					</div>
-					<div class="singer_icon_bg selected icon_yuco_bg extra hidden">
+					<div class="singer_icon_bg selected icon_yuco_frame extra hidden">
 						<span class="icon_yuco singer_icon selected sing_sel_9"></span>
 					</div>
 				</div>
@@ -264,18 +264,49 @@
 						<div id="filter_entry_close" class="filter_close closed"></div>
 					</div>
 					<div id="filter_entry_content" class="hidden">
-						<div id="filter_entry_icon_container" class="filter_subblock_content">
+						<div id="filter_entry_icon_container" class="filter_subblock_content ">
 							<p class="filter_subblock_title">既存選択</p>
-							<div id="filter_kirara_bg" class="filter_icon_bg">
-								<span id="filter_kirara_icon" class="filter_icon selected"></span>
+							<div class="icon_kirara_frame filter_icon_bg">
+								<span class="icon_kirara filter_icon selected"></span>
 							</div>
-							<div id="filter_momo_bg" class="filter_icon_bg">
-								<span id="filter_momo_icon" class="filter_icon selected"></span>
+							<div class="icon_momo_frame filter_icon_bg">
+								<span class="icon_momo filter_icon selected"></span>
 							</div>
-							<div id="filter_nia_bg" class="filter_icon_bg">
-								<span id="filter_nia_icon" class="filter_icon selected"></span>
+							<div class="icon_nia_frame filter_icon_bg">
+								<span class="icon_nia filter_icon selected"></span>
 							</div>
 							<div class="filter_singer_group_container">
+								<label id="filter_icon_union" class="filter_singer_group">
+									<div id="singer_union" class="radio singer_checkbox selected"></div>
+									<div class="attr_name">部分一致</div>
+								</label>
+								<label id="filter_icon_inter" class="filter_singer_group">
+									<div id="singer_inter" class="radio singer_checkbox"></div>
+									<div class="attr_name">完全一致</div>
+								</label>
+							</div>
+						</div>
+						<div id="filter_entry_icon_extra" class="filter_subblock_content hidden">
+							<p class="filter_subblock_title">既存選択</p>
+							<div class="icon_kirara_frame filter_icon_bg_extra">
+								<span class="icon_kirara filter_icon_extra selected"></span>
+							</div>
+							<div class="icon_momo_frame filter_icon_bg_extra">
+								<span class="icon_momo filter_icon_extra selected"></span>
+							</div>
+							<div class="icon_nia_frame filter_icon_bg_extra">
+								<span class="icon_nia filter_icon_extra selected"></span>
+							</div>
+							<div class="icon_chui_frame filter_icon_bg_extra">
+								<span class="icon_chui filter_icon_extra selected"></span>
+							</div>
+							<div class="icon_shiro_frame filter_icon_bg_extra">
+								<span class="icon_shiro filter_icon_extra selected"></span>
+							</div>
+							<div class="icon_yuco_frame filter_icon_bg_extra">
+								<span class="icon_yuco filter_icon_extra selected"></span>
+							</div>
+							<div class="filter_singer_group_extra">
 								<label id="filter_icon_union" class="filter_singer_group">
 									<div id="singer_union" class="radio singer_checkbox selected"></div>
 									<div class="attr_name">部分一致</div>

@@ -173,6 +173,80 @@ body.post_switch {
 
 /* overall section ~end~ */
 
+/* singer colour section */
+.icon_kirara_bg {
+	background-color : #670000;
+}
+
+.icon_momo_bg {
+	background-color : DarkMagenta;
+}
+
+.icon_nia_bg {
+	background-color : DarkBlue;
+}
+
+.icon_chui_bg {
+	background-color : #814B41;
+}
+
+.icon_shiro_bg {
+	background-color : #CC2455;
+}
+
+.icon_yuco_bg {
+	background-color : MediumBlue;
+}
+
+.icon_kirara_frame {
+	background-color : #AC424A;
+}
+
+.icon_momo_frame {
+	background-color : #FDCCD3;
+}
+
+.icon_nia_frame {
+	background-color : #C2CAF3;
+}
+
+.icon_chui_frame {
+	background-color : #8C8596;
+}
+
+.icon_shiro_frame {
+	background-color : #E3807C;
+}
+
+.icon_yuco_frame {
+	background-color : #9E7CE9;
+}
+
+.icon_kirara {
+	content : url("icon/kirara.jpg");
+}
+
+.icon_momo {
+	content : url("icon/momo.jpg");
+}
+
+.icon_nia {
+	content : url("icon/nia.jpg");
+}
+
+.icon_chui {
+	content : url("https://yt3.googleusercontent.com/LpNKgI0PNKzHI3RcTzfHcqRPIrxPvkkU7jek8sybYsIIZTUz4_cyVKhXWKR_c-ZCgGBPrzzHKeM");
+}
+
+.icon_shiro {
+	content : url("https://yt3.googleusercontent.com/o8GYT-bJt7fUXAs-jwyCXgt5IANbz1wWL8opnwi5McN7SYI3TD5-fIjbwFEGSGnRTG04vQdl");
+}
+
+.icon_yuco {
+	content : url("https://yt3.googleusercontent.com/EQIvOcnF0onnRN1-FkMgd0jg6eNkBVWiwCUVEXHhXPUyjlHtWxPbxc3cCdrdLqnz9DFKdpg2Lg");
+}
+/* singer colour section end*/
+
 /* menu section */
 #menu_container {
 	position : fixed;

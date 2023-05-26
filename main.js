@@ -80,7 +80,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.0a";
+var version = "1.5.0b";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -126,7 +126,7 @@ var memcount_rep_int;
 // pre-process song names
 var processed_song_name = [""];
 
-$(document).ready(async function() {
+$(window).on("load", async function() {
 	var url_para = new URLSearchParams(window.location.search);
 	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
 		// on mobile, do nothing
@@ -187,6 +187,8 @@ $(document).ready(async function() {
 		}
 		// wrong key or no key in cookie, delete anyway
 		removeCookie("pcsl_content_key");
+		// remove extra to prevent ID crash
+		$(".extra").html("");
 	} while (0);
 	
 	// remove encryped data
@@ -232,7 +234,14 @@ $(document).ready(async function() {
 		// extract member data
 		var ext = parseInt(url_para.get("sfilter"));
 		// bit and = true => default 
-		var member_name = [ext & 1 ? "" : "nia", ext & 2 ? "" : "momo", ext & 4 ? "" : "kirara"];
+		var member_name = [
+			ext & 1 ? "" : "nia",
+			ext & 2 ? "" : "momo",
+			ext & 4 ? "" : "kirara",
+			ext & 8 ? "" : "yuco",
+			ext & 16 ? "" : "shiro",
+			ext & 32 ? "" : "chui"
+		];
 		// rep
 		if (url_para.get("page") === ("rep" || "repertoire")) {
 			for (var i in member_name) {
@@ -245,10 +254,9 @@ $(document).ready(async function() {
 		//search
 		if (url_para.get("page") === "search" || url_para.get("search") !== (null && "")) {
 			for (var i in member_name) {
-				if (member_name[i] === "") {
-					continue;
+				if (member_name[i].length) {
+					$(".singer_icon.icon_" + member_name[i]).click();
 				}
-				$(".singer_icon.icon_" + member_name[i]).click();
 			}
 		}
 	}
@@ -584,6 +592,8 @@ function load_encrpyted_data(key_id) {
 	// update rep display
 	member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
 	$(".extra").removeClass("hidden");
+	$(".anti_extra").html("");
+	$(".anti_extra").addClass("hidden");
 	$("#home_key").removeClass("hidden");
 	// update expire day
 	removeCookie("pcsl_content_key");

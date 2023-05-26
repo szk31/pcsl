@@ -20,6 +20,7 @@ var attr_idx = [
 var rep_list = [];
 // singer selection
 var rep_singer = [1, 1, 1];
+var rep_part_singer = [1, 1, 1, 1, 1, 1];
 // singer selection method
 var rep_is_union = true;
 
@@ -84,7 +85,7 @@ $(function() {
 		
 		// filter - entry - singer
 		$(document).on("click", ".filter_icon", function() {
-			var e = $(this).attr("id").replace(/(filter_)|(_icon)/g, "");
+			var e = $(this).attr('class').split(/\s+/).find(x => x.startsWith("icon_")).replace("icon_", "");
 			var f = -1;
 			switch (e) {
 				case "kirara" :
@@ -101,6 +102,39 @@ $(function() {
 					return;
 			}
 			rep_singer[f] ^= 1;
+			$(this).toggleClass("selected");
+			rep_search(true);
+		});
+		$(document).on("click", ".filter_icon_extra", function() {
+			var e = $(this).attr('class').split(/\s+/).find(x => x.startsWith("icon_")).replace("icon_", "");
+			var f = -1;
+			switch (e) {
+				case "kirara" :
+					f = 2;
+					break;
+				case "momo" :
+					f = 1;
+					break;
+				case "nia" :
+					f = 0;
+					break;
+				case "chui" :
+					f = 5;
+					break;
+				case "shiro" :
+					f = 4;
+					break;
+				case "yuco" :
+					f = 3;
+					break;
+				default : 
+					//error
+					return;
+			}
+			if (0 <= f || f <= 2) {
+				rep_singer[f] ^= 1;
+			}
+			rep_part_singer[f] ^= 1;
 			$(this).toggleClass("selected");
 			rep_search(true);
 		});

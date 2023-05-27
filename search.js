@@ -541,9 +541,9 @@ function update_display(force = false) {
 			var cur_entry = sorted_enrties[j];
 			// get part filter
 			var hit = false;
-			for (var i in part_filter) {
-				if (!part_filter[i] &&
-					((part_rom[i] | 8) & entry[cur_entry][entry_idx.type]) === part_rom[i]
+			for (var k in part_filter) {
+				if (!part_filter[k] &&
+					((part_rom[k] | 8) & entry[cur_entry][entry_idx.type]) === part_rom[k]
 				){
 					hit = true;
 					break;

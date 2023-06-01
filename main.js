@@ -86,7 +86,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.0c";
+var version = "1.5.1";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -519,6 +519,27 @@ $(function() {
 function init() {
 	$("#input").val("");
 	// process data
+	{
+		// reverse video dates
+		const date_start = new Date("2021-01-01");
+
+		function getDateText(passed) {
+			var result = new Date(date_start);
+			result.setDate(date_start.getDate() + passed);
+			return result.toISOString().slice(0, 10);
+		}
+		
+		for (var i in video) {
+			video[i][video_idx.date] = getDateText(video[i][video_idx.date]);
+		}
+		
+		// reverse note
+		for (var i in entry) {
+			entry[i][entry_idx.note] = note_index[entry[i][entry_idx.note]];
+		}
+		// remove note index
+		note_index = null;
+	}
 	for (var i in song) {
 		entry_proc[i] = [];
 	}

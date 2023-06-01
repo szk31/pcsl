@@ -479,6 +479,7 @@ function search() {
 			}
 		}
 	}
+	$("#nav_share").toggleClass("disabled", searching_song_name || hits === 0);
 	// sort exact song name to top
 	hits.sort(function (a, b) {
 		if (song[a][song_idx.name].trim().toLowerCase() === e) {

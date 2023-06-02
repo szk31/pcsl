@@ -12,7 +12,7 @@ html {
 	font-family: 'M PLUS 1p', sans-serif;
 }
 
-body:not(#input) {
+body:not(input[type=text]) {
 	-webkit-user-select : none; /* Safari */
 	user-select : none; /* Standard syntax */
 }
@@ -35,6 +35,10 @@ body.no_scroll {
 a {
 	text-decoration: none;
 	color : inherit;
+}
+
+input[type=text]:focus {
+	outline : 0.4vw solid #dfdfdf;
 }
 
 .hidden {

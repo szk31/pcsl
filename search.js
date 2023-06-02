@@ -153,6 +153,7 @@ $(function() {
 			searching_song_name = new_setting;
 			$(".search_option_group1>.radio").toggleClass("selected");
 			$("#input").val("");
+			$("#nav_share").addClass("disabled");
 			$("#input").attr("placeholder", searching_song_name ? "曲名/読みで検索" : "アーティスト名で検索");
 			$("#search_display").html("");
 			loading = "";

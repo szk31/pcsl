@@ -207,8 +207,8 @@
 }
 
 .rep_song_chui {
-	background-color : #C4E2FA;
-	border : max(2px, 0.4vw) solid #814B41;
+	background-color : #ffd3ca;
+	border : max(2px, 0.4vw) solid #7a36a6;
 }
 
 .rep_song_shiro {
@@ -217,8 +217,8 @@
 }
 
 .rep_song_yuco {
-	background-color : #FFC0F9;
-	border : max(2px, 0.4vw) solid MediumBlue;
+	background-color : #ffcffb;
+	border : max(2px, 0.4vw) solid #265ebd;
 }
 
 .rep_extra_info {

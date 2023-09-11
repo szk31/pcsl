@@ -542,12 +542,12 @@ function update_display(force = false) {
 		for (var j = 0; j < sorted_enrties.length; ++j) {
 			var cur_entry = sorted_enrties[j];
 			// get part filter
-			var hit = false;
+			var hit = true;
 			for (var k in part_filter) {
-				if (!part_filter[k] &&
+				if (part_filter[k] &&
 					((part_rom[k] | 8) & entry[cur_entry][entry_idx.type]) === part_rom[k]
 				){
-					hit = true;
+					hit = false;
 					break;
 				}
 			}
@@ -595,7 +595,7 @@ function update_display(force = false) {
 			var no_note = entry[cur_entry][entry_idx.note] === "" || entry[cur_entry][entry_idx.note] === "【メン限】" || entry[cur_entry][entry_idx.note] === "【メン限アーカイブ】";
 			var note = entry[cur_entry][entry_idx.note];
 			if (is_mem) {
-				if (note.includes("メン限アーカイブ"))　{
+				if (note.includes("メン限アーカイブ")) {
 					note = note.replace(/【メン限アーカイブ】/g, "");
 				} else {
 					note = note.replace(/【メン限】/g, "");

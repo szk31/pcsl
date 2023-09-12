@@ -179,7 +179,11 @@
 
 .rep_song_singer {
 	display : grid;
-	grid-template-columns: 33.3% 33.3% 33.3%;
+	grid-template-columns : 33.3% 33.3% 33.3%;
+}
+
+.rep_singer_2rows {
+	margin-top : -1.1vw;
 }
 
 .rep_song_singer div {

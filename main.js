@@ -86,7 +86,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.3";
+var version = "1.5.4";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -249,7 +249,7 @@ $(window).on("load", async function() {
 			ext & 32 ? "" : "chui"
 		];
 		// rep
-		if (url_para.get("page") === ("rep" || "repertoire")) {
+		if (url_para.get("page") === ("rep" || "repertoire") || url_para.get("rfilter") !== (null && "")) {
 			for (var i in member_name) {
 				if (member_name[i] === "") {
 					continue;
@@ -293,6 +293,39 @@ $(window).on("load", async function() {
 		} else if (song_id >= 1 && song_id < song.length) {
 			$("#input").val(song[song_lookup[song_id]][song_idx.name]);
 			$("#input").blur();
+		}
+	}
+	/*    rep filter
+	 * this read a string of binary number
+	 * the value is exactly the same as rep_anisong and rep_genre
+	 */
+	if (url_para.get("rfilter") !== (null && "")) {
+		if (current_page !== "repertoire") {
+			jump2page("rep");
+		}
+		// extract bits
+		var selected_bits = [];
+		var temp = parseInt(url_para.get("rfilter"));
+		var counter = 0;
+		while (temp) {
+			// test if last bit is 1
+			if (temp % 2) {
+				selected_bits.push(counter);
+			}
+			// remove last bit, add counter
+			temp >>= 1;
+			counter++;
+		}
+		// click all checkbox thats NOT selected
+		for (var i in rep_anisong) {
+			if (!selected_bits.includes(rep_anisong[i][1])) {
+				$("#anisong_" + i).click();
+			}
+		}
+		for (var i in rep_genre) {
+			if (!selected_bits.includes(rep_genre[i][1])) {
+				$("#general_" + i).click();
+			}
 		}
 	}
 	// remove loading screen

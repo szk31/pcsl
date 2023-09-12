@@ -70,7 +70,20 @@ hfilterの値はクッキーで保存していますので、一回入力でき�
 例：`?search=100`の場合、`song[song_lookup[100]]`の曲が読み込まれます。\
 `?search=10,11,12,13`の場合、`song[song_lookup[10]]`から`song[song_lookup[13]]`の四曲が読み込まれます。\
 連番である必要がありませんが、`1≦x≦song.length`である必要があります。
+ - rfilter\
+*repertoire_filter*の略で、レパートリー一覧のジャンルの特定ができます。\
+「現在選択済みのジャンルを共有」機能は開発中です。手動で編集する場合は以下参考してください。
 
+| ジャンル | bit | ジャンル | bit | ジャンル | bit |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| ジャンルその他 | 0 | J-POP | 5 | 歌謡曲 | 10 |
+| アニソンその他 | 1 | ボカロ | 6 | ポップス | 11 |
+| ラブライブ | 2 | ジブリ | 7 | R&B | 12 |
+| アイマス | 3 | 特撮 | 8 | キャラソン | 13 |
+| マクロス | 4 | ロック | 9 |
+
+例：アニソンを検索したい場合、「アニソンその他」(1)、「ラブライブ」(2)、「アイマス」(3)、「マクロス」(4)が全部になります。
+この場合のrfilter値は、`2^1 + 2^2 + 2^3 + 2^4 = 30`になります。（?rfilter=30）
 
 # 歌検索の使い方 <a name="search"></a>
 入力ボックスで曲名か、読みで検索できます。\
@@ -98,10 +111,29 @@ hfilterの値はクッキーで保存していますので、一回入力でき�
    1. 検索URL付き (*OFF*)\
 動画を共有するとき、共有する曲が検索されている状態で検索ページを開けます。
 
-曲名の隣の ▼ を押すとその曲のエントリーを収納できます。もう一度押すと元に戻ります。<img src="https://szk31.github.io/pcsl/icon/copy.png" width="20px" height="20px" alt="copy_icon"> を押すと曲名がコピーされます。エントリーの右にある <img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="copy_icon"> を押すとツイート用の文章でTwitterが開きます。他のSNSに対応する予定は今のところありません。
+曲名の隣の ▼ を押すとその曲のエントリーを収納できます。もう一度押すと元に戻ります。<img src="https://szk31.github.io/pcsl/icon/copy.png" width="20px" height="20px" alt="copy_icon"> を押すと曲名がコピーされます。エントリーの右にある <img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon"> を押すとツイート用の文章でTwitterが開きます。他のSNSに対応する予定は今のところありません。
 
 # レパートリー一覧の使い方 <a name="rep"></a>
-編集中…
+1回以上歌ったことがある曲の一覧が見れます。絞り込み・並び順を変えるでリクエストなどに使えます。
+
+1. 既存選択\
+各メンバーの既存曲が見れます。選択されているメンバーが歌ったことある曲のみ表示されます。\
+部分一致(∪)、完全一致(∩)は削除予定のため説明を省きます。
+1. ジャンル選択\
+曲のジャンル限定で検索できます。アニソン・ボカロ限定リクエストに活用してください。\
+全部のチェックボックスを押すと一括選択/選択解除ができます。
+1. 並び順/表示\
+絞り込まれた曲の表示順が変えれます。\
+表示アイテムの属性情報は「弾き語り」「ASMR弾き語り」「アカペラ」の回数を表示します。
+1. 曲名で検索
+歌検索と同様、曲の**名前**を入れるとヒットする曲のみ表示されます。\
+予想は実装してありません。\
+1. 曲選択
+曲のブロックを押すことで、その曲を選択できます。\
+選択された曲は「選択済み優先」が<img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon">のとき、絞り込み一切無視し一番上に表示されます。\
+また、曲選択後に更新されず、絞り込みに変化があるか、右上の<img src="https://szk31.github.io/pcsl/icon/to_top.png" width="20px" height="20px" alt="to_top_icon">ボタンが押されたときのみ更新されます。\
+選択された曲は右上の<img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon">を押すとツイート用ダイアログが表示されます。(オーバーホール予定)\
+また、右上の<img src="https://szk31.github.io/pcsl/icon/to_yt.png" width="20px" height="20px" alt="to_youtube_icon">を押すと選択された曲で歌検索が表示されます。
 
 # English version <a name="eng"></a>
 

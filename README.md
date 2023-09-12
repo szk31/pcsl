@@ -130,7 +130,7 @@ hfilterの値はクッキーで保存していますので、一回入力でき�
 予想は実装してありません。\
 1. 曲選択
 曲のブロックを押すことで、その曲を選択できます。\
-選択された曲は「選択済み優先」が<img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon">のとき、絞り込み一切無視し一番上に表示されます。\
+選択された曲は「選択済み優先」が<img src="https://szk31.github.io/pcsl/icon/cbx_check.png" width="20px" height="20px" alt="checkbox_check_icon">のとき、絞り込み一切無視し一番上に表示されます。\
 また、曲選択後に更新されず、絞り込みに変化があるか、右上の<img src="https://szk31.github.io/pcsl/icon/to_top.png" width="20px" height="20px" alt="to_top_icon">ボタンが押されたときのみ更新されます。\
 選択された曲は右上の<img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon">を押すとツイート用ダイアログが表示されます。(オーバーホール予定)\
 また、右上の<img src="https://szk31.github.io/pcsl/icon/to_yt.png" width="20px" height="20px" alt="to_youtube_icon">を押すと選択された曲で歌検索が表示されます。

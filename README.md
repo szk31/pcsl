@@ -147,3 +147,10 @@ anything else thats made by me is copyleft, do whatever you want with it.
 Content keys (Level2) are only distributed to selected individuals.\
 Please do not request or redistribute.\
 This repository may be removed if any leaks happen.
+
+# Future Version / to-do list
+1. UI overhaul
+1. rep-share overhaul
+1. mem_count results are wrong
+1. storing data in local storage
+1. request data after key confirmation

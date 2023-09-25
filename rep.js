@@ -14,7 +14,8 @@ var attr_idx = [
 	"歌謡曲",
 	"ポップス",
 	"R&B",
-	"キャラソン"
+	"キャラソン",
+	"disney"
 ];
 // type of all songs
 var rep_list = [];
@@ -42,6 +43,7 @@ var rep_genre = {
 	pops : [1, 11],
 	rnb : [1, 12],
 	cha : [1, 13],
+	dis : [1, 14],
 	other : [1, 0]
 };
 // sort method

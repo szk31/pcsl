@@ -145,8 +145,8 @@ anything that has a owner / is copyrighted belongs to their owner / holder.\
 anything else thats made by me is copyleft, do whatever you want with it.
 
 Content keys (Level2) are only distributed to selected individuals.\
-Please do not request or redistribute.\
-This repository may be removed if any leaks happen.
+~~Please do not request or redistribute.~~\
+Feel free to request via twitter, though there is no guarantee on anything.
 
 # Future Version / to-do list
 1. UI overhaul

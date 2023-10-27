@@ -302,22 +302,22 @@ $(function() {
 		});
 		
 		// display - press copy
-		$(document).on("mousedown", ".rep_song_container", function() {
+		$(document).on("mousedown touchstart", ".rep_song_container", function() {
 			var e = parseInt($(this).attr("id").replace(/(rep_song_)/, ""));
 			longpress_timer = setTimeout(function() {
 				navigator.clipboard.writeText(song[e][song_idx.name]);
 				copy_popup();
+				is_long_pressing = true;
+				post_longpress_timer = setTimeout(function() {
+					is_long_pressing = false;
+					clearTimeout(post_longpress_timer);
+				}, 500);
 			}, 600);
 		});
 		
 		// display - press copy (disable)
-		$(document).on("mouseup mouseleft", ".rep_song_container", function() {
+		$(document).on("mouseup mouseleft touchend touchmove", ".rep_song_container", function() {
 			clearTimeout(longpress_timer);
-			is_long_pressing = true;
-			post_longpress_timer = setTimeout(function() {
-				is_long_pressing = false;
-				clearTimeout(post_longpress_timer);
-			}, 100);
 		});
 		
 		// diaplay - bulk search

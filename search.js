@@ -179,7 +179,7 @@ $(function() {
 		
 		// search - options - sort - asd/des
 		$(document).on("click", ".search_option_group3", function() {
-			search_sort_asd　^= 1;
+			search_sort_asd ^= 1;
 			$("#search_options_asd>.attr_name").html(search_sort_by_date ? 
 			(search_sort_asd ? "古い順&nbsp;(⇌新しい順)" : "新しい順&nbsp;(⇌古い順)") : 
 			(search_sort_asd ? "正順&nbsp;(⇌逆順)" : "逆順&nbsp;(⇌正順)"));

@@ -64,6 +64,10 @@ var rep_edit_selected = -1;
 
 var selected_member = 7;
 
+var longpress_timer;
+var post_longpress_timer;
+var is_long_pressing = false;
+
 $(function() {
 	{ // repertoire
 		// input - submit
@@ -279,6 +283,9 @@ $(function() {
 		
 		// display - select
 		$(document).on("click", ".rep_song_container", function() {
+			if (is_long_pressing) {
+				return;
+			}
 			var e = parseInt($(this).attr("id").replace(/(rep_song_)/, ""));
 			if ($(this).hasClass("selected")) {
 				rep_selected.splice(rep_selected.indexOf(e), 1);
@@ -292,6 +299,25 @@ $(function() {
 				$("#nav_bulk_search").removeClass("disabled");
 			}
 			$(this).toggleClass("selected");
+		});
+		
+		// display - press copy
+		$(document).on("mousedown", ".rep_song_container", function() {
+			var e = parseInt($(this).attr("id").replace(/(rep_song_)/, ""));
+			longpress_timer = setTimeout(function() {
+				navigator.clipboard.writeText(song[e][song_idx.name]);
+				copy_popup();
+			}, 600);
+		});
+		
+		// display - press copy (disable)
+		$(document).on("mouseup mouseleft", ".rep_song_container", function() {
+			clearTimeout(longpress_timer);
+			is_long_pressing = true;
+			post_longpress_timer = setTimeout(function() {
+				is_long_pressing = false;
+				clearTimeout(post_longpress_timer);
+			}, 100);
 		});
 		
 		// diaplay - bulk search

@@ -363,8 +363,7 @@ body.post_switch {
 	border-radius: 2vw;
 }
 
-#memcount_table,
-#memcount_rep_table {
+#memcount_table {
 	margin-left: auto;
 	margin-right: auto;
 	background-color : AliceBlue;
@@ -374,13 +373,8 @@ body.post_switch {
 	font-size : 4vw;
 }
 
-#memcount_table th,
-#memcount_rep_table th:not(.table_empty_column) {
+#memcount_table th {
 	min-width : 13.6vw;
-}
-
-#memcount_rep_table th.table_empty_column {
-	min-width : 8vw;
 }
 
 .memcount_row>td {
@@ -427,23 +421,106 @@ body.post_switch {
 	height : 6vw;
 }
 
-.memcount_sum_seperate,
-.memcount_rep_sum_seperate {
+.memcount_sum_seperate {
 	content : url("icon/arrow_seperate.png");
 	width : 6vw;
 	height : 6vw;
 }
 
-.memcount_sum_combine,
-.memcount_rep_sum_combine {
+.memcount_sum_combine {
 	content : url("icon/arrow_combine.png");
 	width : 6vw;
 	height : 6vw;
 }
 
-#memcount_sum_seperated div:not(.colspan-2),
-#memcount_rep_sum_seperated div:not(.colspan-2) {
+#memcount_sum_seperated div:not(.colspan-2) {
 	transform: translate(0, -3.8vw);
+}
+
+#memcount_rep_content.extra_content {
+	display : grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+#memcount_rep_content:not(.extra_content) {
+	position : absolute;
+	left : 30%;
+	top : 15%;
+	width : 40%;
+}
+
+.memcount_rep_block {
+	width : 90%;
+	block-size : fit-content;
+	margin : auto;
+	font-size : 3.8vw;
+	font-weight : 550;
+	padding : 4vh 0;
+}
+
+.memcount_rep_block>div {
+	padding : 1vw;
+}
+
+.memcount_rep_block>div:first-child {
+	border-radius : 1.8vw 1.8vw 0 0;
+}
+
+.memcount_rep_block>div:last-child {
+	border-radius : 0 0 1.8vw 1.8vw;
+}
+
+.memcount_rep_block_sum>div {
+	padding : 1vw;
+	border-radius : 1.8vw;
+}
+
+.memcount_rep_sum {
+	content : url("icon/sigma.png");
+	width : 6vw;
+	height : 6vw;
+	block-size : fit-content;
+	margin : auto;
+	padding : 0;
+}
+
+.memcount_rep_block_sum {
+	font-size : 4.2vw;
+	font-weight : 600;
+	padding : 5%;
+	border-radius : 1.8vw;
+	margin : 5%;
+	width : 80%;
+}
+
+.memcount_rep_singer_4 {
+	background: linear-gradient(135deg, LightCoral 0 30%, #ffd3ca 70% 100%);
+}
+
+.memcount_rep_singer_4>div {
+	background: linear-gradient(135deg, #670000 0 30%, #7a36a6 70% 100%);
+	-webkit-background-clip: text;
+	color: transparent;
+}
+
+.memcount_rep_singer_2 {
+	background: linear-gradient(135deg, LightPink 0 30%, #FFF0AB 70% 100%);
+}
+
+.memcount_rep_singer_2>div {
+	background: linear-gradient(135deg, DarkMagenta 0 30%, #CC2455 70% 100%);
+	-webkit-background-clip: text;
+	color: transparent;
+}
+
+.memcount_rep_singer_1 {
+	background: linear-gradient(135deg, PaleTurquoise 0 30%, #ffcffb 70% 100%);
+}
+
+.memcount_rep_singer_1>div {
+	background: linear-gradient(135deg, DarkBlue 0 30%, #265ebd 70% 100%);
+	-webkit-background-clip: text;
+	color: transparent;
 }
 
 /* info section */

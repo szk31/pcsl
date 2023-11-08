@@ -87,7 +87,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.5";
+var version = "1.5.6";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -589,30 +589,6 @@ function init() {
 	
 	// rep
 	var rep_solo_temp = [];
-	function split_to_solo(input) {
-		// hard code is easier
-		switch (input) {
-			case 1 : 
-			case 2 : 
-			case 4 : 
-			case 9 : 
-			case 10 : 
-			case 12 : 
-				return [input];
-				break;
-			case 3 : 
-				return [1, 2];
-				break;
-			case 5 : 
-				return [1, 4];
-				break;
-			case 6 : 
-				return [2, 4];
-				break;
-			case 7 : 
-				return [1, 2, 4];
-		}
-	}
 	
 	// process song names
 	for (var i = 1; i < song.length; ++i) {
@@ -666,140 +642,49 @@ function memcount_load_rep() {
 	// remove interval
 	clearInterval(memcount_rep_int);
 	
-	// get total sum
-	var rep_count = [],
-		rep_sum = [[], []];
+	// get number for each member
+	var singer_counter = [];
 	for (var i = 0; i < 15; ++i) {
-		rep_count[i] = [];
+		singer_counter[i] = [];
 	}
-	// get all entry data
-	for (var i in entry) {
-		rep_count[entry[i][entry_idx.type]].push(entry[i][entry_idx.song_id]);
-	}
-	// remove duplicate, sort (is sort nessary?)
-	for (var i in rep_count) {
-		if (rep_count[i].length > 0) {
-			rep_count[i] = [...new Set(rep_count[i])].sort((a, b) => a - b);
+	for (var i in rep_hits_solo) {
+		for (var j in rep_hits_solo[i]) {
+			var bits = split_to_solo(rep_hits_solo[i][j]);
+			for (var k in bits) {
+				singer_counter[bits[k]].push(i);
+			}
 		}
 	}
-	
-	// assign solo entries into non-solo entries
-	// im not sure if rep_list is going to work so not using here
-	
-	// *note : this does not take account for song that
-	// DOES NOT exist in all 1, 2 and 4, but DOES exist in 2 or more of 3, 5 and 6
-	
-	for (var repeat = 0; repeat < 2; ++repeat) {
-		for (var i = 0; i < song.length; ++i) {
-			// check which solo array(s) does the song exist in
-			var type  = 0,
-				found = [];
-			for (var j = 0; j < 3; ++j) {
-				if (rep_count[1 << j].includes(i)) {
-					type += 1 << j;
-					found.push(1 << j);
-				}
-			}
-			if (found.length <= 1) {
-				continue;
-			}
-			// found in multiple solo arrays
-			rep_count[type].push(i);
-		}
-		// clone from non-solo to solo
+	// remove duplicates
+	singer_counter.map(x => [...new Set(x)]);
+	var display_number = [
+		singer_counter[4].length,
+		singer_counter[2].length,
+		singer_counter[1].length,
 		
-		// im going to assume i did the right thing here
-		// im not sure if the numbers are correct
+		singer_counter[12].length,
+		singer_counter[10].length,
+		singer_counter[9].length,
 		
-		for (var i = 1; i < 7; ++i) {
-			// remove 7 from 1 to 6
-			for (var inner = 0; inner < rep_count[7].length; ++inner) {
-				var index = rep_count[i].indexOf(rep_count[7][inner]);
-				if (index !== -1) {
-					rep_count[i].splice(index, 1);
-				}
-			}
-		}
-		var target = [3, 5, 6];
-		for (var i in target) {
-			// remove 3 from 1 and 2, 5 from 1 and 4 and 6 from 2 and 4
-			for (var solos = 0; solos < 3; ++solos) {
-				if (!(1 << solos) & target[i]) {
-					continue;
-				}
-				for (var inner = 0; inner < rep_count[target[i]].length; ++inner) {
-					var index = rep_count[(1 << solos)].indexOf(rep_count[target[i]][inner]);
-					if (index !== -1) {
-						rep_count[(1 << solos)].splice(index, 1);
-					}
-				}
-			}
-		}
-		// remove duplicate
-		for (var i in rep_count) {
-			if (rep_count[i].length > 0) {
-				rep_count[i] = [...new Set(rep_count[i])].sort((a, b) => a - b).filter(Number);
-			}
-		}
-		for (var i in rep_count) {
-			rep_sum[repeat][i] = rep_count[i].length;
-		}
-		if (key_valid && repeat === 0) {
-			// is 1st loop
-			// it doesnt hurt if executed 2nd time but
-			for (var i = 0; i < 8; ++i) {
-				rep_count[i] = rep_count[i].concat(rep_count[i + 8]);
-			}
-		}
-	}
-	
-	// print the table
-	var new_html = "<table id=\"memcount_rep_table\"><tr><th></th><th>加算✕</th>" + (key_valid ? "<th class=\"table_empty_column\"></th><th>加算〇</th>" : "") + "</tr>";
-	for (var i in member_display_order) {
-		var mem_id = member_display_order[i];
-		// new row, name
-		new_html += ("<tr class=\"memcount_row singer_" + mem_id + "\"><td><div class=\"memcount_name\">" + singer_lookup[mem_id] + "</div></td>");
-		// first column
-		new_html += ("<td>" + rep_sum[0][mem_id] + "</td>");
-		if (key_valid) {
-			new_html += "<td></td><td" + (mem_id > 8 ? " class=\"memcount_empty\"" : "") + ">" + (mem_id > 8 ? "" : rep_sum[1][mem_id]) + "</td>";
-		}
-		// close row
-		new_html += "</tr>";
-	}
-	// total for each member
-	// get numbers
-	var entry_count_total = [
-		[
-			rep_sum[1][7] + rep_sum[1][6] + rep_sum[1][5] + rep_sum[1][4],
-			rep_sum[1][7] + rep_sum[1][6] + rep_sum[1][3] + rep_sum[1][2],
-			rep_sum[1][7] + rep_sum[1][5] + rep_sum[1][3] + rep_sum[1][1]
-		], [
-			rep_sum[0][7] + rep_sum[0][6] + rep_sum[0][5] + rep_sum[0][4],
-			rep_sum[0][7] + rep_sum[0][6] + rep_sum[0][3] + rep_sum[0][2],
-			rep_sum[0][7] + rep_sum[0][5] + rep_sum[0][3] + rep_sum[0][1],
-			rep_sum[0][12],
-			rep_sum[0][10],
-			rep_sum[0][9]
-		]
+		new Set([...singer_counter[4], ...singer_counter[12]]).size,
+		new Set([...singer_counter[2], ...singer_counter[10]]).size,
+		new Set([...singer_counter[1], ...singer_counter[9]]).size
 	];
-	// display (combined sum)
-	new_html += "</table><div id=\"memcount_rep_sum_combined\" class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
-	for (var i = 0; i < 3; ++i) {
-		new_html += ("<div class=\"singer_" + (1 << (2 - i)) + "\">" + entry_count_total[0][i] + "</div>");
-	}
 	
-	// display (seperated sum)
-	if (key_valid) {
-		new_html += "<div class=\"memcount_rep_sum_seperate memcount_btn\"></div></div><div id=\"memcount_rep_sum_seperated\" class=\"memcount_sum hidden\"><div class=\"memcount_sum_icon col-1 colspan-2\"></div>";
-		for (var row = 0; row < 2; ++row) {
-			for (var col = 0; col < 3; ++col) {
-				new_html += ("<div class=\"row-" + (row + 1) + " col-" + (col + 2) + " singer_" + ((row ? 8 : 0) + (1 << (2 - col))) + "\">" + entry_count_total[1][row * 3 + col] + "</div>");
-			}
-		}
-		new_html += "<div class=\"memcount_rep_sum_combine memcount_btn col-5 colspan-2\"></div>";
+	var display_lookup = [4, 2, 1, 12, 10, 9, 4, 2, 1];
+	
+	// display
+	var new_html = "";
+	for (var i = 0; i < (key_valid ? 6 : 3); ++i) {
+		new_html += ("<div class=\"memcount_rep_block\"><div class=\"singer_" + display_lookup[i] + "m\">" + singer_lookup[display_lookup[i]] + "</div><div class=\"singer_" + display_lookup[i] + "\">" + display_number[i] + "</div></div>");
 	}
-	new_html += "</div>";
+	if (key_valid) {
+		new_html += ("<div></div><div class=\"memcount_rep_sum\"></div><div></div>");
+		for (var i = 6; i < 9; ++i) {
+			new_html += ("<div class=\"memcount_rep_block_sum memcount_rep_singer_" + display_lookup[i] + "\"><div>" + display_number[i] + "</div></div>");
+		}
+	}
+	$("#memcount_rep_content").toggleClass("extra_content", key_valid === 1);
 	$("#memcount_rep_content").html(new_html);
 }
 
@@ -954,6 +839,31 @@ function jump2page(target) {
 			return -1;
 	}
 	$(window).scrollTop(0);
+}
+
+function split_to_solo(input) {
+	// hard code is easier
+	switch (input) {
+		case 1 : 
+		case 2 : 
+		case 4 : 
+		case 9 : 
+		case 10 : 
+		case 12 : 
+			return [input];
+			break;
+		case 3 : 
+			return [1, 2];
+			break;
+		case 5 : 
+			return [1, 4];
+			break;
+		case 6 : 
+			return [2, 4];
+			break;
+		case 7 : 
+			return [1, 2, 4];
+	}
 }
 
 var copy_popup_is_displaying = false;

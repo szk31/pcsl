@@ -151,6 +151,5 @@ Feel free to request via twitter, though there is no guarantee on anything.
 # Future Version / to-do list
 1. UI overhaul
 1. rep-share overhaul
-1. mem_count results are wrong
 1. storing data in local storage
 1. request data after key confirmation

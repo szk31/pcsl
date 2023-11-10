@@ -87,7 +87,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.7a";
+var version = "1.5.7b";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -654,8 +654,6 @@ function memcount_load_rep() {
 			singer_counter[rep_hits_solo[i][j]]++;
 		}
 	}
-	// remove duplicates
-	singer_counter.map(x => [...new Set(x)]);
 	var display_number = [
 		singer_counter[4],
 		singer_counter[2],

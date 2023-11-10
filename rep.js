@@ -20,7 +20,7 @@ var attr_idx = [
 // type of all songs
 var rep_list = [];
 // singer selection
-var rep_singer = [1, 1, 1];
+var rep_singer = [1, 1, 1, 1, 1, 1];
 var rep_part_singer = [1, 1, 1, 1, 1, 1];
 // singer selection method
 var rep_is_union = true;
@@ -62,7 +62,11 @@ var rep_edit_selected = -1;
  * 0~ : index of the song in rep_selected
  */
 
-var selected_member = 7;
+//var selected_member = 7;
+var selected_member = [4, 2, 1, 12, 10, 9];
+const selected_member_ram = [4, 2, 1, 12, 10, 9];
+
+const exist = (x) => selected_member.includes(x);
 
 var longpress_timer;
 var post_longpress_timer;
@@ -95,13 +99,13 @@ $(function() {
 			var f = -1;
 			switch (e) {
 				case "kirara" :
-					f = 2;
+					f = 0;
 					break;
 				case "momo" :
 					f = 1;
 					break;
 				case "nia" :
-					f = 0;
+					f = 2;
 					break;
 				default : 
 					//error
@@ -116,30 +120,28 @@ $(function() {
 			var f = -1;
 			switch (e) {
 				case "kirara" :
-					f = 2;
+					f = 0;
 					break;
 				case "momo" :
 					f = 1;
 					break;
 				case "nia" :
-					f = 0;
+					f = 2;
 					break;
 				case "chui" :
-					f = 5;
+					f = 3;
 					break;
 				case "shiro" :
 					f = 4;
 					break;
 				case "yuco" :
-					f = 3;
+					f = 5;
 					break;
 				default : 
 					//error
 					return;
 			}
-			if (0 <= f || f <= 2) {
-				rep_singer[f] ^= 1;
-			}
+			rep_singer[f] ^= 1;
 			rep_part_singer[f] ^= 1;
 			$(this).toggleClass("selected");
 			rep_search(true);
@@ -543,13 +545,15 @@ function rep_search(force = false) {
 		rep_display();
 		return;
 	}
-	// all singer pre-load
-	selected_member = 0;
-	for (var i in rep_singer) {
-		selected_member += rep_singer[i] << i;
+	// get member list
+	selected_member = [];
+	for (var i in selected_member_ram) {
+		if (rep_singer[i]) {
+			selected_member.push(selected_member_ram[i]);
+		}
 	}
-	if (selected_member === 0) {
-		// clear output
+	if (selected_member.length === 0) {
+		// no one selected
 		$("#rep_display").html("");
 		return;
 	}
@@ -580,8 +584,7 @@ function rep_search(force = false) {
 					continue;
 				}
 			}
-			// check singer requirement
-			if (rep_is_union ? !(selected_member & rep_list[i]) : (selected_member !== rep_list[i])) {
+			if (!rep_hits_solo[i].some(exist)) {
 				continue;
 			}
 			rep_hits[rep_hits_count++] = i;
@@ -604,7 +607,7 @@ function rep_display() {
 	}
 
 	// get member
-	selected_member &= hard_filter;
+	//selected_member &= hard_filter;
 	$("#rep_display").html("");
 	// sort record
 	switch (rep_sort) {
@@ -622,13 +625,13 @@ function rep_display() {
 			// create a lookup array for all songs for the current member selection
 			var entry_count = [];
 			for (var i in song) {
-				if (selected_member === 7) {
+				if (selected_member.length === 6) {
 					entry_count[i] = entry_proc[i].length;
 					continue;
 				}
 				entry_count[i] = 0;
 				for (var j in entry_proc[i]) {
-					if (entry[entry_proc[i][j]][entry_idx.type] & selected_member) {
+					if (selected_member.includes(entry[entry_proc[i][j]][entry_idx.type])) {
 						entry_count[i]++;
 					} 
 				}
@@ -705,7 +708,7 @@ function rep_display_loop() {
 				var attr_count = {asm : 0, gui : 0, aca : 0};
 				for (var j in entry_proc[rep_hits[i]]) {
 					// only get attr if the entry satisfy selected singer
-					if (entry[entry_proc[rep_hits[i]][j]][entry_idx.type] & selected_member) {
+					if (selected_member.includes(entry[entry_proc[rep_hits[i]][j]][entry_idx.type])) {
 						attr_count[get_attr(entry_proc[rep_hits[i]][j])]++;
 					}
 				}

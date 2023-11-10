@@ -153,3 +153,4 @@ Feel free to request via twitter, though there is no guarantee on anything.
 1. rep-share overhaul
 1. storing data in local storage
 1. request data after key confirmation
+1. remove rep-union intersection remanent

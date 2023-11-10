@@ -87,7 +87,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.6";
+var version = "1.5.7";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -182,7 +182,6 @@ $(window).on("load", async function() {
 		}
 		
 		// 2-2. scan for url para
-		key = url_para.get("key");
 		// if key para exist and sha384 hash matches
 		if (key !== "" && await getSHA384Hash(key) === key_hash[0]) {
 			// save to cookie
@@ -632,6 +631,8 @@ function load_encrpyted_data(key_id) {
 	$(".anti_extra").html("");
 	$(".anti_extra").addClass("hidden");
 	$("#home_key").removeClass("hidden");
+	$("#filter_entry_icon_container").addClass("hidden");
+	$("#filter_entry_icon_extra").removeClass("hidden");
 	// update expire day
 	removeCookie("pcsl_content_key");
 	setCookie("pcsl_content_key", key);
@@ -649,26 +650,23 @@ function memcount_load_rep() {
 	}
 	for (var i in rep_hits_solo) {
 		for (var j in rep_hits_solo[i]) {
-			var bits = split_to_solo(rep_hits_solo[i][j]);
-			for (var k in bits) {
-				singer_counter[bits[k]].push(i);
-			}
+			singer_counter[rep_hits_solo[i][j]]++;
 		}
 	}
 	// remove duplicates
 	singer_counter.map(x => [...new Set(x)]);
 	var display_number = [
-		singer_counter[4].length,
-		singer_counter[2].length,
-		singer_counter[1].length,
+		singer_counter[4],
+		singer_counter[2],
+		singer_counter[1],
 		
-		singer_counter[12].length,
-		singer_counter[10].length,
-		singer_counter[9].length,
+		singer_counter[12],
+		singer_counter[10],
+		singer_counter[9],
 		
-		new Set([...singer_counter[4], ...singer_counter[12]]).size,
-		new Set([...singer_counter[2], ...singer_counter[10]]).size,
-		new Set([...singer_counter[1], ...singer_counter[9]]).size
+		singer_counter[4] + singer_counter[12],
+		singer_counter[2] + singer_counter[10],
+		singer_counter[1] + singer_counter[9]
 	];
 	
 	var display_lookup = [4, 2, 1, 12, 10, 9, 4, 2, 1];
@@ -729,9 +727,9 @@ function copy_of(input) {
 	}
 }
 
-function get_last_sang(id, mask = 7) {
+function get_last_sang(id, mask = [4, 2, 1, 12, 10, 9]) {
 	for (var i = entry_proc[id].length - 1; i >= 0; --i) {
-		if (entry[entry_proc[id][i]][entry_idx.type] & (mask & hard_filter)) {
+		if (mask.some((x) => (x & entry[entry_proc[id][i]][entry_idx.type]) === x)) {
 			return new Date(video[entry[entry_proc[id][i]][entry_idx.video]][video_idx.date]);
 		}
 	}
@@ -763,11 +761,12 @@ function get_date_different(date1, date2 = today) {
 }
 
 // get entry count of all entry and member-only entry that fufills mask
-function get_sang_count(id, mask = 7) {
+function get_sang_count(id, mask = [4, 2, 1, 12, 10, 9]) {
+	
 	var count = 0,
 		mem_count = 0;
 	for (var i in entry_proc[id]) {
-		if (entry[entry_proc[id][i]][entry_idx.type] & (mask & hard_filter)) {
+		if (mask.some((x) => (x & entry[entry_proc[id][i]][entry_idx.type]) === x)) {
 			count++;
 			if (entry[entry_proc[id][i]][entry_idx.note].includes("【メン限")) {
 				mem_count++;

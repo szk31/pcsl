@@ -87,7 +87,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.7";
+var version = "1.5.7a";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -255,6 +255,7 @@ $(window).on("load", async function() {
 					continue;
 				}
 				$(".filter_icon.icon_" + member_name[i]).click();
+				$(".filter_icon_extra.icon_" + member_name[i]).click();
 			}
 		}
 		//search

@@ -87,7 +87,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.7c";
+var version = "1.5.7d";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -441,26 +441,20 @@ $(function() {
 					}
 				}
 			}
-			// display (combined sum)
-			new_html += "</table><div id=\"memcount_sum_combined\" class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
-			for (var i = 2; i >= 0; --i) {
-				new_html += (
-					"<div class=\"singer_" + (1 << i) + "\">" + (entry_count_total[0][i] + entry_count_total[1][i]) + "</div>"
-				);
-			}
-			
-			// display (seperated sum)
 			if (key_valid) {
-				new_html += "<div class=\"memcount_sum_seperate memcount_btn\"></div></div><div id=\"memcount_sum_seperated\" class=\"memcount_sum hidden\"><div class=\"memcount_sum_icon col-1 colspan-2\"></div>";
+				new_html += "</table><div id=\"memcount_sum_warpper\" class=\"memcount_sum\"><div class=\"memcount_sum_icon col-1 colspan-2\"></div>";
 				for (var row = 0; row < 2; ++row) {
 					for (var col = 2; col >= 0; --col) {
 						new_html += ("<div class=\"row-" + (row + 1) + " col-" + (4 - col) + " singer_" + ((row ? 8 : 0) + (1 << col)) + "\">" + entry_count_total[row][col] + "</div>");
 					}
 				}
-				new_html += "<div class=\"memcount_sum_combine memcount_btn col-5 colspan-2\"></div>";
+			} else {
+				new_html += "</table><div class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
+				for (var i = 2; i >= 0; --i) {
+					new_html += ("<div class=\"singer_" + (1 << i) + "\">" + entry_count_total[0][i] + "</div>");
+				}
 			}
-			new_html += "</div>";
-			$("#memcount_content").html(new_html);
+			$("#memcount_content").html(new_html + "</div>");
 			
 			// rep part - load in background
 			memcount_rep_int = setInterval(memcount_load_rep , 1);

@@ -432,68 +432,60 @@
 			</div>
 		</div>
 		<div id="popup_container" class="hidden">
-			<div id="information" class="hidden">
-				<div id="info_defog">
-					<h3>詳細情報</h3>
-					version : <span id="info_version"></span><br />
-					last update : <span id="info_last-update"></span><br />
-					<div>
-						Creator : shizuku3158<br />
-						<div id="info_bug-report">
-							<a href="https://forms.gle/YSmBFgWRmpfRmJd6A" target="_blank" class="google_forms">不具合報告</a>
-						</div>
-						<div id="info_github">
-							<a href="https://github.com/szk31/pcsl/blob/main/README.md" target="_blank" class="github">使い方</a>
-						</div>
+			<div id="information" class="popup_frame hidden">
+				<h3>詳細情報</h3>
+				version : <span id="info_version"></span><br />
+				last update : <span id="info_last-update"></span><br />
+				<div>
+					Creator : shizuku3158<br />
+					<div id="info_bug-report">
+						<a href="https://forms.gle/YSmBFgWRmpfRmJd6A" target="_blank" class="google_forms">不具合報告</a>
+					</div>
+					<div id="info_github">
+						<a href="https://github.com/szk31/pcsl/blob/main/README.md" target="_blank" class="github">使い方</a>
 					</div>
 				</div>
 			</div>
-			<div id="rep_list" class="hidden">
-				<div id="rep_list_defog">
-					<div class="rep_list_title_container">
-						<div class="rep_list_delete_container row-1 col-1">
-							<div class="rep_list_delete hidden"></div>
-						</div>
-						<h3 class="row-1 col-2">リクエスト</h3>
-						<div class="rep_list_wc_container row-1 col-3">
-							<div class="rep_list_wordcount"></div>
-						</div>
+			<div id="rep_list" class="popup_frame hidden">
+				<div class="rep_list_title_container">
+					<div class="rep_list_delete_container row-1 col-1">
+						<div class="rep_list_delete hidden"></div>
 					</div>
-					<div id="rep_list_container">
-						<div id="rep_list_leftbar" class="hidden"></div>
-						<div id="rep_list_content" class="scrollbar"></div>
+					<h3 class="row-1 col-2">リクエスト</h3>
+					<div class="rep_list_wc_container row-1 col-3">
+						<div class="rep_list_wordcount"></div>
 					</div>
-					<div class="rep_list_control grid_block-2">
-						<div id="rep_list_artist" class="row-1 col-1 rep_item">
-							<div id="list_artist_cb" class="checkbox selected"></div>
-							<div class="sort_name">アーティスト名</div>
-						</div>
-						<div id="rep_list_edit" class="row-1 col-2">編集</div>
-						<div id="rep_list_close" class="row-2 col1">閉じる</div>
-						<div id="rep_share_rap" class="row-2 col-2">
-							<div id="rep_compose_tweet" class="twitter col-1">ツイート</div>
-							<div id="rep_copy" class="col-2"></div>
-						</div>
+				</div>
+				<div id="rep_list_container">
+					<div id="rep_list_leftbar" class="hidden"></div>
+					<div id="rep_list_content" class="scrollbar"></div>
+				</div>
+				<div class="rep_list_control grid_block-2">
+					<div id="rep_list_artist" class="row-1 col-1 rep_item">
+						<div id="list_artist_cb" class="checkbox selected"></div>
+						<div class="sort_name">アーティスト名</div>
+					</div>
+					<div id="rep_list_edit" class="row-1 col-2">編集</div>
+					<div id="rep_list_close" class="row-2 col1">閉じる</div>
+					<div id="rep_share_rap" class="row-2 col-2">
+						<div id="rep_compose_tweet" class="twitter col-1">ツイート</div>
+						<div id="rep_copy" class="col-2"></div>
 					</div>
 				</div>
 			</div>
-			<div id="memcount" class="hidden">
-				<div id="memcount_defog" class="memcount_subblock">
-					<h3>メンバー別曲数</h3>
-					<div id="memcount_content"></div>
-				</div>
-				<div id="memcount_rep_defog" class="memcount_subblock hidden">
-					<h3>レパートリー曲数</h3>
-					<div id="memcount_rep_content"></div>
-				</div>
+			<div id="memcount" class="popup_frame memcount_subblock anti_extra hidden">
+				<h3>メンバー別曲数</h3>
+				<div id="memcount_content"></div>
 			</div>
-			<div id="remove_key" class="hidden">
-				<div id="remove_key_defog">
-					<div id="remove_key_text">キーを削除しますか？</div>
-					<div id="remove_key_options">
-						<div id="remove_key_nah">削除しない</div>
-						<div id="remove_key_yes">削除する</div>
-					</div>
+			<div id="memcount_rep" class="popup_frame memcount_subblock anti_extra hidden">
+				<h3>レパートリー曲数</h3>
+				<div id="memcount_rep_content"></div>
+			</div>
+			<div id="remove_key" class="popup_frame hidden">
+				<div id="remove_key_text">キーを削除しますか？</div>
+				<div id="remove_key_options">
+					<div id="remove_key_nah">削除しない</div>
+					<div id="remove_key_yes">削除する</div>
 				</div>
 			</div>
 		</div>

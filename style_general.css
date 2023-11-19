@@ -330,35 +330,72 @@ body.post_switch {
 	top : 10vw;
 	height : calc(100% - 10vw);
 	width : 100%;
+	background-color : rgba(31, 31, 31, 0.5);
+	z-index : 1;
+}
+
+/* info section */
+#information {
+	position : absolute;
+	left : 50%;
+	top : 50%;
+	transform: translate(-50%, -50%);
+	width : 70vw;
+	height : 48vh;
+	font-size : 4vw;
+	background-color : DarkSlateBlue;
+	color : AliceBlue;
+	text-align : center;
+	border : 0.5vw solid SlateBlue;
+	border-radius : 2vw;
+	z-index : 10;
+}
+
+#information>div {
+	position : absolute;
+	bottom : 3vh;
+	width : 100%;
+	left : 50%;
+	transform: translate(-50%, 0);
+}
+
+#info_bug-report {
+	margin-top : 2vh;
+}
+
+#info_github {
+	margin-top : 2.5vh;
 }
 
 /* mem count section */
-#memcount {
-	top : 0;
-	position : absolute;
-	width : 100%;
-	height : 100%;
-	background-color : rgba(31, 31, 31, 0.5);
-}
-
-#memcount h3 {
+#memcount h3,
+#memcount_rep h3{
 	font-size : 6vw;
 	margin-block : 0.4em;
 }
 
-#memcount_defog,
-#memcount_rep_defog {
+#memcount,
+#memcount_rep {
 	position : absolute;
 	left : 50%;
 	top : 50%;
 	transform: translate(-50%, -50%);
 	width : 84vw;
-	height : calc(12vh + 100vw);
 	background-color : DarkSlateBlue;
 	color : AliceBlue;
 	text-align : center;
 	border: 0.5vw solid SlateBlue;
 	border-radius: 2vw;
+}
+
+#memcount.anti_extra,
+#memcount_rep.anti_extra {
+	height : calc(12vh + 75vw);
+}
+
+#memcount:not(.anti_extra),
+#memcount_rep:not(.anti_extra) {
+	height : calc(12vh + 100vw);
 }
 
 #memcount_table {
@@ -435,7 +472,16 @@ body.post_switch {
 	width : 40%;
 }
 
-.memcount_rep_block {
+#memcount_rep_content:not(.extra_content) .memcount_rep_block {
+	width : 90%;
+	block-size : fit-content;
+	margin : auto;
+	font-size : 3.8vw;
+	font-weight : 550;
+	padding : 2.5vh 0;
+}
+
+#memcount_rep_content.extra_content .memcount_rep_block {
 	width : 90%;
 	block-size : fit-content;
 	margin : auto;
@@ -507,46 +553,6 @@ body.post_switch {
 	background: linear-gradient(135deg, DarkBlue 0 30%, #265ebd 70% 100%);
 	-webkit-background-clip: text;
 	color: transparent;
-}
-
-/* info section */
-#information {
-	top : 0;
-	position : absolute;
-	width : 100%;
-	height : 100%;
-	background-color : rgba(31, 31, 31, 0.5);
-}
-
-#info_defog {
-	position : absolute;
-	left : 50%;
-	top : 50%;
-	transform: translate(-50%, -50%);
-	width : 70vw;
-	height : 48vh;
-	font-size : 4vw;
-	background-color : DarkSlateBlue;
-	color : AliceBlue;
-	text-align : center;
-	border: 0.5vw solid SlateBlue;
-	border-radius: 2vw;
-}
-
-#info_defog>div {
-	position : absolute;
-	bottom : 3vh;
-	width : 100%;
-	left : 50%;
-	transform: translate(-50%, 0);
-}
-
-#info_bug-report {
-	margin-top : 2vh;
-}
-
-#info_github {
-	margin-top : 2.5vh;
 }
 
 #copy_popup {

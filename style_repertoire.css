@@ -214,14 +214,6 @@
 }
 
 #rep_list {
-	top : 0;
-	position : absolute;
-	width : 100%;
-	height : 100%;
-	background-color : rgba(31, 31, 31, 0.5);
-}
-
-#rep_list_defog {
 	position : absolute;
 	left : 50%;
 	top : 50%;

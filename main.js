@@ -13,6 +13,7 @@ var singer_lookup = [
 	"愛白ふりる",		//    1010    A
 	null,
 	"小悪熊ちゅい",		//    1100    C
+/*
 	null,
 	null,
 	null,
@@ -22,6 +23,7 @@ var singer_lookup = [
 	"ゆこもも",			//   10011   13
 	null,
 	"ゆこきら",			//   10101   15
+*/
 ];
 
 // display order of search
@@ -87,7 +89,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.8";
+var version = "1.5.8a";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -150,7 +152,7 @@ $(window).on("load", async function() {
 			$("body > div").addClass("post_switch");
 			$("body").addClass("post_switch");
 			url_para.delete("key");
-			window.history.replaceState(null, null, "?" + url_para.toString());
+			window.history.replaceState(null, "", url_para.size === 0 ? "" : ("?" + url_para.toString()));
 			return;
 		}
 	}
@@ -470,49 +472,19 @@ $(function() {
 		});
 	}
 	
-	// memcount - sum - swap - sep->com
-	$(document).on("click", ".memcount_sum_seperate", function() {
-		$("#memcount_sum_seperated").removeClass("hidden");
-		$("#memcount_sum_combined").addClass("hidden");
-	});
-	
-	// memcount - sum - swap - com->sep
-	$(document).on("click", ".memcount_sum_combine", function() {
-		$("#memcount_sum_combined").removeClass("hidden");
-		$("#memcount_sum_seperated").addClass("hidden");
-	});
-	
-	// memcount_rep - sum - swap - sep->com
-	$(document).on("click", ".memcount_rep_sum_seperate", function() {
-		$("#memcount_rep_sum_seperated").removeClass("hidden");
-		$("#memcount_rep_sum_combined").addClass("hidden");
-	});
-	
-	// memcount_rep - sum - swap - com->sep
-	$(document).on("click", ".memcount_rep_sum_combine", function() {
-		$("#memcount_rep_sum_combined").removeClass("hidden");
-		$("#memcount_rep_sum_seperated").addClass("hidden");
-	});
-	
-	// memcount -fog> return, swap content
-	$(document).on("click", "#memcount", function(e) {
-		if ($(e.target).attr("id") === "memcount") {
-			$("#memcount").addClass("hidden");
-			$("#popup_container").addClass("hidden");
-			$(document.body).removeClass("no_scroll");
-			prevent_menu_popup = false;
-		} else {
-			// pressing on the block
-			if (!$(e.target).hasClass("memcount_btn")) {
-				$(".memcount_subblock").toggleClass("hidden");
-			}
+	// memcount swap content
+	$(document).on("click", "#memcount, #memcount_rep", function(e) {
+		if ($(e.target).closest('.popup_frame').length) {
+			$(".memcount_subblock").toggleClass("hidden");
 		}
 	});
 	
-	// information -fog> return
-	$(document).on("click", "#information", function(e) {
-		if ($(e.target).attr("id") === "information") {
-			$("#information").addClass("hidden");
+	// popup - return
+	$(document).on("click", "#popup_container", function(e) {
+		// all popup except rep share
+		if (!($(e.target).closest('.popup_frame').length ||
+			  $(e.target).find("#rep_list:not(.hidden)").length)) {
+			$(".popup_frame").addClass("hidden");
 			$("#popup_container").addClass("hidden");
 			$(document.body).removeClass("no_scroll");
 			prevent_menu_popup = false;
@@ -623,6 +595,7 @@ function load_encrpyted_data(key_id) {
 	// update rep display
 	member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
 	$(".extra").removeClass("hidden");
+	$(".memcount_subblock").removeClass("anti_extra");
 	$(".anti_extra").html("");
 	$(".anti_extra").addClass("hidden");
 	$("#home_key").removeClass("hidden");

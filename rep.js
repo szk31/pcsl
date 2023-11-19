@@ -514,6 +514,13 @@ function rep_search(force = false) {
 		// if input didnt changed and is not blank
 		return;
 	}
+	// update selected member before branching out
+	selected_member = [];
+	for (var i in selected_member_ram) {
+		if (rep_singer[i]) {
+			selected_member.push(selected_member_ram[i]);
+		}
+	}
 	if (rep_input_memory !== "") {
 		rep_hits = [];
 		rep_hits_count = 0;
@@ -531,13 +538,7 @@ function rep_search(force = false) {
 		rep_display();
 		return;
 	}
-	// get member list
-	selected_member = [];
-	for (var i in selected_member_ram) {
-		if (rep_singer[i]) {
-			selected_member.push(selected_member_ram[i]);
-		}
-	}
+	// return nothing if no one is selected and nothing is being searched
 	if (selected_member.length === 0) {
 		// no one selected
 		$("#rep_display").html("");
@@ -593,7 +594,6 @@ function rep_display() {
 	}
 
 	// get member
-	//selected_member &= hard_filter;
 	$("#rep_display").html("");
 	// sort record
 	switch (rep_sort) {

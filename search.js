@@ -265,7 +265,7 @@ $(function() {
 			.then(function(data) {
 				// title of unlisted / private video are returned a 401 error
 				if (data.title === undefined) {
-					alert((entry[entry_id][entry_idx.note].includes("【非公開】") ? "非公開" : "再アップの") + "動画を共有しないで下さい。");
+					alert("動画タイトル取得できませんでした。");
 					return;
 				}
 				var tweet = "";

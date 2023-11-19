@@ -22,8 +22,6 @@ var rep_list = [];
 // singer selection
 var rep_singer = [1, 1, 1, 1, 1, 1];
 var rep_part_singer = [1, 1, 1, 1, 1, 1];
-// singer selection method
-var rep_is_union = true;
 
 // anisong selection
 var rep_anisong = {
@@ -144,18 +142,6 @@ $(function() {
 			rep_singer[f] ^= 1;
 			rep_part_singer[f] ^= 1;
 			$(this).toggleClass("selected");
-			rep_search(true);
-		});
-		
-		// filter - singer - inter
-		$(document).on("click", ".filter_singer_group", function() {
-			var e = $(this).attr("id").replace(/(filter_icon_)/, "");
-			if ($("#singer_" + e).hasClass("selected")) {
-				return;
-			}
-			rep_is_union ^= 1;
-			$(".singer_checkbox").removeClass("selected");
-			$("#singer_" + e).addClass("selected");
 			rep_search(true);
 		});
 		

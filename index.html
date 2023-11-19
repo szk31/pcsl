@@ -147,7 +147,6 @@
 				</div>
 			</div>
 			<div id="home_key" class="hidden">
-				<div id="home_key_stat">キー入力済み</div>
 				<div id="home_key_reset">キー削除</div>
 			</div>
 		</div>
@@ -257,16 +256,6 @@
 							<div class="icon_nia_frame filter_icon_bg">
 								<span class="icon_nia filter_icon selected"></span>
 							</div>
-							<!--div class="filter_singer_group_container">
-								<label id="filter_icon_union" class="filter_singer_group">
-									<div id="singer_union" class="radio singer_checkbox selected"></div>
-									<div class="attr_name">部分一致</div>
-								</label>
-								<label id="filter_icon_inter" class="filter_singer_group">
-									<div id="singer_inter" class="radio singer_checkbox"></div>
-									<div class="attr_name">完全一致</div>
-								</label>
-							</div-->
 						</div>
 						<div id="filter_entry_icon_extra" class="filter_subblock_content hidden">
 							<p class="filter_subblock_title">メンバー/既存選択</p>
@@ -433,7 +422,7 @@
 				<div id="menu2page_container">
 					<div id="menu2page_home" class="menu2page menu2page_selected">ホーム</div>
 					<div id="menu2page_search" class="menu2page">曲検索</div>
-					<div id="menu2page_repertoire" class="menu2page">レパートリー一覧</div>
+					<div id="menu2page_repertoire" class="menu2page">レパートリー</div>
 				</div>
 				<div id="menu_bottom">
 					<div id="menu_line"></div>
@@ -450,7 +439,12 @@
 					last update : <span id="info_last-update"></span><br />
 					<div>
 						Creator : shizuku3158<br />
-						<a href="https://www.twitter.com/8513ukuzihs" id="info_twitter" target="_blank" class="twitter">twitter</a>
+						<div id="info_bug-report">
+							<a href="https://forms.gle/YSmBFgWRmpfRmJd6A" target="_blank" class="google_forms">不具合報告</a>
+						</div>
+						<div id="info_github">
+							<a href="https://github.com/szk31/pcsl/blob/main/README.md" target="_blank" class="github">使い方</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -493,14 +487,9 @@
 					<div id="memcount_rep_content"></div>
 				</div>
 			</div>
-			<div id="tag_selector" class="hidden">
-				<div id="tag_selector_defog">
-					<!-- nah i bet no one uses this, or sees this -->
-				</div>
-			</div>
 			<div id="remove_key" class="hidden">
 				<div id="remove_key_defog">
-					<div id="remove_key_text">本当にキーを削除しますか？</div>
+					<div id="remove_key_text">キーを削除しますか？</div>
 					<div id="remove_key_options">
 						<div id="remove_key_nah">削除しない</div>
 						<div id="remove_key_yes">削除する</div>

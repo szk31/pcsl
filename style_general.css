@@ -51,8 +51,6 @@ input[type=text]:focus {
 
 .red_text {
 	color : Red !important;
-	-webkit-text-stroke : 0.144vw White;
-	text-stroke : 0.144vw White;
 }
 
 #v_screen {
@@ -356,10 +354,10 @@ body.post_switch {
 	transform: translate(-50%, -50%);
 	width : 84vw;
 	height : calc(12vh + 100vw);
-	background-color : MediumPurple;
-	color : Snow;
+	background-color : DarkSlateBlue;
+	color : AliceBlue;
 	text-align : center;
-	border: none;
+	border: 0.5vw solid SlateBlue;
 	border-radius: 2vw;
 }
 
@@ -526,12 +524,12 @@ body.post_switch {
 	top : 50%;
 	transform: translate(-50%, -50%);
 	width : 70vw;
-	height : 40vh;
-	background-color : MediumPurple;
-	color : Snow;
+	height : 48vh;
 	font-size : 4vw;
+	background-color : DarkSlateBlue;
+	color : AliceBlue;
 	text-align : center;
-	border: none;
+	border: 0.5vw solid SlateBlue;
 	border-radius: 2vw;
 }
 
@@ -541,6 +539,14 @@ body.post_switch {
 	width : 100%;
 	left : 50%;
 	transform: translate(-50%, 0);
+}
+
+#info_bug-report {
+	margin-top : 2vh;
+}
+
+#info_github {
+	margin-top : 2.5vh;
 }
 
 #copy_popup {
@@ -596,7 +602,7 @@ body.post_switch {
 
 
 
-.twitter, .youtube, .deleted, .google_sheets {
+.twitter, .youtube, .deleted, .google_sheets, .google_forms, .github {
 	color : White;
 	border: none;
 	border-radius: 2vw;
@@ -620,6 +626,16 @@ body.post_switch {
 
 .google_sheets {
 	background-color : #00AC47;
+}
+
+.google_forms {
+	background-color : #7248B9;
+	border : 0.8vw solid MediumSlateBlue;
+}
+
+.github {
+	background-color : Black;
+	border : 0.8vw solid MediumSlateBlue;
 }
 
 .ext_link {

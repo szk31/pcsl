@@ -1,7 +1,9 @@
 # [P]etit♡[C]ocotte [S]ong [L]ist <a name="title"></a>
 ぷちここ歌まとめ
 
-逢魔きらら、胡桃澤もも、看谷にぃあ＋αの歌一覧
+逢魔きらら、胡桃澤もも、看谷にぃあ＋αの歌一覧\
+ここでは曲名検索から歌った枠(TS付き)に直接飛べます。\
+レパートリー一覧でジャンル別の既存曲も確認できます。\
 
 English version [here](#eng)
 
@@ -111,14 +113,13 @@ hfilterの値はクッキーで保存していますので、一回入力でき�
    1. 検索URL付き (*OFF*)\
 動画を共有するとき、共有する曲が検索されている状態で検索ページを開けます。
 
-曲名の隣の ▼ を押すとその曲のエントリーを収納できます。もう一度押すと元に戻ります。<img src="https://szk31.github.io/pcsl/icon/copy.png" width="20px" height="20px" alt="copy_icon"> を押すと曲名がコピーされます。エントリーの右にある <img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon"> を押すとツイート用の文章でTwitterが開きます。他のSNSに対応する予定は今のところありません。
+曲名の隣の ▼ を押すとその曲のエントリーを収納できます。もう一度押すと元に戻ります。<img src="https://szk31.github.io/pcsl/icon/copy_border.png" width="20px" height="20px" alt="copy_icon"> を押すと曲名がコピーされます。エントリーの右にある <img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon"> を押すとツイート用の文章でTwitterが開きます。他のSNSに対応する予定は今のところありません。
 
 # レパートリー一覧の使い方 <a name="rep"></a>
 1回以上歌ったことがある曲の一覧が見れます。絞り込み・並び順を変えるでリクエストなどに使えます。
 
 1. 既存選択\
-各メンバーの既存曲が見れます。選択されているメンバーが歌ったことある曲のみ表示されます。\
-部分一致(∪)、完全一致(∩)は削除予定のため説明を省きます。
+各メンバーの既存曲が見れます。選択されているメンバーが歌ったことある曲のみ表示されます。
 1. ジャンル選択\
 曲のジャンル限定で検索できます。アニソン・ボカロ限定リクエストに活用してください。\
 全部のチェックボックスを押すと一括選択/選択解除ができます。
@@ -153,4 +154,3 @@ Feel free to request via twitter, though there is no guarantee on anything.
 1. rep-share overhaul
 1. storing data in local storage
 1. request data after key confirmation
-1. remove rep-union intersection remanent

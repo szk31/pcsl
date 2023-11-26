@@ -526,31 +526,31 @@ body.post_switch {
 }
 
 .memcount_rep_singer_4 {
-	background: linear-gradient(112deg, LightCoral 0 30%, #ffd3ca 70% 100%);
+	background: linear-gradient(158deg, LightCoral 0 30%, #ffd3ca 70% 100%);
 }
 
 .memcount_rep_singer_4>div {
-	background: linear-gradient(112deg, #670000 0 30%, #7a36a6 70% 100%);
+	background: linear-gradient(158deg, #670000 0 30%, #7a36a6 70% 100%);
 	-webkit-background-clip: text;
 	color: transparent;
 }
 
 .memcount_rep_singer_2 {
-	background: linear-gradient(112deg, LightPink 0 30%, #FFF0AB 70% 100%);
+	background: linear-gradient(158deg, LightPink 0 30%, #FFF0AB 70% 100%);
 }
 
 .memcount_rep_singer_2>div {
-	background: linear-gradient(112deg, DarkMagenta 0 30%, #CC2455 70% 100%);
+	background: linear-gradient(158deg, DarkMagenta 0 30%, #CC2455 70% 100%);
 	-webkit-background-clip: text;
 	color: transparent;
 }
 
 .memcount_rep_singer_1 {
-	background: linear-gradient(112deg, PaleTurquoise 0 30%, #ffcffb 70% 100%);
+	background: linear-gradient(158deg, PaleTurquoise 0 30%, #ffcffb 70% 100%);
 }
 
 .memcount_rep_singer_1>div {
-	background: linear-gradient(112deg, DarkBlue 0 30%, #265ebd 70% 100%);
+	background: linear-gradient(158deg, DarkBlue 0 30%, #265ebd 70% 100%);
 	-webkit-background-clip: text;
 	color: transparent;
 }

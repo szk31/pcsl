@@ -89,7 +89,7 @@ var video_idx = {
 	date : 1
 };
 
-var version = "1.5.8a";
+var version = "1.5.9";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -114,8 +114,8 @@ var max_display = 100;
 // if on, display private entries despite not accessable
 var do_display_hidden = true;
 
-// if the previous input should be cleared when user tap input box
-var do_clear_input = false;
+// if the previous input should be selected when user tap input box
+var do_select_input = true;
 
 // if random requirement is ignored (input being blank)
 var do_random_anyway = false;
@@ -208,7 +208,7 @@ $(window).on("load", async function() {
 		// cookie not set
 		setCookie("pcsl_settings_display", 100);
 		setCookie("pcsl_settings_hidden" , 1);
-		setCookie("pcsl_settings_clear"  , 0);
+		setCookie("pcsl_settings_select" , 1);
 		setCookie("pcsl_settings_random" , 0);
 		setCookie("pcsl_settings_share"  , 0);
 	} else {

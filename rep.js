@@ -21,7 +21,6 @@ var attr_idx = [
 var rep_list = [];
 // singer selection
 var rep_singer = [1, 1, 1, 1, 1, 1];
-var rep_part_singer = [1, 1, 1, 1, 1, 1];
 
 // anisong selection
 var rep_anisong = {
@@ -140,7 +139,6 @@ $(function() {
 					return;
 			}
 			rep_singer[f] ^= 1;
-			rep_part_singer[f] ^= 1;
 			$(this).toggleClass("selected");
 			rep_search(true);
 		});

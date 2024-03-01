@@ -7,12 +7,12 @@
 }
 
 #input {
-	width : 86vw;
-	padding : 1vw;
-	margin : 1.5vw 2vw;
+	width : 82vw;
+    padding: 0.5vw 1.6vw;
+    margin: 1.5vw 2vw;
 	height : 10vw;
 	font-size : 5vw;
-	border-radius : 1.2vw;
+	border-radius : 2vw;
 }
 
 #switch_container {
@@ -23,7 +23,7 @@
 	content : url("icon/arrow.png");
 	width : 8vw;
 	height : 8vw;
-	margin-top : 2vw;
+	margin-top : 3vw;
 	transform : rotate(180deg);
 }
 

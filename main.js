@@ -91,7 +91,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.0b";
+var version = "1.6.0c";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			content_level = 1;
 			load_from_cookie = false;
 		}
-		key_valid = content_level;
+		key_valid = content_level ? 1 : 0;
 		// load data
 		var local_version_hash = localStorage.getItem("pcsl_version_hash");
 		//  data version is up to date             key did not update
@@ -228,6 +228,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 function process_data() {
 	var url_para = new URLSearchParams(window.location.search);
+	// remove key
+	url_para.delete("key");
+	window.history.pushState(null, null, `${document.location.href.split('?')[0]}${url_para.size ? `?${url_para}` : ""}`)
 	// get settings from cookie
 	if (getCookie("pcsl_settings_display") === "") {
 		// cookie not set

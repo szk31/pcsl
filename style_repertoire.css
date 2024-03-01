@@ -3,12 +3,12 @@
 }
 
 #rep_input {
-    width: 96vw;
-    padding: 1vw 1vw;
+    width: 92vw;
+    padding: 0.5vw 1.6vw;
     margin: 1.5vw 2vw 0 2vw;
     height: 10vw;
     font-size: 5vw;
-	border-radius : 1.2vw;
+	border-radius : 2vw;
 }
 
 #filter_container>div {
@@ -132,7 +132,7 @@
 	font-weight : bold;
 	font-size : 3.2vw;
 	margin : 1.5vw 3.2vw;
-	padding : .8vw 1.2vw .2vw 1.2vw;
+	padding : .4vw 1.2vw .2vw 1.2vw;
 	border-radius : 0.8vw;
 	border : 0.8vw solid rgba(0, 0, 0, 0);
 	outline : .2vw solid #b2a58f;
@@ -158,7 +158,7 @@
 }
 
 .rep_song_info {
-	margin-top : 0.4vw;
+	margin-top : 0.8vw;
 }
 
 .rep_song_singer {

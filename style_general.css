@@ -5,6 +5,7 @@ html, body {
 	margin : 0px;
 	touch-action : manipulation;
 	box-shadow : none;
+	height: 100%;
 }
 
 html {
@@ -197,7 +198,7 @@ body.post_switch {
 }
 
 .icon_yuco_bg {
-	background-color : MediumBlue;
+	background-color : #265ebd;
 }
 
 .icon_kirara_frame {

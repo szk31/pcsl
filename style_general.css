@@ -411,6 +411,7 @@ body.post_switch {
 
 #memcount_table th {
 	min-width : 13.6vw;
+	color: rgb(26, 16, 90);
 }
 
 .memcount_row>td {

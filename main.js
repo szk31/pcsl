@@ -91,7 +91,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.0c";
+var version = "1.6.0d";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword

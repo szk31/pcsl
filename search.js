@@ -94,7 +94,7 @@ $(function() {
 		
 		// search - input - autocomplete - selection
 		$(document).on("mousedown", ".auto_panel", function() {
-			var e = $(this).attr("id");
+			var e = to_non_html($(this).attr("id"));
 			// set input
 			$("#input").val(e);
 			// input on blur fires after this so no need to run search here
@@ -126,9 +126,8 @@ $(function() {
 				setTimeout(function() {
 					pass.setSelectionRange(0, $(pass).val().length);
 				}, 0);
-				return;
 			}
-			if (loading === "!bulk_load_flag") {
+			else if (loading === "!bulk_load_flag") {
 				$(this).val("");
 				$("#nav_search_random").removeClass("disabled");
 				$("#nav_share").addClass("disabled");
@@ -356,6 +355,18 @@ function auto_search() {
 				continue;
 			}
 			var f = song[i][song_idx.name].toLowerCase().indexOf(e);
+			// special notation in reading
+			if (f === -1) {
+				// get reading first space position
+				var space_pos = song[i][song_idx.reading].indexOf(" ");
+				if (space_pos > 0) {
+					//  position of searching string
+					if (song[i][song_idx.reading].indexOf(e) > space_pos) {
+						// hit
+						f = 1;
+					}
+				}	
+			}
 			switch (f) {
 				case  0 : // found, from beginning
 					if (entry_proc[i].length > 0) {
@@ -397,11 +408,11 @@ function auto_search() {
 			song_name = song[auto_exact[i]][song_idx.name];
 			auto_display = bold(song_name, e);
 		}
-		new_html += ("<div id=\"" + song_name + "\" class=\"auto_panel" + (auto_display_count === 0 ? " auto_first" : "") + "\"><div class=\"auto_reading\">" + auto_reading + "</div><div class=\"auto_display\">" + auto_display + "</div></div>");
+		new_html += ("<div id=\"" + to_html(song_name) + "\" class=\"auto_panel" + (auto_display_count === 0 ? " auto_first" : "") + "\"><div class=\"auto_reading\">" + auto_reading + "</div><div class=\"auto_display\">" + auto_display + "</div></div>");
 		auto_display_count++;
 	}
 	for (var i in auto_other) {
-		new_html += ("<div id=\"" + song[auto_other[i]][song_idx.name] + "\" class=\"auto_panel" + (auto_display_count === 0 ? " auto_first" : "") + "\"><div class=\"auto_reading\"></div><div class=\"auto_display\">" + bold(song[auto_other[i]][song_idx.name], e) + "</div></div>");
+		new_html += ("<div id=\"" + to_html(song[auto_other[i]][song_idx.name]) + "\" class=\"auto_panel" + (auto_display_count === 0 ? " auto_first" : "") + "\"><div class=\"auto_reading\"></div><div class=\"auto_display\">" + bold(song[auto_other[i]][song_idx.name], e) + "</div></div>");
 		
 		if (++auto_display_count >= auto_display_max) {
 			break;

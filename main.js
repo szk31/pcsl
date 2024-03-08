@@ -91,7 +91,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.0d";
+var version = "1.6.1";
 
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
@@ -868,6 +868,14 @@ function copy_popup() {
 		copy_popup_is_displaying = false;
 		$("#copy_popup").attr("class", "hidden");
 	}, 1500);
+}
+
+function to_html(input) {
+	return input.replaceAll(`"`, `&quot;`).replaceAll(`'`, `&apos;`);
+}
+
+function to_non_html(input) {
+	return input.replaceAll(`&quot;`, `"`).replaceAll(`&apos;`, `'`);
 }
 
 // from : https://stackoverflow.com/a/67600346/20897145

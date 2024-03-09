@@ -91,8 +91,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.1";
-
+var version = "1.6.2";
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -145,6 +144,16 @@ if (getCookie("is_mobile") === "") {
 	is_mobile = is_mobile === "true";
 }
 
+// theme
+{
+	var theme = localStorage.getItem("theme");
+	if (theme === null) {
+		theme = "mixed";
+		localStorage.setItem("theme", "mixed");
+	}
+	document.documentElement.setAttribute("theme", theme);
+}
+
 document.addEventListener('DOMContentLoaded', async function() {
 	var key;
 	function decrypt(input) {
@@ -189,6 +198,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			process_data();
 		} else {
 			// need to refresh data
+			$("#loading_text").html("Downloading data...");
 			fetch(`data_${content_level}.txt`)
 			.then(response => {
 				if (!response.ok) {
@@ -227,6 +237,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 function process_data() {
+	$("#loading_text").html("Processing data...");
 	var url_para = new URLSearchParams(window.location.search);
 	// remove key
 	url_para.delete("key");
@@ -359,6 +370,7 @@ function process_data() {
 		}
 	}
 	// remove loading screen
+	$("#loading_text").html("Loading Complete.<br />You can't see this tho");
 	$("#loading_overlay").addClass("hidden");
 }
 

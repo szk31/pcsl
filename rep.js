@@ -710,6 +710,7 @@ function rep_display_loop() {
 	rep_loading_progress += 20;
 	if (rep_loading_progress >= rep_hits.length) {
 		clearInterval(reb_display_inter);
+		$("#rep_display").append("<div class=\"general_vertical_space\"></div>")
 	}
 }
 

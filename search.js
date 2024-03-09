@@ -669,7 +669,7 @@ function update_display(force = false) {
 		new_html += "<div class=\"search_no_result\">歌記録なし";
 	} while (0);
 	
-	$("#search_display").html(new_html + "</div>");
+	$("#search_display").html(new_html + "</div><div class=\"general_vertical_space\"></div>");
 	// check all hiden songs
 	for (var i = 0; i < hide_song.length; ++i) {
 		// if song havnt been loaded, remove from hide list

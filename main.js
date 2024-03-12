@@ -91,7 +91,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.2";
+var version = "pre 1.6.3";
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -136,14 +136,6 @@ var memcount_rep_int;
 // pre-process song names
 var processed_song_name = [""];
 
-var is_mobile = getCookie("is_mobile");
-if (getCookie("is_mobile") === "") {
-	is_mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-	setCookie("is_mobile", is_mobile);
-} else {
-	is_mobile = is_mobile === "true";
-}
-
 // theme
 {
 	var theme = localStorage.getItem("theme");
@@ -155,84 +147,98 @@ if (getCookie("is_mobile") === "") {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
+	// change settings selected theme
+	$(`#three_way_${localStorage.getItem("theme")}`).addClass("selected");
+
 	var key;
 	function decrypt(input) {
 		return content_level ? CryptoJS.AES.decrypt(input, key).toString(CryptoJS.enc.Utf8) : input;
 	}
 	// check if loading inner sector
-	if (is_mobile || (!is_mobile && window.innerHeight / window.innerWidth > 1.5)) {
-		// check url para first
-		var url_para = new URLSearchParams(window.location.search);
-		key = url_para.get("key");
-		var load_from_cookie = true;
-		var content_level = 0;
-		// level 2 cookie
-		if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[1]) {
-			content_level = 2;
-			key = getCookie("pcsl_content_key");
-		}
-		// level 2 url para
-		else if (key !== "" && await getSHA384Hash(key) === key_hash[1]) {
-			content_level = 2;
-			load_from_cookie = false;
-		}
-		// level 1 cookie
-		else if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[0]) {
-			content_level = 1;
-			key = getCookie("pcsl_content_key");
-		}
-		// level 1 url para
-		else if (key !== "" && await getSHA384Hash(key) === key_hash[0]) {
-			content_level = 1;
-			load_from_cookie = false;
-		}
-		key_valid = content_level ? 1 : 0;
-		// load data
-		var local_version_hash = localStorage.getItem("pcsl_version_hash");
-		//  data version is up to date             key did not update
-		if (local_version_hash === version_hash && load_from_cookie) {
-			// good to use old data
-			var ls_data = localStorage.getItem("pcsl_data").split("\n");
-			video = JSON.parse(decrypt(ls_data[0]));
-			entry = JSON.parse(decrypt(ls_data[1]));
-			process_data();
-		} else {
-			// need to refresh data
-			$("#loading_text").html("Downloading data...");
-			fetch(`data_${content_level}.txt`)
-			.then(response => {
-				if (!response.ok) {
-					// well idk, reload? maybe?
-					console.log(`failed to load data_${content_level}.txt`);
-				}
-				return response.text();
-			})
-			.then(data => {
-				const objs = data.split("\n");
-				video = JSON.parse(decrypt(objs[0]));
-				entry = JSON.parse(decrypt(objs[1]));
+	
+	if (window.innerHeight / window.innerWidth < 1.5) {
+		// bad screen ratio, open new window
+		$("#v_screen").addClass("post_switch");
+		$("#v_screen").height("100%");
+		$("#v_screen").width(0.5625 * window.innerHeight);
+		$("#v_screen").attr("src", "index.html" + window.location.search);
+		// hide original page
+		$("body > div").addClass("post_switch");
+		$("body").addClass("post_switch");
+		return;
+	}
 
-				// save to local storage
-				localStorage.setItem("pcsl_data", data);
-				localStorage.setItem("pcsl_version_hash", version_hash);
-				process_data();
-			});
-		}
-		
-		// changing thing if content key
-		if (content_level) {
-			member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
-			$(".extra").removeClass("hidden");
-			$(".memcount_subblock").removeClass("anti_extra");
-			$(".anti_extra").html("");
-			$(".anti_extra").addClass("hidden");
-			$("#home_key").removeClass("hidden");
-			$("#filter_entry_icon_container").addClass("hidden");
-			$("#filter_entry_icon_extra").removeClass("hidden");
-			// update expire day
-			removeCookie("pcsl_content_key");
-			setCookie("pcsl_content_key", key);
-		}
+	// check url para first
+	var url_para = new URLSearchParams(window.location.search);
+	key = url_para.get("key");
+	var load_from_cookie = true;
+	var content_level = 0;
+	// level 2 cookie
+	if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[1]) {
+		content_level = 2;
+		key = getCookie("pcsl_content_key");
+	}
+	// level 2 url para
+	else if (key !== "" && await getSHA384Hash(key) === key_hash[1]) {
+		content_level = 2;
+		load_from_cookie = false;
+	}
+	// level 1 cookie
+	else if (await getSHA384Hash(getCookie("pcsl_content_key")) === key_hash[0]) {
+		content_level = 1;
+		key = getCookie("pcsl_content_key");
+	}
+	// level 1 url para
+	else if (key !== "" && await getSHA384Hash(key) === key_hash[0]) {
+		content_level = 1;
+		load_from_cookie = false;
+	}
+	key_valid = content_level ? 1 : 0;
+	// load data
+	var local_version_hash = localStorage.getItem("pcsl_version_hash");
+	//  data version is up to date             key did not update
+	if (local_version_hash === version_hash && load_from_cookie) {
+		// good to use old data
+		var ls_data = localStorage.getItem("pcsl_data").split("\n");
+		video = JSON.parse(decrypt(ls_data[0]));
+		entry = JSON.parse(decrypt(ls_data[1]));
+		process_data();
+	} else {
+		// need to refresh data
+		$("#loading_text").html("Downloading data...");
+		fetch(`data_${content_level}.txt`)
+		.then(response => {
+			if (!response.ok) {
+				// well idk, reload? maybe?
+				console.log(`failed to load data_${content_level}.txt`);
+			}
+			return response.text();
+		})
+		.then(data => {
+			const objs = data.split("\n");
+			video = JSON.parse(decrypt(objs[0]));
+			entry = JSON.parse(decrypt(objs[1]));
+
+			// save to local storage
+			localStorage.setItem("pcsl_data", data);
+			localStorage.setItem("pcsl_version_hash", version_hash);
+			process_data();
+		});
+	}
+	
+	// changing thing if key valid
+	if (key_valid) {
+		member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
+		$(".extra").removeClass("hidden");
+		$(".memcount_subblock").removeClass("anti_extra");
+		$(".anti_extra").html("");
+		$(".anti_extra").addClass("hidden");
+		$("#home_key").removeClass("hidden");
+		$("#filter_entry_icon_container").addClass("hidden");
+		$("#filter_entry_icon_extra").removeClass("hidden");
+		// update expire day
+		removeCookie("pcsl_content_key");
+		setCookie("pcsl_content_key", key);
 	}
 });
 
@@ -374,20 +380,6 @@ function process_data() {
 	$("#loading_overlay").addClass("hidden");
 }
 
-$(window).on("load", async function() {
-	if (!is_mobile && window.innerHeight / window.innerWidth < 1.5) {
-		// bad screen ratio, open new window
-		$("#v_screen").addClass("post_switch");
-		$("#v_screen").height("100%");
-		$("#v_screen").width(0.5625 * window.innerHeight);
-		$("#v_screen").attr("src", "index.html" + window.location.search);
-		// hide original page
-		$("body > div").addClass("post_switch");
-		$("body").addClass("post_switch");
-		return;
-	}
-});
-
 $(function() {
 	{ // nav
 		// nav - menu
@@ -442,6 +434,16 @@ $(function() {
 			$(document.body).removeClass("no_scroll");
 		});
 		
+		// menu - setting
+		$(document).on("click", "#menu_setting", function() {
+			// hide / show things
+			$("#popup_container").removeClass("hidden");
+			$("#settings").removeClass("hidden");
+			$("#menu_container").addClass("hidden");
+			$("#nav_menu").removeClass("menu_opened");
+			prevent_menu_popup = true;
+		});
+
 		// menu - mem_count
 		$(document).on("click", "#menu_count", function() {
 			// hide / show things
@@ -525,6 +527,17 @@ $(function() {
 		});
 	}
 	
+	{ // settings
+		// general - display_theme
+		$(document).on("click", ".three_way>div", function() {
+			var selected = $(this).attr("id").replace("three_way_", "");
+			document.documentElement.setAttribute("theme", selected);
+			localStorage.setItem("theme", selected);
+			$(".three_way>div").removeClass("selected");
+			$(this).addClass("selected");
+		})
+	}
+
 	// memcount swap content
 	$(document).on("click", "#memcount, #memcount_rep", function(e) {
 		if ($(e.target).closest('.popup_frame').length) {

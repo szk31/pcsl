@@ -25,6 +25,9 @@
 		<link rel="stylesheet" href="style_home.css">
 		<link rel="stylesheet" href="style_search.css">
 		<link rel="stylesheet" href="style_repertoire.css"-->
+		<link rel="preload" as="image" href="icon/kirara.webp">
+		<link rel="preload" as="image" href="icon/momo.webp">
+		<link rel="preload" as="image" href="icon/nia.webp">
 		<style>
 			#loading_overlay {
 				position : fixed;
@@ -32,7 +35,7 @@
 				width : 100%;
 				height : 100%;
 				background-color : rgba(0, 0, 0, 0.666);
-				z-index : 2147483646;
+				z-index : 99;
 			}
 
 			#loading_text {
@@ -431,6 +434,7 @@
 				</div>
 				<div id="menu_bottom">
 					<div id="menu_line"></div>
+					<div id="menu_setting"><span id="menu_setting_icon"></span>設定</div>
 					<div id="menu_count"><span id="menu_count_icon"></span>メンバー別合計</div>
 					<div id="menu_info"><span id="menu_info_icon"></span>詳細情報</div>
 				</div>
@@ -448,6 +452,57 @@
 					</div>
 					<div id="info_github">
 						<a href="https://github.com/szk31/pcsl/blob/main/README.md" target="_blank" class="github">使い方</a>
+					</div>
+				</div>
+			</div>
+			<div id="settings" class="popup_frame hidden">
+				<div id="settings_inner">
+					<div class="settings_title">設定</div>
+					<div class="settings_inner_title">全般</div>
+					<div class="settings_option">
+						<div>表示色</div>
+						<div class="three_way">
+							<div id="three_way_light">L</div>
+							<div id="three_way_mixed">M</div>
+							<div id="three_way_dark">D</div>
+						</div>
+					</div>
+					<div class="settings_inner_title">曲検索</div>
+					<div class="settings_option">
+						<div>非公開動画表示</div>
+						<div id="setting_hidden" class="two_way">
+							<div class="selected">表示</div>
+							<div>非表示</div>
+						</div>
+					</div>
+					<div class="settings_option">
+						<div>入力自動選択</div>
+						<div id="setting_select" class="two_way">
+							<div class="selected">自動</div>
+							<div>なし</div>
+						</div>
+					</div>
+					<div class="settings_option">
+						<div>ランダムを表示</div>
+						<div id="setting_random" class="two_way">
+							<div class="selected">表示</div>
+							<div>非表示</div>
+						</div>
+					</div>
+					<div class="settings_option">
+						<div>ランダム条件無視</div>
+						<div id="setting_ignore" class="two_way">
+							<div class="selected">する</div>
+							<div>しない</div>
+						</div>
+					</div>
+					<div class="settings_inner_title">レパートリー</div>
+					<div class="settings_option">
+						<div>リリース日付表示</div>
+						<div id="setting_release" class="two_way">
+							<div class="selected">表示</div>
+							<div>非表示</div>
+						</div>
 					</div>
 				</div>
 			</div>

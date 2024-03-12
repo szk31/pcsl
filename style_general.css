@@ -7,9 +7,9 @@
 	--nav-back: #d0cad5;
 	--nav-text: rgb(18, 0, 36);
 	--dialog-back: rgb(106, 95, 255);
-	--dialog-back-alt: #7f7f7f;
+	--dialog-back-alt: #cbc4ff;
 	--dialog-text: White;
-	--dialog-border: rgb(217, 215, 255);
+	--dialog-border: rgb(141, 135, 255);
 	--filter-back: rgb(214, 211, 255);
 	--filter-back-alt: #f6efff;
 	--filter-text: black;
@@ -66,6 +66,7 @@
 	--share-icon: invert(0%);
 	
 	--trnsp: rgba(0, 0, 0, 0);
+	--empty-cell: #7f7f7f;
 }
 
 [theme="dark"] {
@@ -77,14 +78,14 @@
 	--nav-back: #303030;
 	--nav-text: #DFDFFF;
 	--dialog-back: rgb(44, 37, 86);
-	--dialog-back-alt: rgb(64, 64, 64);
+	--dialog-back-alt: rgb(64, 56, 113);
 	--dialog-text: AliceBlue;
 	--dialog-border: rgb(106, 95, 140);
 	--filter-back: rgb(20, 0, 41);
 	--filter-back-alt: rgb(48, 34, 70);
 	--filter-text: rgb(200, 195, 202);
 	--filter-border: rgb(205, 180, 221);
-	--filter-border-alt: rgba(0, 0, 0, 0);
+	--filter-border-alt: rgb(51, 26, 88);
 
 	--input-back: rgb(84, 84, 84);
 	--input-text: white;
@@ -151,7 +152,7 @@
 	--filter-back-alt: #dfdfdf;
 	--filter-text: black;
 	--filter-border: rgba(0, 0, 0, 0);
-	--filter-border-alt: rgba(0, 0, 0, 0);
+	--filter-border-alt: MediumSeaGreen;
 
 	--input-back: White;
 	--input-text: Black;
@@ -472,7 +473,7 @@ body.post_switch {
 #menu_bottom {
 	position : absolute;
 	bottom : 4vw;
-	height : 30vw;
+	height : 42vw;
 	width : 75vw;
 }
 
@@ -480,6 +481,15 @@ body.post_switch {
 	display : flex;
 	margin : 2vw;
 	align-items : center;
+}
+
+#menu_setting_icon {
+	position : relative;
+	padding: 1vw;
+	content : url("icon/setting.png");
+	width : 8vw;
+	height : 8vw;
+	filter: var(--white-icon);
 }
 
 #menu_count_icon {
@@ -599,7 +609,7 @@ body.post_switch {
 }
 
 .memcount_row>.memcount_empty {
-	background-color : var(--dialog-back-alt) !important;
+	background-color : var(--empty-cell) !important;
 	color : rgba(0, 0, 0, 0) !important;
 	background-image: linear-gradient(to bottom right, transparent calc(50% - 1px), AliceBlue, transparent calc(50% + 1px)); 
 }
@@ -734,6 +744,137 @@ body.post_switch {
 	background-clip: text;
 	color: transparent;
 }
+
+
+#settings {
+	position : absolute;
+	left : 50%;
+	top : 50%;
+	transform: translate(-50%, -50%);
+	width : 84vw;
+	height: 72vh;
+	background-color : var(--dialog-back);
+	color : var(--dialog-text);
+	text-align : center;
+	border: 0.5vw solid var(--dialog-border);
+	border-radius: 5.6vw;
+	font-size: 3.6vw;
+}
+
+#settings_inner {
+	height: calc(100% - 6.8vw);
+	width: auto;
+	margin: 2.4vw;
+	padding: 0.1vw 2vw 2vw 2vw;
+	background-color: var(--dialog-back-alt);
+	border-radius: 3.2vw;
+	color: var(--base-text);
+
+	overflow-y: scroll;
+}
+
+.settings_title {
+	padding: 3vw;
+	font-size: 5.2vw;
+	font-weight: 600;
+}
+
+.settings_inner_title {
+	font-size: 4.4vw;
+	font-weight: 500;
+	margin: 6vw 0 2vw 0;
+}
+
+.settings_option {
+	height: 7.2vw;
+	display : grid;
+	grid-template-columns: 50% 50%;
+	margin: 1.8vw 0;
+}
+
+.settings_option>div:first-child {
+	margin-right: 4.8vw;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.settings_option>div:last-child {
+	margin-left: 4.8vw;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.three_way {
+	display : grid;
+	grid-template-columns: 33.33% 33.33% 33.33%;
+	background-color: var(--base-back);
+	border-radius: 2.2vw;
+	margin-right: auto;
+	padding: 0.8vw 0.6vw;
+}
+
+.three_way>div {
+	width: 8vw;
+	height: 4.8vw;
+	font-size: 3.2vw;
+	text-align: center;
+	background-color: var(--dialog-back-alt);
+	margin: 0.4vw 0.52vw;
+	border-radius: 1.2vw;
+	font-weight: 600;
+	outline: 0.6vw solid var(--trnsp);
+}
+
+.three_way>div.selected {
+	outline: 0.6vw solid var(--dialog-border);
+}
+
+.three_way>div:not(.selected) {
+	filter: opacity(0.5);
+}
+
+#three_way_light {
+	background-color: rgb(242, 238, 245);
+	color: Black;
+}
+
+#three_way_mixed {
+	background-color: #778899;
+	color: Black;
+}
+
+#three_way_dark {
+	background-color: rgb(23, 26, 29);
+	color: rgb(210, 204, 222);
+}
+
+.two_way {
+	display : grid;
+	grid-template-columns: 50% 50%;
+	background-color: var(--dialog-back);
+	border-radius: 2.2vw;
+	margin-right: auto;
+	padding: 0.8vw 0.6vw;
+	width: 72%;
+}
+
+.two_way>div {
+	width: 100%;
+	border-radius: 1.2vw;
+	margin: 0.4vw 0.52vw;
+}
+
+.two_way>div.selected {
+	outline: 0.6vw solid var(--dialog-border);
+	background-color: var(--dialog-back-alt);
+}
+
+.two_way>div:not(.selected) {
+	filter: opacity(0.3);
+}
+
 
 #copy_popup {
 	position : fixed;

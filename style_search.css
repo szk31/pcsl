@@ -334,6 +334,7 @@ input[type="text"]::placeholder {
 	top : 22.25vw;
 	border : 1vw solid GhostWhite;
 	background-color : var(--filter-back);
+	border-radius: 1vw;
 }
 
 .auto_panel {

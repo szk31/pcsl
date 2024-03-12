@@ -295,7 +295,7 @@
 
 #rep_list_content {
 	overflow-y : auto;
-	background-color : var(--dialog-text);
+	background-color : var(--dialog-back-alt);
 	border-radius : 2vw;
 	border : none;
 	margin : 0vw 2vw;
@@ -308,9 +308,12 @@
 	height : 1em;
 	line-height : 1em;
 	overflow : hidden;
-	color: var(--dialog-back);
 	text-align : left;
 	padding : 1.6vw 0.4vw;
+}
+
+[theme=light] #rep_list_content>div {
+	color: var(--dialog-back);
 }
 
 .rep_list_control {

@@ -812,7 +812,7 @@ body.post_switch {
 	background-color: var(--base-back);
 	border-radius: 2.2vw;
 	margin-right: auto;
-	padding: 0.8vw 0.6vw;
+	padding: 0.6vw;
 }
 
 .three_way>div {
@@ -872,9 +872,12 @@ body.post_switch {
 }
 
 .two_way>div:not(.selected) {
-	filter: opacity(0.3);
+	filter: opacity(0.25);
 }
 
+.setting_req_random.disabled {
+	filter: opacity(0.25);
+}
 
 #copy_popup {
 	position : fixed;

@@ -199,53 +199,6 @@ $(function() {
 			update_display();
 		});
 		
-		// search - options - others - max display - input
-		$(document).on("input", "#search_options_count_input", function() {
-			max_count_update(this);
-		});
-		
-		// search - options - others - max display
-		$(document).on("blur", "#search_options_count_input", function() {
-			// check min max
-			var e = Math.min(400, Math.max(1, parseInt($("#search_options_count_input").val())));
-			$("#search_options_count_input").val(e);
-			max_display = e;
-			update_display();
-			setCookie("pcsl_settings_display", e);
-		});
-		
-		// search - options - others - max display - blur
-		$(document).on("keydown", function(e) {
-			if (e.keyCode === 13) {
-				$("#search_options_count_input").blur();
-			}
-		});
-		
-		// search - options - others
-		$(document).on("click", ".search_option_group4", function() {
-			var btn_id = $(this).attr("id").replace(/(search_options_)/, "");
-			$("#search_options_btn_" + btn_id).toggleClass("selected");
-			switch (btn_id) {
-				case "displayHidden" :
-					do_display_hidden ^= 1;
-					update_display();
-					setCookie("pcsl_settings_hidden" , do_display_hidden ? 1 : 0);
-					break;
-				case "select" :
-					do_select_input ^= 1;
-					setCookie("pcsl_settings_select" , do_select_input ? 1 : 0);
-					break;
-				case "randomAnyway" :
-					do_random_anyway ^= 1;
-					$("#nav_search_random").toggleClass("disabled", searching_song_name ? (do_random_anyway ? false : loading !== "") : true);
-					setCookie("pcsl_settings_random" , do_random_anyway ? 1 : 0);
-					break;
-				case "shareWeb" :
-					do_share_web ^= 1;
-					setCookie("pcsl_settings_share" , do_random_anyway ? 1 : 0);
-			}
-		});
-		
 		// search - song - hide_song
 		$(document).on("click", ".song_name_container", function(e) {
 			if (!$(e.target).hasClass("song_copy_icon")) {
@@ -643,7 +596,7 @@ function update_display(force = false) {
 				"</div>" + 
 				(no_note ? "" : ("<div class=\"entry_note\">" + note + "</div>")) + "</a>" + 
 			"</div>");
-			if (++displayed >= max_display) {
+			if (++displayed >= 400) {	// hardcoded max_display
 				i = 200;
 				break;
 			}

@@ -153,11 +153,22 @@
 	background-color : var(--song-display);
 }
 
+.rep_song_row1 {
+	display: grid;
+	grid-template-columns: 100% 20%;
+}
+
 .rep_song_title {
 	height : 1.25em;
 	line-height : 1.25em;
 	overflow : hidden;
 	overflow-inline : hidden;
+}
+
+.rep_song_nooke {
+	position: absolute;
+	right: 6vw;
+	color: red;
 }
 
 .rep_song_info {
@@ -213,7 +224,7 @@
 }
 
 .rep_extra_info {
-	margin-left : 1vw;
+	margin-left : 4vw;
 }
 
 #rep_list {
@@ -372,7 +383,7 @@
 }
 
 .grid_block-4 {
-	grid-template-columns: 18% 32% 10% 40%;
+	grid-template-columns: 20% 35% 10% 35%;
 }
 
 .grid_block-3_type2 {

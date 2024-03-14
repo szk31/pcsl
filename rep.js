@@ -278,6 +278,9 @@ $(function() {
 		
 		// display - press copy
 		$(document).on("mousedown touchstart", ".rep_song_container", function() {
+			if (!do_longPress_copy) {
+				return;
+			}
 			var e = parseInt($(this).attr("id").replace(/(rep_song_)/, ""));
 			longpress_timer = setTimeout(function() {
 				navigator.clipboard.writeText(song[e][song_idx.name]);

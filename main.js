@@ -92,7 +92,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.3";
+var version = "1.6.4";
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -110,9 +110,6 @@ var current_page = "home";
 var key_valid = 0;
 
 /* setting section */
-// max display song count
-var max_display = 100;
-
 // if on, display private entries despite not accessable
 var do_display_hidden = true;
 
@@ -122,17 +119,14 @@ var do_select_input = true;
 // if random requirement is ignored (input being blank)
 var do_random_anyway = false;
 
-// hidden hard filter
-var hard_filter = 0b111;
-
-// do add the link to this website when sharing
-var do_share_web = false;
-
 // show search random icon
 var do_show_random = false;
 
 // show rep-song release date
 var do_show_release = false;
+
+// copy song name when long press on rep song name
+var do_longPress_copy = true;
 
 // ram for searching (entry_processed)
 var entry_proc = [];
@@ -143,12 +137,11 @@ var memcount_rep_int;
 // pre-process song names
 var processed_song_name = [""];
 
-// theme
-{
+{	// theme
 	var theme = localStorage.getItem("theme");
 	if (theme === null) {
 		theme = "mixed";
-		localStorage.setItem("theme", "mixed");
+		localStorage.setItem("theme", theme);
 	}
 	document.documentElement.setAttribute("theme", theme);
 }
@@ -194,6 +187,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 	else if (key !== "" && await getSHA384Hash(key) === key_hash[1]) {
 		content_level = 2;
 		load_from_storage = false;
+		localStorage.setItem("pcsl_key", key);
 	}
 	// level 1 storage
 	else if (await getSHA384Hash(localStorage.getItem("pcsl_key")) === key_hash[0]) {
@@ -204,6 +198,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 	else if (key !== "" && await getSHA384Hash(key) === key_hash[0]) {
 		content_level = 1;
 		load_from_storage = false;
+		localStorage.setItem("pcsl_key", key);
 	}
 	key_valid = content_level ? 1 : 0;
 	// load data
@@ -264,13 +259,13 @@ function process_data() {
 		do_display_hidden = (getCookie("pcsl_settings_hidden")) === "1";
 		do_select_input   = (getCookie("pcsl_settings_clear")) === "1";
 		do_random_anyway  = (getCookie("pcsl_settings_random")) === "1";
-		do_share_web      = (getCookie("pcsl_settings_share")) === "1";
 		
 		localStorage.setItem("pcsl_s_showHidden", getCookie("pcsl_settings_hidden"));
 		localStorage.setItem("pcsl_s_selecInput", getCookie("pcsl_settings_clear"));
 		localStorage.setItem("pcsl_s_showRandom", "0");
 		localStorage.setItem("pcsl_s_ignoreRule", getCookie("pcsl_settings_random"));
 		localStorage.setItem("pcsl_s_showReleas", "0");
+		localStorage.setItem("pcsl_s_LPressCopy", "1")
 
 		// remove cookies
 		removeCookie("pcsl_settings_hidden");
@@ -289,13 +284,15 @@ function process_data() {
 		localStorage.setItem("pcsl_s_showRandom", "0");
 		localStorage.setItem("pcsl_s_ignoreRule", "0");
 		localStorage.setItem("pcsl_s_showReleas", "0");
+		localStorage.setItem("pcsl_s_LPressCopy", "1")
 	} else {
 		// read from local storage
 		do_display_hidden = localStorage.getItem("pcsl_s_showHidden") === "1";
-		do_select_input    = localStorage.getItem("pcsl_s_selecInput") === "1";
+		do_select_input   = localStorage.getItem("pcsl_s_selecInput") === "1";
 		do_show_random    = localStorage.getItem("pcsl_s_showRandom") === "1";
 		do_random_anyway  = localStorage.getItem("pcsl_s_ignoreRule") === "1";
 		do_show_release   = localStorage.getItem("pcsl_s_showReleas") === "1";
+		do_longPress_copy = localStorage.getItem("pcsl_s_LPressCopy") === "1";
 	}
 	
 	// switch display in settings according to saved settings
@@ -313,6 +310,9 @@ function process_data() {
 	}
 	if (do_show_release) {
 		$("#setting_release>div").toggleClass("selected");
+	}
+	if (!do_longPress_copy) {
+		$("#setting_copy>div").toggleClass("selected");
 	}
 	$("#nav_search_random").addClass("blank", !do_show_random);
 	$(".setting_req_random").toggleClass("disabled", !do_show_random);
@@ -414,6 +414,7 @@ function process_data() {
 	// remove loading screen
 	$("#loading_text").html("Loading Complete.<br />You can't see this tho");
 	$("#loading_overlay").addClass("hidden");
+	$("body").removeClass("allow_reload");
 }
 
 $(function() {
@@ -576,6 +577,9 @@ $(function() {
 			localStorage.setItem("theme", selected);
 			$(".three_way>div").removeClass("selected");
 			$(this).addClass("selected");
+			// set post-switch bg colour
+			// does not account for cross origin, not needed anyways
+			parent.refresh_bgColour();
 		});
 
 		$(document).on("click", ".two_way:not(.disabled)", function() {
@@ -607,6 +611,9 @@ $(function() {
 						rep_display();
 					}
 					break;
+				case "setting_copy":
+					do_longPress_copy ^= 1;
+					localStorage.setItem("pcsl_s_LPressCopy", do_longPress_copy ? "1" : "0");
 			}
 		})
 	}
@@ -642,8 +649,8 @@ $(function() {
 	
 	// key reset - yes
 	$(document).on("click", "#remove_key_yes", function() {
-		removeCookie("pcsl_content_key");
-		localStorage.clear();
+		localStorage.setItem("pcsl_version_hash", "");
+		localStorage.setItem("pcsl_key", "");
 		window.location = window.location.href.split("?")[0];
 	});
 	
@@ -684,7 +691,7 @@ function init() {
 		entry_proc[i] = [];
 	}
 	for (var i = 0; i < entry.length; ++i) {
-		if (entry[i][entry_idx.type] & hard_filter) {
+		if (entry[i][entry_idx.type]) {
 			entry_proc[entry[i][0]].push(i);
 		}
 	}
@@ -763,7 +770,7 @@ function memcount_load_rep() {
 	// display
 	var new_html = "";
 	for (var i = 0; i < (key_valid ? 6 : 3); ++i) {
-		new_html += ("<div class=\"memcount_rep_block\"><div class=\"singer_" + display_lookup[i] + "m\">" + singer_lookup[display_lookup[i]] + "</div><div class=\"singer_" + display_lookup[i] + "\">" + display_number[i] + "</div></div>");
+		new_html += ("<div class=\"memcount_rep_block\"><div class=\"singer_" + display_lookup[i] + "m memcount_rep_name\">" + singer_lookup[display_lookup[i]] + "</div><div class=\"singer_" + display_lookup[i] + "\">" + display_number[i] + "</div></div>");
 	}
 	if (key_valid) {
 		new_html += ("<div></div><div class=\"memcount_rep_sum\"></div><div></div>");
@@ -991,4 +998,8 @@ function getCookie(cname) {
 
 function removeCookie(cname) {
 	document.cookie = cname + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+}
+
+function refresh_bgColour() {
+	document.documentElement.setAttribute("theme", localStorage.getItem("theme"));
 }

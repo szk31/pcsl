@@ -25,9 +25,6 @@
 		<link rel="stylesheet" href="style_home.css">
 		<link rel="stylesheet" href="style_search.css">
 		<link rel="stylesheet" href="style_repertoire.css"-->
-		<link rel="preload" as="image" href="icon/kirara.webp">
-		<link rel="preload" as="image" href="icon/momo.webp">
-		<link rel="preload" as="image" href="icon/nia.webp">
 		<style>
 			#loading_overlay {
 				position : fixed;
@@ -54,7 +51,7 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700&display=swap" rel="stylesheet" async>
 	</head>
-    <body oncontextmenu="return false;">
+    <body oncontextmenu="return false;" class="allow_reload">
 		<iframe id="v_screen" frameBorder="0"></iframe>
 		<div id="navbar">
 			<div id="nav_menu_group">
@@ -222,12 +219,12 @@
 			<div id="filter_container">
 				<div id="filter_entry">
 					<div id="filter_entry_title" class="filter_title">
-						<div id="filter_entry_title_name" class="filter_title_name">メンバー/既存</div>
+						<div id="filter_entry_title_name" class="filter_title_name">フィルタ/並び順</div>
 						<div id="filter_entry_close" class="filter_close closed"></div>
 					</div>
 					<div id="filter_entry_content" class="hidden">
 						<div id="filter_entry_icon_container" class="filter_subblock_content anti_extra">
-							<p class="filter_subblock_title">メンバー/既存選択</p>
+							<p class="filter_subblock_title">メンバー</p>
 							<div class="icon_kirara_frame filter_icon_bg">
 								<span class="icon_kirara filter_icon selected"></span>
 							</div>
@@ -239,7 +236,7 @@
 							</div>
 						</div>
 						<div id="filter_entry_icon_extra" class="filter_subblock_content hidden">
-							<p class="filter_subblock_title">メンバー/既存選択</p>
+							<p class="filter_subblock_title">メンバー</p>
 							<div class="icon_kirara_frame filter_icon_bg_extra">
 								<span class="icon_kirara filter_icon_extra selected"></span>
 							</div>
@@ -259,16 +256,9 @@
 								<span class="icon_yuco filter_icon_extra selected"></span>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div id="filter_genre">
-					<div id="filter_genre_title" class="filter_title">
-						<div id="filter_genre_title_name" class="filter_title_name">ジャンル</div>
-						<div id="filter_genre_close" class="filter_close closed"></div>
-					</div>
-					<div id="filter_genre_content" class="hidden">
+						<div class="general_vertical_space"></div>
 						<div id="filter_genre_anisong_container" class="filter_subblock_content grid_block-3">
-							<p class="filter_subblock_title row-1 rowspan-3">アニソン</p>
+							<p class="filter_subblock_title row-1 rowspan-3">ジャンル - アニソン</p>
 							<label id="genre_container_anisong_all" class="filter_genre_anisong_item row-2 col-1">
 								<div id="anisong_all" class="checkbox genre_anisong_checkbox selected"></div>
 								<div class="genre_name">全部</div>
@@ -292,7 +282,7 @@
 						</div>
 						<div class="general_vertical_space"></div>
 						<div id="filter_genre_general_container" class="filter_subblock_content grid_block-3">
-							<p class="filter_subblock_title row-1 rowspan-3">ジャンル別</p>
+							<p class="filter_subblock_title row-1 rowspan-3">ジャンル - その他</p>
 							<label id="genre_container_general_all" class="filter_genre_general_item row-2 col-1">
 								<div id="general_all" class="checkbox genre_general_checkbox selected"></div>
 								<div class="genre_name">全部</div>
@@ -321,35 +311,16 @@
 								<div id="general_kay" class="checkbox genre_general_checkbox selected"></div>
 								<div class="genre_name">歌謡曲</div>
 							</label>
-							<label id="genre_container_general_pops" class="filter_genre_general_item row-4 col-2">
-								<div id="general_pops" class="checkbox genre_general_checkbox selected"></div>
-								<div class="genre_name">ポップス</div>
-							</label>
-							<label id="genre_container_general_rnb" class="filter_genre_general_item row-4 col-3">
-								<div id="general_rnb" class="checkbox genre_general_checkbox selected"></div>
-								<div class="genre_name">R&amp;B</div>
-							</label>
-							<label id="genre_container_general_cha" class="filter_genre_general_item row-5 col-1">
-								<div id="general_cha" class="checkbox genre_general_checkbox selected"></div>
-								<div class="genre_name">キャラソン</div>
-							</label>
-							<label id="genre_container_general_dis" class="filter_genre_general_item row-5 col-2">
+							<label id="genre_container_general_dis" class="filter_genre_general_item row-4 col-2">
 								<div id="general_dis" class="checkbox genre_general_checkbox selected"></div>
 								<div class="genre_name">ディズニー</div>
 							</label>
-							<label id="genre_container_general_other" class="filter_genre_general_item row-5 col-3">
+							<label id="genre_container_general_other" class="filter_genre_general_item row-4 col-3">
 								<div id="general_other" class="checkbox genre_general_checkbox selected"></div>
 								<div class="genre_name">その他</div>
 							</label>
 						</div>
-					</div>
-				</div>
-				<div id="filter_sort">
-					<div id="filter_sort_title" class="filter_title">
-						<div id="filter_sort_title_name" class="filter_title_name">並び順</div>
-						<div id="filter_sort_close" class="filter_close closed"></div>
-					</div>
-					<div id="filter_sort_content" class="hidden">
+						<div class="general_vertical_space"></div>
 						<div id="filter_sort_container" class="filter_subblock_content grid_block-2">
 							<p class="filter_subblock_title row-1 rowspan-2">並び順</p>
 							<label id="sort_container_50" class="filter_sort_item row-2 col-1">
@@ -461,6 +432,13 @@
 						<div id="setting_release" class="two_way">
 							<div>表示</div>
 							<div class="selected">非表示</div>
+						</div>
+					</div>
+					<div class="settings_option">
+						<div>曲名長押しコピー</div>
+						<div id="setting_copy" class="two_way">
+							<div class="selected">する</div>
+							<div>しない</div>
 						</div>
 					</div>
 				</div>

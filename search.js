@@ -45,7 +45,6 @@ $(function() {
 				sel_member -= 1 << i;
 			}
 		}
-		sel_member &= hard_filter;
 		if (sel_member === 0) {
 			// no body got selected so
 			return;
@@ -239,9 +238,6 @@ $(function() {
 					tweet = data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + ")";
 				} else {
 					tweet = song[entry[entry_id][entry_idx.song_id]][song_idx.name].trim() + " / " + song[entry[entry_id][entry_idx.song_id]][song_idx.artist] + " @" + data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + timestamp(entry_id) + ")";
-				}
-				if (do_share_web) {
-					tweet += ("\n\nszk31.github.io/pcsl/?search=" + song_lookup.indexOf(entry[entry_id][entry_idx.song_id]) + "より");
 				}
 				window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(tweet), "_blank");
 			});
@@ -493,7 +489,6 @@ function update_display(force = false) {
 			sel_member -= 1 << i;
 		}
 	}
-	sel_member &= hard_filter;
 	// record loaded song (for un-hiding song thats no longer loaded)
 	var loaded_song = [];
 	var loaded_count = 0;

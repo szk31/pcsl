@@ -1,11 +1,8 @@
 // stores whats currently looking up
 var loading = "";
 
-// stores enabled singer data
-var singer_chosen = [1, 1, 1];
-// selector for 0b1xxx records
 var part_filter = [1, 1, 1, 1, 1, 1];
-var part_rom = [1, 2, 4, 9, 10, 12];
+const part_rom = [1, 2, 4, 8, 16, 32];
 
 // store song id (song[id]) of folded up songs
 var hide_song = new Array();
@@ -30,19 +27,15 @@ var search_input_focused = false;
 $(function() {
 	// nav - random
 	$(document).on("click", "#nav_search_random", function() {
-		if($(this).hasClass("disabled") && !do_random_anyway) {
-			return;
-		}
-		if (prevent_menu_popup) {
+		if($(this).hasClass("disabled") && !do_random_anyway || prevent_menu_popup) {
 			return;
 		}
 		// check if the song has any visibile record
 		var random_song,
-			found = trial = 0,
-			sel_member = 7;
-		for (var i in singer_chosen) {
-			if (!singer_chosen[i]) {
-				sel_member -= 1 << i;
+			found = sel_member = 0;
+		for (var i in part_filter) {
+			if (part_filter[i]) {
+				sel_member += part_rom[i];
 			}
 		}
 		if (sel_member === 0) {
@@ -50,15 +43,9 @@ $(function() {
 			return;
 		}
 		do {
-			random_song = Math.floor(Math.random() * song.length);
+			random_song = 1 + Math.floor(Math.random() * song.length);
 			for (var i in entry_proc[random_song]) {
-				// check if all member
-				if (sel_member !== 7) {
-					if (!(sel_member & entry[entry_proc[random_song][i]][entry_idx.type])) {
-						continue;
-					}
-				}
-				if ((!do_display_hidden) && is_private(entry_proc[random_song][i])) {
+				if (!(rep_list[random_song] & sel_member) || (!do_display_hidden && is_private(entry_proc[random_song][i]))) {
 					continue;
 				}
 				found++;
@@ -72,7 +59,7 @@ $(function() {
 	
 	// nav - share
 	$(document).on("click", "#nav_share", function() {
-		if (current_page !== "search" || $(this).hasClass("disabled")) {
+		if (current_page !== "search" || $(this).hasClass("disabled") || prevent_menu_popup) {
 			return;
 		}
 		// generate url w/ first song
@@ -143,11 +130,7 @@ $(function() {
 		// search - options - singer
 		$(document).on("click", ".singer_icon", function() {
 			var e = parseInt($(this).attr('class').split(/\s+/).find(x => x.startsWith("sing_sel_")).replace("sing_sel_", ""));
-			var selected = part_rom.indexOf(e);
-			if (0 <= selected && selected <= 2) {
-				singer_chosen[selected] ^= 1;
-			}
-			part_filter[selected] ^= 1;
+			part_filter[part_rom.indexOf(e)] ^= 1;
 			// just add a new filter[6] to use at displaying
 			$(".sing_sel_" + e).toggleClass("selected");
 			loading = "";
@@ -233,7 +216,7 @@ $(function() {
 					alert("動画タイトル取得できませんでした。");
 					return;
 				}
-				var tweet = "";
+				var tweet;
 				if (entry[entry_id][entry_idx.time] === 0) {
 					tweet = data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + ")";
 				} else {
@@ -483,12 +466,6 @@ function update_display(force = false) {
 		return;
 	}
 	var current_song = -1;
-	var sel_member = 7;
-	for (var i in singer_chosen) {
-		if (!singer_chosen[i]) {
-			sel_member -= 1 << i;
-		}
-	}
 	// record loaded song (for un-hiding song thats no longer loaded)
 	var loaded_song = [];
 	var loaded_count = 0;
@@ -515,17 +492,15 @@ function update_display(force = false) {
 		for (var j = 0; j < sorted_enrties.length; ++j) {
 			var cur_entry = sorted_enrties[j];
 			// get part filter
-			var hit = true;
+			var no_selected_found = true;
 			for (var k in part_filter) {
-				if (part_filter[k] &&
-					((part_rom[k] | 8) & entry[cur_entry][entry_idx.type]) === part_rom[k]
-				){
-					hit = false;
+				if (part_filter[k] && (part_rom[k] & entry[cur_entry][entry_idx.type])){
+					no_selected_found = false;
 					break;
 				}
 			}
 			// if hit on previous module or private
-			if (hit || ((!do_display_hidden) && is_private(cur_entry))) {
+			if (no_selected_found || ((!do_display_hidden) && is_private(cur_entry))) {
 				continue;
 			}
 			// if new song
@@ -568,11 +543,7 @@ function update_display(force = false) {
 			var no_note = entry[cur_entry][entry_idx.note] === "" || entry[cur_entry][entry_idx.note] === "【メン限】" || entry[cur_entry][entry_idx.note] === "【メン限アーカイブ】";
 			var note = entry[cur_entry][entry_idx.note];
 			if (is_mem) {
-				if (note.includes("メン限アーカイブ")) {
-					note = note.replace(/【メン限アーカイブ】/g, "");
-				} else {
-					note = note.replace(/【メン限】/g, "");
-				}
+				note = note.replace(/【メン限アーカイブ】|【メン限】/g, "");
 			}
 			new_html += (
 			"<div class=\"entry_container " + 
@@ -629,18 +600,4 @@ function update_display(force = false) {
 
 function timestamp(id) {
 	return entry[id][entry_idx.time] === 0 ? "" : "?t=" + entry[id][entry_idx.time];
-}
-
-function max_count_update(node) {
-	// store cursor position
-	var start = node.selectionStart,
-		  end = node.selectionEnd,
-	        e = $(node).val();
-	
-	// remove anything thats not 0~9, remove last character if too long
-	e = e.replace(/[^\d]/g, "").substring(0, 3);
-	// set value to processed value
-	$("#search_options_count_input").val(e);
-	// restore cursor position
-	node.setSelectionRange(start, end);
 }

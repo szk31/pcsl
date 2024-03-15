@@ -62,8 +62,8 @@ var rep_edit_selected = -1;
  */
 
 //var selected_member = 7;
-var selected_member = [4, 2, 1, 12, 10, 9];
-const selected_member_ram = [4, 2, 1, 12, 10, 9];
+var selected_member = [4, 2, 1, 32, 16, 8];
+const selected_member_ram = [4, 2, 1, 32, 16, 8];
 const name_lookup = ["kirara", "momo", "nia", "chui", "shiro", "yuco"];
 
 const exist = (x) => selected_member.includes(x);
@@ -181,7 +181,7 @@ $(function() {
 			rep_search();
 		});
 		
-		// filter - sort - item
+		// filter - sort - sort options
 		$(document).on("click", ".filter_sort_item", function() {
 			var e = $(this).attr("id").replace(/(sort_container_)/, "");
 			// check if clicking on the same item
@@ -204,7 +204,7 @@ $(function() {
 			rep_display();
 		});
 		
-		// filter - display selecetd first
+		// filter - if display selecetd first
 		$(document).on("click", ".filter_sort3_item", function() {
 			rep_display_selected_first ^= 1;
 			$(".sort3_checkbox").toggleClass("selected", rep_display_selected_first);
@@ -232,7 +232,7 @@ $(function() {
 			$(this).toggleClass("selected");
 		});
 		
-		// display - press copy
+		// display - long press copy
 		$(document).on("mousedown touchstart", ".rep_song_container", function() {
 			if (!do_longPress_copy) {
 				return;
@@ -249,7 +249,7 @@ $(function() {
 			}, 600);
 		});
 		
-		// display - press copy (disable)
+		// display - long press copy (disabling)
 		$(document).on("mouseup mouseleft touchend touchmove", ".rep_song_container", function() {
 			clearTimeout(longpress_timer);
 		});
@@ -634,7 +634,7 @@ function rep_display_loop() {
 		// count
 		new_html += ("<div>" + sang_count[0] + "回" + (sang_count[1] > 0 ? (sang_count[0] === sang_count[1] ? " (メン限のみ)" : " (" + sang_count[1] + "回メン限)") : "") + "</div>");
 		// type
-		new_html += ("<div class=\"rep_song_singer" + (key_valid ? " rep_singer_2rows" : "") + "\"><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(4) ? "rep_song_kirara" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(2) ? "rep_song_momo" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(1) ? "rep_song_nia" : "rep_song_empty") + "\"></div>" + (key_valid ? ("<div class=\"" + (rep_hits_solo[rep_hits[i]].includes(12) ? "rep_song_chui" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(10) ? "rep_song_shiro" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(9) ? "rep_song_yuco" : "rep_song_empty") + "\"></div>") : "") + "</div>");
+		new_html += ("<div class=\"rep_song_singer" + (key_valid ? " rep_singer_2rows" : "") + "\"><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(4) ? "rep_song_kirara" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(2) ? "rep_song_momo" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(1) ? "rep_song_nia" : "rep_song_empty") + "\"></div>" + (key_valid ? ("<div class=\"" + (rep_hits_solo[rep_hits[i]].includes(32) ? "rep_song_chui" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(16) ? "rep_song_shiro" : "rep_song_empty") + "\"></div><div class=\"" + (rep_hits_solo[rep_hits[i]].includes(8) ? "rep_song_yuco" : "rep_song_empty") + "\"></div>") : "") + "</div>");
 		// extra info
 		if (do_show_release) {
 			new_html += ("<div class=\"rep_extra_info\"> (" + display_date(to8601(song[rep_hits[i]][song_idx.release])) + ")</div>");

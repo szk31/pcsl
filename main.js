@@ -9,22 +9,11 @@ var singer_lookup = [
 	"きらにぃあ",		//    0101    5
 	"ももきら",			//    0110    6
 	"ぷちここ",			//    0111    7
-	null,
-	"つきみゆこ",		//    1001    9
-	"愛白ふりる",		//    1010    A
-	null,
-	"小悪熊ちゅい",		//    1100    C
-/*
-	null,
-	null,
-	null,
-	null,
-	null,
-	null,
-	"ゆこもも",			//   10011   13
-	null,
-	"ゆこきら",			//   10101   15
-*/
+	"つきみゆこ",		//    1000    8
+	9,10,11,12,13,14,15,
+	"愛白ふりる",		//   10000   10
+	17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
+	"小悪熊ちゅい",		//  100000   20
 ];
 
 // display order of search
@@ -37,14 +26,17 @@ var display_order = [
 	3,		// 0101
 	2,		// 0110
 	1,		// 0111
-	-1,		// 1000
-	14,		// 1001
-	13,		// 1010
-	11,		// 1011
-	12,		// 1100
-	10,		// 1101
-	9,		// 1110
-	8,		// 1111
+	11,		// 1000
+	-1,		// 1001
+	-1,		// 1010
+	-1,		// 1011
+	-1,		// 1100
+	-1,		// 1101
+	-1,		// 1110
+	-1,		// 1111
+	10,		//10000
+	17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
+	 9		
 ];
 
 // display order of rep display
@@ -92,7 +84,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.4a";
+var version = "1.6.5";
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -235,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 	
 	// changing thing if key valid
 	if (key_valid) {
-		member_display_order = [7, 6, 5, 3, 4, 2, 1, 12, 10, 9];
+		member_display_order = [7, 6, 5, 3, 4, 2, 1, 32, 16, 8];
 		$(".extra").removeClass("hidden");
 		$(".memcount_subblock").removeClass("anti_extra");
 		$(".anti_extra").html("");
@@ -243,6 +235,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 		$("#home_key").removeClass("hidden");
 		$("#filter_entry_icon_container").addClass("hidden");
 		$("#filter_entry_icon_extra").removeClass("hidden");
+	} else {
+		part_filter = [1, 1, 1, 0, 0, 0];
 	}
 });
 
@@ -314,7 +308,7 @@ function process_data() {
 	if (!do_longPress_copy) {
 		$("#setting_copy>div").toggleClass("selected");
 	}
-	$("#nav_search_random").addClass("blank", !do_show_random);
+	$("#nav_search_random").toggleClass("blank", !do_show_random);
 	$(".setting_req_random").toggleClass("disabled", !do_show_random);
 
 	// processing url para
@@ -502,7 +496,7 @@ $(function() {
 			// is empty, generate
 			var entry_count = [];
 			// entry_count[singer_id][0:public, 1:member, 2:private]
-			for (var i = 0; i < 16; ++i) {
+			for (var i = 0; i < 33; ++i) {
 				entry_count[i] = [0, 0, 0];
 			}
 			for (var i = 0; i < entry.length; ++i) {
@@ -532,25 +526,24 @@ $(function() {
 			
 			// total for each member
 			// get numbers
-			var entry_count_total = [[0, 0, 0], [0, 0, 0]];
+			var entry_count_total = [0, 0, 0, 0, 0, 0];
 			for (var i in entry) {
-				for (var j = 0; j < 3; ++j) {
-					if ((1 << j) & entry[i][entry_idx.type]) {
-						entry_count_total[entry[i][entry_idx.type] > 8 ? 1 : 0][j]++;
-					}
+				var solo_output = split_to_solo(entry[i][entry_idx.type])
+				for (var j in solo_output) {
+					entry_count_total[part_rom.indexOf(solo_output[j])]++;
 				}
 			}
 			if (key_valid) {
 				new_html += "</table><div id=\"memcount_sum_warpper\" class=\"memcount_sum\"><div class=\"memcount_sum_icon col-1 colspan-2\"></div>";
 				for (var row = 0; row < 2; ++row) {
 					for (var col = 2; col >= 0; --col) {
-						new_html += ("<div class=\"row-" + (row + 1) + " col-" + (4 - col) + " singer_" + ((row ? 8 : 0) + (1 << col)) + "\">" + entry_count_total[row][col] + "</div>");
+						new_html += ("<div class=\"row-" + (row + 1) + " col-" + (4 - col) + " singer_" + (1 << (row * 3 + col)) + "\">" + entry_count_total[row * 3 + col] + "</div>");
 					}
 				}
 			} else {
 				new_html += "</table><div class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
 				for (var i = 2; i >= 0; --i) {
-					new_html += ("<div class=\"singer_" + (1 << i) + "\">" + entry_count_total[0][i] + "</div>");
+					new_html += ("<div class=\"singer_" + (1 << i) + "\">" + entry_count_total[i] + "</div>");
 				}
 			}
 			$("#memcount_content").html(new_html + "</div>");
@@ -712,15 +705,9 @@ function init() {
 	for (var i = 0; i < song.length; ++i) {
 		rep_list[i] = 0;
 		for (var j in entry_proc[i]) {
-			// check if all singer bits are filled
-			if ((rep_list[i] & 7) === 7) {
-				break;
-			}
 			// or is faster than checking then add (i think)
 			rep_list[i] |= entry[entry_proc[i][j]][entry_idx.type];
 		}
-		// remove the non-singer bit, not needed.
-		rep_list[i] &= ~8;
 		
 		rep_solo_temp[i] = [...new Set(entry_proc[i])];
 		rep_hits_solo[i] = [];
@@ -738,7 +725,7 @@ function memcount_load_rep() {
 	
 	// get number for each member
 	var singer_counter = [];
-	for (var i = 0; i < 15; ++i) {
+	for (var i = 0; i < 33; ++i) {
 		singer_counter[i] = [];
 	}
 	for (var i in rep_hits_solo) {
@@ -756,16 +743,16 @@ function memcount_load_rep() {
 		singer_counter[2].length,
 		singer_counter[1].length,
 		
-		singer_counter[12].length,
-		singer_counter[10].length,
-		singer_counter[9].length,
+		singer_counter[32].length,
+		singer_counter[16].length,
+		singer_counter[8].length,
 		
-		new Set([...singer_counter[4], ...singer_counter[12]]).size,
-		new Set([...singer_counter[2], ...singer_counter[10]]).size,
-		new Set([...singer_counter[1], ...singer_counter[9]]).size
+		new Set([...singer_counter[4], ...singer_counter[32]]).size,
+		new Set([...singer_counter[2], ...singer_counter[16]]).size,
+		new Set([...singer_counter[1], ...singer_counter[8]]).size
 	];
 	
-	var display_lookup = [4, 2, 1, 12, 10, 9, 4, 2, 1];
+	var display_lookup = [4, 2, 1, 32, 16, 8, 4, 2, 1];
 	
 	// display
 	var new_html = "";
@@ -823,7 +810,7 @@ function copy_of(input) {
 	}
 }
 
-function get_last_sang(id, mask = [4, 2, 1, 12, 10, 9]) {
+function get_last_sang(id, mask = [4, 2, 1, 32, 16, 8]) {
 	for (var i = entry_proc[id].length - 1; i >= 0; --i) {
 		if (mask.some((x) => (x & entry[entry_proc[id][i]][entry_idx.type]) === x)) {
 			return new Date(video[entry[entry_proc[id][i]][entry_idx.video]][video_idx.date]);
@@ -857,7 +844,7 @@ function get_date_different(date1, date2 = today) {
 }
 
 // get entry count of all entry and member-only entry that fufills mask
-function get_sang_count(id, mask = [4, 2, 1, 12, 10, 9]) {
+function get_sang_count(id, mask = [4, 2, 1, 32, 16, 8]) {
 	
 	var count = 0,
 		mem_count = 0;
@@ -933,6 +920,8 @@ function split_to_solo(input) {
 			return [2, 4];
 		case 7 : 
 			return [1, 2, 4];
+		case 12:
+			return [4, 8];
 		default:
 			return [input];
 	}

@@ -90,16 +90,6 @@ input[type="text"]::placeholder {
 	font-weight : bold;
 }
 
-#search_options_count_input {
-	height : 5vw;
-	width : 12vw;
-	font-size : 4.2vw;
-	border-radius: 1.8vw;
-	border : 0.6vw solid DarkBlue;
-	text-align : center;
-	padding : 0.2vw 0 0 0;
-}
-
 /* singer section */
 .singer_container {
 	height : 7.5vw;
@@ -300,35 +290,35 @@ input[type="text"]::placeholder {
 }
 
 /* yuco (9) cc : 4.55 */
-.singer_9m,
-[theme=dark] .singer_9m.memcount_rep_name {
+.singer_8m,
+[theme=dark] .singer_8m.memcount_rep_name {
 	background-color : var(--s-yuco-text);
 	color : var(--s-yuco-back);
 }
-.singer_9,
-[theme=dark] .singer_9m {
+.singer_8,
+[theme=dark] .singer_8m {
 	background-color : var(--s-yuco-back);
 	color : var(--s-yuco-text);
 }
 /* shiro (10) cc : 4.63 */
-.singer_10m,
-[theme=dark] .singer_10m.memcount_rep_name {
+.singer_16m,
+[theme=dark] .singer_16m.memcount_rep_name {
 	background-color : var(--s-siro-text);
 	color : var(--s-siro-back);
 }
-.singer_10,
-[theme=dark] .singer_10m {
+.singer_16,
+[theme=dark] .singer_16m {
 	background-color : var(--s-siro-back);
 	color : var(--s-siro-text);
 }
 /* chui (12) cc : 5.31 */
-.singer_12m,
-[theme=dark] .singer_12m.memcount_rep_name {
+.singer_32m,
+[theme=dark] .singer_32m.memcount_rep_name {
 	background-color : var(--s-chui-text);
 	color : var(--s-chui-back);
 }
-.singer_12,
-[theme=dark] .singer_12m {
+.singer_32,
+[theme=dark] .singer_32m {
 	background-color : var(--s-chui-back);
 	color : var(--s-chui-text);
 }

@@ -64,6 +64,7 @@ var rep_edit_selected = -1;
 //var selected_member = 7;
 var selected_member = [4, 2, 1, 12, 10, 9];
 const selected_member_ram = [4, 2, 1, 12, 10, 9];
+const name_lookup = ["kirara", "momo", "nia", "chui", "shiro", "yuco"];
 
 const exist = (x) => selected_member.includes(x);
 
@@ -93,54 +94,9 @@ $(function() {
 		});
 		
 		// filter - entry - singer
-		$(document).on("click", ".filter_icon", function() {
+		$(document).on("click", ".filter_icon, .filter_icon_extra", function() {
 			var e = $(this).attr('class').split(/\s+/).find(x => x.startsWith("icon_")).replace("icon_", "");
-			var f = -1;
-			switch (e) {
-				case "kirara" :
-					f = 0;
-					break;
-				case "momo" :
-					f = 1;
-					break;
-				case "nia" :
-					f = 2;
-					break;
-				default : 
-					//error
-					return;
-			}
-			rep_singer[f] ^= 1;
-			$(this).toggleClass("selected");
-			rep_search(true);
-		});
-		$(document).on("click", ".filter_icon_extra", function() {
-			var e = $(this).attr('class').split(/\s+/).find(x => x.startsWith("icon_")).replace("icon_", "");
-			var f = -1;
-			switch (e) {
-				case "kirara" :
-					f = 0;
-					break;
-				case "momo" :
-					f = 1;
-					break;
-				case "nia" :
-					f = 2;
-					break;
-				case "chui" :
-					f = 3;
-					break;
-				case "shiro" :
-					f = 4;
-					break;
-				case "yuco" :
-					f = 5;
-					break;
-				default : 
-					//error
-					return;
-			}
-			rep_singer[f] ^= 1;
+			rep_singer[name_lookup.indexOf(e)] ^= 1;
 			$(this).toggleClass("selected");
 			rep_search(true);
 		});
@@ -531,6 +487,7 @@ function rep_search(force = false) {
 	// return nothing if no one is selected and nothing is being searched
 	if (selected_member.length === 0) {
 		// no one selected
+		clearInterval(rep_display_inter);
 		$("#rep_display").html("");
 		return;
 	}
@@ -690,7 +647,7 @@ function rep_display_loop() {
 	rep_loading_progress += 20;
 	if (rep_loading_progress >= rep_hits.length) {
 		clearInterval(rep_display_inter);
-		$("#rep_display").append("<div class=\"general_vertical_space\"></div>")
+		$("#rep_display").append("<div class=\"general_vertical_space\"></div>");
 	}
 }
 

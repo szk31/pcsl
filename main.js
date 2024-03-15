@@ -92,7 +92,7 @@ var video_idx = {
 
 var video, entry;
 
-var version = "1.6.4";
+var version = "1.6.4a";
 var key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -319,7 +319,7 @@ function process_data() {
 
 	// processing url para
 	init();
-	if (url_para.get("sfilter") !== (null && "")) {
+	if (url_para.get("sfilter") !== null) {
 		// extract member data
 		var ext = parseInt(url_para.get("sfilter"));
 		// bit and = true => default 
@@ -332,7 +332,7 @@ function process_data() {
 			ext & 32 ? "" : "chui"
 		];
 		// rep
-		if (url_para.get("page") === ("rep" || "repertoire") || url_para.get("rfilter") !== (null && "")) {
+		if (url_para.get("page") === ("rep" || "repertoire") || url_para.get("rfilter") !== null) {
 			for (var i in member_name) {
 				if (member_name[i] === "") {
 					continue;
@@ -341,7 +341,7 @@ function process_data() {
 			}
 		}
 		//search
-		if (url_para.get("page") === "search" || url_para.get("search") !== (null && "")) {
+		if (url_para.get("page") === "search" || url_para.get("search") !== null) {
 			for (var i in member_name) {
 				if (member_name[i].length) {
 					$(".singer_icon.icon_" + member_name[i]).click();
@@ -350,12 +350,12 @@ function process_data() {
 		}
 	}
 	var target_page = url_para.get("page");
-	if (target_page !== ("home" || null)) {
+	if (target_page !== "home") {
 		if (jump2page(target_page) === -1) {
 			jump2page("home");
 		}
 	}
-	if (url_para.get("search") !== (null && "")) {
+	if (url_para.get("search") !== null) {
 		if (current_page !== "search") {
 			jump2page("search");
 		}
@@ -382,7 +382,7 @@ function process_data() {
 	 * this read a string of binary number
 	 * the value is exactly the same as rep_anisong and rep_genre
 	 */
-	if (url_para.get("rfilter") !== (null && "")) {
+	if (url_para.get("rfilter") !== null) {
 		if (current_page !== "repertoire") {
 			jump2page("rep");
 		}
@@ -925,25 +925,16 @@ function jump2page(target) {
 function split_to_solo(input) {
 	// hard code is easier
 	switch (input) {
-		case 1 : 
-		case 2 : 
-		case 4 : 
-		case 9 : 
-		case 10 : 
-		case 12 : 
-			return [input];
-			break;
 		case 3 : 
 			return [1, 2];
-			break;
 		case 5 : 
 			return [1, 4];
-			break;
 		case 6 : 
 			return [2, 4];
-			break;
 		case 7 : 
 			return [1, 2, 4];
+		default:
+			return [input];
 	}
 }
 

@@ -20,7 +20,7 @@
 	font-size : 3.2vw;
 	font-weight : bold;
 	border: 0.36vw solid var(--filter-border);
-	border-radius : 3.2vw;
+	border-radius : 4vw;
 }
 
 #filter_title {
@@ -139,7 +139,7 @@
 	font-weight : bold;
 	font-size : 3.2vw;
 	margin : 1.5vw 3.6vw;
-	padding : .8vw 1.2vw .2vw 1.2vw;
+	padding : .8vw 1.2vw 0 1.2vw;
 	border-radius : 1.6vw;
 	border : 0.6vw solid var(--trnsp);
 	outline : .2vw solid var(--song-border);

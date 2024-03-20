@@ -1,7 +1,7 @@
 //"use strict";
 // display string, refered in entry[].type
 const singer_lookup = [
-	"",					// 0b 0000 0x 0
+	,					// 0b 0000 0x 0
 	"看谷にぃあ",		//    0001    1
 	"胡桃澤もも",		//    0010    2
 	"ももにぃあ",		//    0011    3
@@ -10,12 +10,14 @@ const singer_lookup = [
 	"ももきら",			//    0110    6
 	"ぷちここ",			//    0111    7
 	"つきみゆこ",		//    1000    8
-	,,,
+	,
+	"ゆこもも",
+	,
 	"ゆこきら",
 	,,,
 	"愛白ふりる",		//   10000   10
 	,,,,,,,,,,,,,,,
-	"小悪熊ちゅい",		//  100000   20
+	"小悪熊ちゅい"		//  100000   20
 ];
 
 // display order of search
@@ -28,13 +30,15 @@ const display_order = [
 	3,		// 0101
 	2,		// 0110
 	1,		// 0111
-	11,		// 1000
-	,,,
+	12,		// 1000
+	,
+	9,
+	,
 	8,
 	,,,
-	10,		//10000
+	11,		//10000
 	,,,,,,,,,,,,,,,
-	9
+	10
 ];
 
 // display order of rep display
@@ -80,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.7.0";
+const version = "1.7.1";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -147,6 +151,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 		// hide original page
 		$("body > div").addClass("post_switch");
 		$("body").addClass("post_switch");
+		// remove key
+		let url_para = new URLSearchParams(window.location.search);
+		url_para.delete("key");
+		window.history.pushState(null, null, `${document.location.href.split('?')[0]}${url_para.size ? `?${url_para}` : ""}`);
+		// delete data
+		song = song_lookup = note_index = null;
 		return;
 	}
 
@@ -236,7 +246,7 @@ function process_data() {
 	let url_para = new URLSearchParams(window.location.search);
 	// remove key
 	url_para.delete("key");
-	window.history.pushState(null, null, `${document.location.href.split('?')[0]}${url_para.size ? `?${url_para}` : ""}`)
+	window.history.pushState(null, null, `${document.location.href.split('?')[0]}${url_para.size ? `?${url_para}` : ""}`);
 	
 	// ad local storage if not exist
 	const lookup = [
@@ -503,9 +513,9 @@ $(function() {
 			for (let i in member_display_order) {
 				let mem_id = member_display_order[i];
 				// new row, name
-				new_html += ("<tr class=\"memcount_row singer_" + mem_id + "\"><td><div class=\"memcount_name\">" + singer_lookup[mem_id] + "</div></td>");
+				new_html += `<tr class=\"memcount_row singer_${mem_id}\"><td><div class=\"memcount_name\">${singer_lookup[mem_id]}</div></td>`;
 				for (let j = 0; j < 3; ++j) {
-					new_html += ("<td" + (entry_count[mem_id][j] === 0 ? " class=\"memcount_empty\"" : "") + ">" + entry_count[mem_id][j] + "</td>");
+					new_html += `<td${entry_count[mem_id][j] === 0 ? ` class="memcount_empty"` : ""}>${entry_count[mem_id][j]}</td>`;
 				}
 				// close row
 				new_html += "</tr>";
@@ -521,16 +531,16 @@ $(function() {
 				}
 			}
 			if (key_valid) {
-				new_html += "</table><div id=\"memcount_sum_warpper\" class=\"memcount_sum\"><div class=\"memcount_sum_icon col-1 colspan-2\"></div>";
+				new_html += `</table><div id="memcount_sum_warpper" class="memcount_sum"><div class="memcount_sum_icon col-1 colspan-2"></div>`;
 				for (let row = 0; row < 2; ++row) {
 					for (let col = 2; col >= 0; --col) {
-						new_html += ("<div class=\"row-" + (row + 1) + " col-" + (4 - col) + " singer_" + (1 << (row * 3 + col)) + "\">" + entry_count_total[row * 3 + col] + "</div>");
+						new_html += `<div class="row-${row + 1} col-${4 - col} singer_${1 << (row * 3 + col)}">${entry_count_total[row * 3 + col]}</div>`;
 					}
 				}
 			} else {
-				new_html += "</table><div class=\"memcount_sum\"><div class=\"memcount_sum_icon\"></div>";
+				new_html += `</table><div class="memcount_sum"><div class="memcount_sum_icon"></div>`;
 				for (let i = 2; i >= 0; --i) {
-					new_html += ("<div class=\"singer_" + (1 << i) + "\">" + entry_count_total[i] + "</div>");
+					new_html += `div class=\"singer_${(1 << i)}">${entry_count_total[i]}</div>`;
 				}
 			}
 			$("#memcount_content").html(new_html + "</div>");
@@ -602,7 +612,7 @@ $(function() {
 					break;
 				case "setting_rep_select":
 					setting.rep_select_input ^= 1;
-					ls("pcsl_s_rep_select", setting.longPress_copy ? "1" : "0");
+					ls("pcsl_s_rep_select", setting.rep_select_input ? "1" : "0");
 					break;
 				case "setting_copy":
 					setting.longPress_copy ^= 1;
@@ -757,12 +767,12 @@ function memcount_load_rep() {
 	// display
 	let new_html = "";
 	for (let i = 0; i < (key_valid ? 6 : 3); ++i) {
-		new_html += ("<div class=\"memcount_rep_block\"><div class=\"singer_" + display_lookup[i] + "m memcount_rep_name\">" + singer_lookup[display_lookup[i]] + "</div><div class=\"singer_" + display_lookup[i] + "\">" + display_number[i] + "</div></div>");
+		new_html += `<div class="memcount_rep_block"><div class="singer_${display_lookup[i]}m memcount_rep_name">${singer_lookup[display_lookup[i]]}</div><div class="singer_${display_lookup[i]}">${display_number[i]}</div></div>`;
 	}
 	if (key_valid) {
-		new_html += ("<div></div><div class=\"memcount_rep_sum\"></div><div></div>");
+		new_html += `<div></div><div class="memcount_rep_sum"></div><div></div>`;
 		for (let i = 6; i < 9; ++i) {
-			new_html += ("<div class=\"memcount_rep_block_sum memcount_rep_singer_" + display_lookup[i] + "\"><div>" + display_number[i] + "</div></div>");
+			new_html += `<div class="memcount_rep_block_sum memcount_rep_singer_${display_lookup[i]}"><div>${display_number[i]}</div></div>`;
 		}
 	}
 	$("#memcount_rep_content").toggleClass("extra_content", key_valid === 1);

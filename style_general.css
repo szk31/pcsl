@@ -57,6 +57,8 @@
 	--s-yuco-back: #ffcffb;
 	--s-yuco-text: #265ebd;
 
+	--s-ycmm-back: #c1ceff;
+	--s-ycmm-text: #a10091;
 	--s-yckr-back: #ffcffb;
 	--s-yckr-text: #af1919;
 
@@ -134,6 +136,8 @@
 	--s-yuco-back: #0b1b35;
 	--s-yuco-text: #ffcffb;
 
+	--s-ycmm-back: #280024;
+	--s-ycmm-text: #c1ceff;
 	--s-yckr-back: #300000;
 	--s-yckr-text: #ffcffb;
 
@@ -532,7 +536,7 @@ body.post_switch {
 	color : var(--dialog-text);
 	text-align : center;
 	border : 0.5vw solid var(--dialog-border);
-	border-radius : 2vw;
+	border-radius: 5.6vw;
 	z-index : 10;
 }
 
@@ -570,7 +574,7 @@ body.post_switch {
 	color : var(--dialog-text);
 	text-align : center;
 	border: 0.5vw solid var(--dialog-border);
-	border-radius: 2vw;
+	border-radius: 5.6vw;
 }
 
 #memcount.anti_extra,
@@ -673,7 +677,7 @@ body.post_switch {
 	margin : auto;
 	font-size : 3.8vw;
 	font-weight : 550;
-	padding : 4vh 0;
+	padding : 5.6vh 0;
 }
 
 .memcount_rep_block>div {
@@ -699,7 +703,7 @@ body.post_switch {
 	height : 6vw;
 	block-size : fit-content;
 	margin : auto;
-	padding : 0;
+	padding : 2vw 0 0;
 }
 
 .memcount_rep_block_sum {
@@ -787,7 +791,7 @@ body.post_switch {
 	height: 7.2vw;
 	display : grid;
 	grid-template-columns: 50% 50%;
-	margin: 1.8vw 0;
+	margin: 2vw 0;
 }
 
 .settings_option>div:first-child {

@@ -193,7 +193,8 @@ $(function() {
 		});
 		
 		// search - entry - share
-		$(document).on("click", ".entry_share", function() {
+		$(document).on("click", ".entry_share", function(e) {
+			e.preventDefault();
 			let entry_id = parseInt(this.id.replace("entry_", ""));
 			// get video title
 			const url = "https://www.youtube.com/watch?v=" + video[entry[entry_id][entry_idx.video]][video_idx.id];
@@ -326,11 +327,11 @@ function auto_search() {
 			song_name = song[auto_exact[i]][song_idx.name];
 			auto_display = bold(song_name, e);
 		}
-		new_html += ("<div id=\"" + to_html(song_name) + "\" class=\"auto_panel" + (auto_display_count === 0 ? " auto_first" : "") + "\"><div class=\"auto_reading\">" + auto_reading + "</div><div class=\"auto_display\">" + auto_display + "</div></div>");
+		new_html += `<div id="${to_html(song_name)}" class="auto_panel${auto_display_count === 0 ? " auto_first" : ""}"><div class="auto_reading">${auto_reading}</div><div class="auto_display">${auto_display}</div></div>`;
 		auto_display_count++;
 	}
 	for (let i in auto_other) {
-		new_html += ("<div id=\"" + to_html(song[auto_other[i]][song_idx.name]) + "\" class=\"auto_panel" + (auto_display_count === 0 ? " auto_first" : "") + "\"><div class=\"auto_reading\"></div><div class=\"auto_display\">" + bold(song[auto_other[i]][song_idx.name], e) + "</div></div>");
+		new_html += `<div id="${to_html(song[auto_other[i]][song_idx.name])}" class="auto_panel${(auto_display_count === 0 ? " auto_first" : "")}"><div class="auto_reading"></div><div class="auto_display">${bold(song[auto_other[i]][song_idx.name], e)}</div></div>`;
 		
 		if (++auto_display_count >= auto_display_max) {
 			break;
@@ -480,7 +481,7 @@ function update_display(force = false) {
 			}
 			// if new song
 			if (current_song !== entry[cur_entry][entry_idx.song_id]) {
-				new_html += ((current_song !== -1 ? "</div>" : "") + "<div class=\"song_container\">");
+				new_html += ((current_song !== -1 ? "</div>" : "") + `<div class="song_container">`);
 				current_song = entry[cur_entry][entry_idx.song_id];
 				loaded_song[loaded_count++] = current_song;
 				// if hide the song
@@ -502,17 +503,17 @@ function update_display(force = false) {
 				if (/([^~]+~+[^~])/g.test(song_name) && song_name_length >= 28) {
 					song_name = song_name.substring(0, song_name.search(/~/g)) + "<br />" + song_name.substring(song_name.search(/~/g));
 				}
-				new_html += (
-				"<div class=\"song_name_container " + (loaded_count % 2 ? "odd_colour" : "even_colour") + "\" id=\"" + current_song + "\">" +
-					"<div class=\"song_rap\">" +
-						"<div class=\"song_name\">" + song_name + "</div>" +
-						"<div class=\"song_credit" + (show ? "" : " hidden") + (song[current_song][song_idx.artist].length > 30 ? " long_credit" : "") + " song_" + current_song + "\">" + song[current_song][song_idx.artist] + "</div>" +
-					"</div>" +
-					"<div class=\"song_icon_container\">" +
-						"<div id=\"fold_" + current_song + "\" class=\"song_fold_icon" + (show ? "" : " closed") + "\"></div>" +
-						"<div id=\"copy_name_" + current_song + "\" class=\"song_copy_icon song_" + current_song + (show ? "" : " hidden") + "\"></div>" +
-					"</div>" +
-				"</div>");
+				new_html += 
+				`<div class="song_name_container" id="${current_song}">
+					<div class="song_rap">
+						<div class="song_name">${song_name}</div>
+						<div class="song_credit${show ? "" : " hidden"}${song[current_song][song_idx.artist].length > 30 ? " long_credit" : ""} song_${current_song}">${song[current_song][song_idx.artist]}</div>
+					</div>
+					<div class="song_icon_container">
+						<div id="fold_${current_song}" class="song_fold_icon${show ? "" : " closed"}"></div>
+						<div id="copy_name_${current_song}" class="song_copy_icon song_${current_song}${show ? "" : " hidden"}"></div>
+					</div>
+				</div>`;
 			}
 			let is_mem = entry[cur_entry][entry_idx.note].includes("【メン限");
 			let no_note = entry[cur_entry][entry_idx.note] === "" || entry[cur_entry][entry_idx.note] === "【メン限】" || entry[cur_entry][entry_idx.note] === "【メン限アーカイブ】";
@@ -520,23 +521,17 @@ function update_display(force = false) {
 			if (is_mem) {
 				note = note.replace(/【メン限アーカイブ】|【メン限】/g, "");
 			}
-			new_html += (
-			"<div class=\"entry_container " + 
-			"singer_" + entry[cur_entry][entry_idx.type] + (is_mem ? "m" : "") + 
-			" song_" + current_song + (hide_song.includes(current_song) ? " hidden" : "") + "\">" + 
-				"<a href=\"https://youtu.be/" + video[entry[cur_entry][entry_idx.video]][video_idx.id] + timestamp(cur_entry) +"\" target=\"_blank\">" + 
-				"<div class=\"entry_primary\">" + 
-					"<div class=\"entry_date\">" + 
-						display_date(video[entry[cur_entry][entry_idx.video]][video_idx.date]) + 
-					"</div>" + 
-					"<div class=\"entry_singer\">" + 
-						singer_lookup[entry[cur_entry][entry_idx.type]] + 
-					"</div>" + 
-					"<div class=\"mem_display\">" + (is_mem ? "メン限" : "") + "</div>" + 
-					"<div class=\"entry_share\" id=\"entry_" + cur_entry + "\" onclick=\"return false;\"></div>" + 
-				"</div>" + 
-				(no_note ? "" : ("<div class=\"entry_note\">" + note + "</div>")) + "</a>" + 
-			"</div>");
+			new_html +=
+			`<div class="entry_container singer_${entry[cur_entry][entry_idx.type]}${is_mem ? "m" : ""} song_${current_song}${hide_song.includes(current_song) ? " hidden" : ""}">
+				<a href="https://youtu.be/${video[entry[cur_entry][entry_idx.video]][video_idx.id]}${timestamp(cur_entry)}" target="_blank">
+				<div class="entry_primary">
+					<div class="entry_date">${display_date(video[entry[cur_entry][entry_idx.video]][video_idx.date])}</div>
+					<div class="entry_singer">${singer_lookup[entry[cur_entry][entry_idx.type]]}</div>
+					<div class="mem_display">${is_mem ? "メン限" : ""}</div>
+					<div class="entry_share" id="entry_${cur_entry}"></div>
+				</div>
+				${no_note ? "" : `<div class="entry_note">${note}</div>`}</a>
+			</div>`;
 			if (++displayed >= 400) {	// hardcoded max_display
 				i = 200;
 				break;
@@ -551,19 +546,19 @@ function update_display(force = false) {
 		}
 		// no song found
 		if (hits.length === 0) {
-			new_html += "<div class=\"search_no_result\">曲検索結果なし";
+			new_html += `<div class="search_no_result">曲検索結果なし`;
 			break;
 		}
 		// only private songs are found / singer deselected
 		if (found_entries > 0) {
-			new_html += "<div class=\"search_no_result\">非表示動画のみ";
+			new_html += `<div class="search_no_result">非表示動画のみ`;
 			break;
 		}
 		// only never sang songs are found
-		new_html += "<div class=\"search_no_result\">歌記録なし";
+		new_html += `<div class="search_no_result">歌記録なし`;
 	} while (0);
 	
-	$("#search_display").html(new_html + "</div><div class=\"general_vertical_space\"></div>");
+	$("#search_display").html(new_html + `</div><div class="general_vertical_space"></div>`);
 	// check all hiden songs
 	for (let i = 0; i < hide_song.length; ++i) {
 		// if song havnt been loaded, remove from hide list

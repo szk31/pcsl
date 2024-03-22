@@ -503,17 +503,7 @@ function update_display(force = false) {
 				if (/([^~]+~+[^~])/g.test(song_name) && song_name_length >= 28) {
 					song_name = song_name.substring(0, song_name.search(/~/g)) + "<br />" + song_name.substring(song_name.search(/~/g));
 				}
-				new_html += 
-				`<div class="song_name_container" id="${current_song}">
-					<div class="song_rap">
-						<div class="song_name">${song_name}</div>
-						<div class="song_credit${show ? "" : " hidden"}${song[current_song][song_idx.artist].length > 30 ? " long_credit" : ""} song_${current_song}">${song[current_song][song_idx.artist]}</div>
-					</div>
-					<div class="song_icon_container">
-						<div id="fold_${current_song}" class="song_fold_icon${show ? "" : " closed"}"></div>
-						<div id="copy_name_${current_song}" class="song_copy_icon song_${current_song}${show ? "" : " hidden"}"></div>
-					</div>
-				</div>`;
+				new_html += `<div class="song_name_container" id="${current_song}"><div class="song_rap"><div class="song_name">${song_name}</div><div class="song_credit${show ? "" : " hidden"}${song[current_song][song_idx.artist].length > 30 ? " long_credit" : ""} song_${current_song}">${song[current_song][song_idx.artist]}</div></div><div class="song_icon_container"><div id="fold_${current_song}" class="song_fold_icon${show ? "" : " closed"}"></div><div id="copy_name_${current_song}" class="song_copy_icon song_${current_song}${show ? "" : " hidden"}"></div></div></div>`;
 			}
 			let is_mem = entry[cur_entry][entry_idx.note].includes("【メン限");
 			let no_note = entry[cur_entry][entry_idx.note] === "" || entry[cur_entry][entry_idx.note] === "【メン限】" || entry[cur_entry][entry_idx.note] === "【メン限アーカイブ】";
@@ -521,17 +511,7 @@ function update_display(force = false) {
 			if (is_mem) {
 				note = note.replace(/【メン限アーカイブ】|【メン限】/g, "");
 			}
-			new_html +=
-			`<div class="entry_container singer_${entry[cur_entry][entry_idx.type]}${is_mem ? "m" : ""} song_${current_song}${hide_song.includes(current_song) ? " hidden" : ""}">
-				<a href="https://youtu.be/${video[entry[cur_entry][entry_idx.video]][video_idx.id]}${timestamp(cur_entry)}" target="_blank">
-				<div class="entry_primary">
-					<div class="entry_date">${display_date(video[entry[cur_entry][entry_idx.video]][video_idx.date])}</div>
-					<div class="entry_singer">${singer_lookup[entry[cur_entry][entry_idx.type]]}</div>
-					<div class="mem_display">${is_mem ? "メン限" : ""}</div>
-					<div class="entry_share" id="entry_${cur_entry}"></div>
-				</div>
-				${no_note ? "" : `<div class="entry_note">${note}</div>`}</a>
-			</div>`;
+			new_html += `<div class="entry_container singer_${entry[cur_entry][entry_idx.type]}${is_mem ? "m" : ""} song_${current_song}${hide_song.includes(current_song) ? " hidden" : ""}"><a href="https://youtu.be/${video[entry[cur_entry][entry_idx.video]][video_idx.id]}${timestamp(cur_entry)}" target="_blank"><div class="entry_primary"><div class="entry_date">${display_date(video[entry[cur_entry][entry_idx.video]][video_idx.date])}</div><div class="entry_singer">${singer_lookup[entry[cur_entry][entry_idx.type]]}</div><div class="mem_display">${is_mem ? "メン限" : ""}</div><div class="entry_share" id="entry_${cur_entry}"></div></div>${no_note ? "" : `<div class="entry_note">${note}</div>`}</a></div>`;
 			if (++displayed >= 400) {	// hardcoded max_display
 				i = 200;
 				break;

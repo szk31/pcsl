@@ -84,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.7.1a";
+const version = "1.7.1b";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -540,7 +540,7 @@ $(function() {
 			} else {
 				new_html += `</table><div class="memcount_sum"><div class="memcount_sum_icon"></div>`;
 				for (let i = 2; i >= 0; --i) {
-					new_html += `div class=\"singer_${(1 << i)}">${entry_count_total[i]}</div>`;
+					new_html += `<div class=\"singer_${(1 << i)}">${entry_count_total[i]}</div>`;
 				}
 			}
 			$("#memcount_content").html(new_html + "</div>");
@@ -927,6 +927,8 @@ function split_to_solo(input) {
 			return [2, 4];
 		case 7 : 
 			return [1, 2, 4];
+		case 10:
+			return [2, 8];
 		case 12:
 			return [4, 8];
 		default:

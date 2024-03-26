@@ -48,21 +48,6 @@ $(function() {
 		search();
 	});
 	
-	// nav - share
-	$(document).on("click", "#nav_share", function() {
-		if (current_page !== "search" || $(this).hasClass("disabled") || prevent_menu_popup) {
-			return;
-		}
-		// generate url w/ first song
-		let out_url = "szk31.github.io/pcsl/?search=" + song_lookup.indexOf(hits[0]);
-		// then add 2nd to last song
-		for (let i = 1; i < hits.length; ++i) {
-			out_url += ("," + song_lookup.indexOf(hits[i]));
-		}
-		navigator.clipboard.writeText(out_url);
-		copy_popup();
-	});
-	
 	{ // search
 		// search - input - autocomplete
 		$(document).on("input", "#input", function() {
@@ -493,7 +478,11 @@ function update_display(force = false) {
 					song_name_length += /[ -~]/.test(song_name.charAt(k)) ? 1 : 2;
 				}
 				// you know what fuck this shit i will just add exception
-				if (song_name === "secret base ~君がくれたもの~") {
+				if (song_name === "secret base ~君がくれたもの~" ||
+					song_name === "かくしん的☆めたまるふぉ～ぜっ！" ||
+					song_name === "ススメ☆オトメ ~jewel parade~" ||
+					song_name === "Time after time ～花舞う街で～"
+				) {
 					song_name_length = 0;
 				}
 				// case "みくみくにしてあげる♪【してやんよ】"
@@ -549,5 +538,6 @@ function update_display(force = false) {
 }
 
 function timestamp(id) {
-	return entry[id][entry_idx.time] === 0 ? "" : "?t=" + entry[id][entry_idx.time];
+	let e = entry[id][entry_idx.time];
+	return e ? "?t=" + e : "";
 }

@@ -12,9 +12,6 @@ const attr_idx = [
 	"特撮",
 	"ロック",
 	"歌謡曲",
-	"ポップス",
-	"R&B",
-	"キャラソン",
 	"disney"
 ];
 // type of all songs
@@ -37,10 +34,7 @@ let rep_genre = {
 	tok : [1, 8],
 	rock : [1, 9],
 	kay : [1, 10],
-	pops : [1, 11],
-	rnb : [1, 12],
-	cha : [1, 13],
-	dis : [1, 14],
+	dis : [1, 11],
 	other : [1, 0]
 };
 // songs no longer have karaoke available
@@ -297,7 +291,7 @@ $(function() {
 		$(document).on("click", ".rep_tweet_submit", function() {
 			let tweet = "";
 			for (let i in rep_selected) {
-				tweet += (song[rep_selected[i]][song_idx.name] + (setting.rep_show_artist ? (" / " + song[rep_selected[i]][song_idx.artist]) : "") + "\n");
+				tweet += `${song[rep_selected[i]][song_idx.name]}${setting.rep_show_artist ? (" / " + song[rep_selected[i]][song_idx.artist]) : ""}\n`;
 			}
 			const lookup = {
 				k : "#うたってきららちゃま",

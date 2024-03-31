@@ -437,7 +437,7 @@ $(function() {
 					clearInterval(id)
 			}
 			let id = setInterval(frame, 1);
-			if (current_page === "repertoire" && rep_display_selected_first) {
+			if (current_page === "repertoire" && setting.rep_selected_first) {
 				rep_display();
 			}
 		});

@@ -27,24 +27,46 @@
 		<script type="text/javascript" src="rep.js"></script-->
 		<style>
 			#loading_overlay {
-				position : fixed;
-				top : 0;
-				width : 100%;
-				height : 100%;
-				background-color : rgba(0, 0, 0, 0.666);
-				z-index : 99;
+				position: fixed;
+				font-size: 20px;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0, 0, 0, 0.666);
+				z-index: 99;
+				color: white;
 			}
 
 			#loading_text {
-				position : fixed;
-				color : White;
-				font-size : 20px;
-				font-weight : bold;
-				left : 50%;
-				top : 50%;
+				position: fixed;
+				font-weight: bold;
+				left: 50%;
+				top: 50%;
 				transform: translate(-50%, -50%);
 			}
+
+			#clear_storage {
+				position: fixed;
+				background-color: black;
+				font-weight: bold;
+				left: 50%;
+				top: 70%;
+				transform: translate(-50%, -50%);
+				text-align: center;
+				border-radius: 10px;
+				border: 5px solid White;
+				padding: 5px;
+				width: 250px;
+			}
 		</style>
+		<script>
+			function reset() {
+				localStorage.removeItem("pcsl_data");
+				localStorage.removeItem("pcsl_key");
+				localStorage.removeItem("pcsl_version_hash");
+				window.location.reload();
+			}
+		</script>
 		<!-- font -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -510,6 +532,7 @@
 		<div id="search_auto" class="hidden"></div>
 		<div id="loading_overlay">
 			<div id="loading_text">Loading page...</div>
+			<div id="clear_storage" onclick="reset();">Click here to<br />clear storage and reload<br />if load failed</div>
 		</div>
     </body>
 </html>

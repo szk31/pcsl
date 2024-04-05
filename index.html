@@ -14,6 +14,7 @@
 		<link rel="stylesheet" href="style_home.css">
 		<link rel="stylesheet" href="style_search.css">
 		<link rel="stylesheet" href="style_repertoire.css"-->
+		<link rel="stylesheet" href="icon.css" defer>
 		<!-- using libraries -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
@@ -57,6 +58,10 @@
 				border: 5px solid White;
 				padding: 5px;
 				width: 250px;
+			}
+
+			.hidden, .pre_hidden {
+				display : none !important;
 			}
 		</style>
 		<script>
@@ -411,6 +416,13 @@
 							<div id="three_way_light">L</div>
 							<div id="three_way_mixed">M</div>
 							<div id="three_way_dark">D</div>
+						</div>
+					</div>
+					<div id="setting_extra_container" class="settings_option hidden">
+						<div>ダークモード</div>
+						<div id="setting_extra" class="two_way">
+							<div id="dark_normal" class="selected">通常</div>
+							<div id="dark_extra">EX</div>
 						</div>
 					</div>
 					<div class="settings_inner_title">曲検索</div>

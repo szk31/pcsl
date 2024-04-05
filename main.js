@@ -84,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.7.2";
+const version = "1.7.3";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -120,7 +120,7 @@ let setting = {
 	rep_sort_asd : true,			// config: sort ascendingly
 	rep_selected_first : false,		// config: display selecetd songs on top
 	rep_show_artist : true,			// hidden: rep-share include artist name
-	longPress_time : 200			// conifg: 
+	longPress_time : 600			// conifg: long press copy time (ms)
 };
 
 // ram for searching (entry_processed)
@@ -134,7 +134,7 @@ let processed_song_name = [""];
 
 {	// theme
 	let theme = ls("theme");
-	if (theme === null) {
+	if (!theme) {
 		theme = "mixed";
 		ls("theme", theme);
 	}
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		return content_level ? CryptoJS.AES.decrypt(input, key).toString(CryptoJS.enc.Utf8) : input;
 	}
 	// change settings selected theme
-	$(`#three_way_${ls("theme")}`).addClass("selected");
+	$(`#three_way_${ls("theme") === "extra" ? "dark" : ls("theme")}`).addClass("selected");
 	// check url para first
 	let url_para = new URLSearchParams(window.location.search);
 	key = url_para.get("key");
@@ -307,6 +307,18 @@ function process_data() {
 	$("#nav_search_random").toggleClass("blank", !setting.show_random);
 	$(".setting_req_random").toggleClass("disabled", !setting.show_random);
 	$(".setting_copy_time").toggleClass("disabled", !setting.longPress_copy);
+
+	if (ls("pcsl_s_show_extra")) {
+		$("#setting_extra_container").removeClass("hidden");
+	}
+	switch (ls("theme")) {
+		case "light":
+		case "mixed":
+			$("#setting_extra_container>div").addClass("disabled");
+			break;
+		case "extra":
+			$("#setting_extra").click();
+	}
 
 	// processing url para
 	init();
@@ -560,9 +572,15 @@ $(function() {
 	}
 	
 	{ // settings
+
+		let dark_clicked = 0;
 		// general - display_theme
 		$(document).on("click", "#three_way_theme>div", function() {
 			let selected = this.id.replace("three_way_", "");
+			$("#setting_extra_container>div").toggleClass("disabled", selected !== "dark");
+			if (selected === "dark") {
+				selected = $("#dark_extra").hasClass("selected") ? "extra" : "dark";
+			}
 			document.documentElement.setAttribute("theme", selected);
 			ls("theme", selected);
 			$("#three_way_theme>div").removeClass("selected");
@@ -570,6 +588,12 @@ $(function() {
 			// set post-switch bg colour
 			// does not account for cross origin, not needed anyways
 			parent.refresh_bgColour();
+			dark_clicked = selected === "dark" ? ++dark_clicked : 0;
+			if (dark_clicked === 5) {
+				$("#setting_extra_container").removeClass("hidden");
+				ls("pcsl_s_show_extra", 1);
+			}
+			
 		});
 
 		// rep - long press length
@@ -584,6 +608,11 @@ $(function() {
 		$(document).on("click", ".two_way:not(.disabled)", function() {
 			$(this).children().toggleClass("selected");
 			switch (this.id) {
+				case "setting_extra":
+					let cur_state = $("#dark_extra").hasClass("selected");
+					ls("theme", cur_state ? "extra" : "dark");
+					document.documentElement.setAttribute("theme", ls("theme"));
+					break;
 				case "setting_hidden":
 					setting.show_hidden ^= 1;
 					ls("pcsl_s_showHidden", setting.show_hidden ? "1" : "0");

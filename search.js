@@ -508,24 +508,18 @@ function update_display(force = false) {
 		}
 	}
 	// dealing with a blank screen with non-blank input
-	do {
-		// if there already something to display
-		if (new_html !== "") {
-			break;
-		}
-		// no song found
-		if (hits.length === 0) {
-			new_html += `<div class="search_no_result">曲検索結果なし`;
-			break;
-		}
-		// only private songs are found / singer deselected
-		if (found_entries > 0) {
-			new_html += `<div class="search_no_result">非表示動画のみ`;
-			break;
-		}
-		// only never sang songs are found
+	// no song found
+	if (!hits.length) {
+		new_html += `<div class="search_no_result">曲検索結果なし`;
+	}
+	// only private songs are found / singer deselected
+	else if (!found_entries) {
+		new_html += `<div class="search_no_result">非表示動画のみ`;
+	}
+	// only never sang songs are found
+	else if (new_html === "") {
 		new_html += `<div class="search_no_result">歌記録なし`;
-	} while (0);
+	}
 	
 	$("#search_display").html(new_html + `</div><div class="general_vertical_space"></div>`);
 	// check all hiden songs

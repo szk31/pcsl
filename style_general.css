@@ -8,9 +8,9 @@
     --menu-text: #180030;
     --nav-back: #d0cad5;
     --nav-text: #120024;
-    --dialog-back: #6c74ff;
-    --dialog-back-alt: #cbc4ff;
-    --dialog-text: White;
+    --dialog-back: #bdbfff;
+    --dialog-back-alt: #e3e2f2;
+    --dialog-text: Black;
     --dialog-text-alt: #120024;
     --dialog-border: #8d87ff;
     --filter-back: #d6d3ff;
@@ -72,11 +72,12 @@
     --black-icon: invert(0%);
     --share-icon: invert(0%);
 
-    --trnsp: rgba(0, 0, 0, 0);
+    --trnsp: #0000;
     --empty-cell: #7f7f7f;
 }
 
-[theme="dark"] {
+[theme=dark],
+[theme=extra] {
     --post-switch: #0d0020;
 
     --base-back: #171a1d;
@@ -109,7 +110,7 @@
     --song-display-alt: #160633;
     --song-text: #e6e6f2;
     --song-border: #b1a1b8;
-    --song-selected: #966bb3;
+    --song-selected: #00a16b;
 
     --s-krr-back: #240000;
     --s-krr-text: #f08080;
@@ -151,7 +152,7 @@
     --share-icon: invert(100%);
 }
 
-[theme="mixed"] {
+[theme=mixed] {
     --post-switch: #2f4f4f;
 
     --base-back: #778899;
@@ -161,14 +162,14 @@
     --nav-back: #303030;
     --nav-text: #dfdfff;
     --dialog-back: #483d8a;
-    --dialog-back-alt: #5a5195;
+    --dialog-back-alt: #685f9d;
     --dialog-text: #f0f8ff;
-    --dialog-text-alt: #f0f8ff;
-    --dialog-border: #6a5acd;
+    --dialog-text-alt: #efedfd;
+    --dialog-border: #9186d8;
     --filter-back: #98fb98;
     --filter-back-alt: #dfdfdf;
     --filter-text: Black;
-    --filter-border: rgba(0, 0, 0, 0);
+    --filter-border: #0000;
     --filter-border-alt: #3cb371;
 
     --white-icon: invert(0%);
@@ -176,6 +177,42 @@
     --share-icon: invert(100%);
 }
 
+[theme=extra] {
+    --menu-back: #272629;
+    --menu-back-alt: #3a363f;
+    --menu-text: #f8f8ff;
+    --nav-back: #171717;
+    --dialog-back: #120b35;
+    --dialog-back-alt: #080016;
+    --dialog-text: #b8adce;
+    --dialog-border: #3e3166;
+    --filter-back: #0f001f;
+    --filter-back-alt: #25153f;
+    --filter-border: #9b81ac;
+    --filter-border-alt: #331a58;
+
+    --song-display: #020621;
+    --song-display-alt: #0f0326;
+    --song-selected: #008c5e;
+
+    --s-krr-back: #170000;
+    --s-momo-back: #1a001a;
+    --s-nia-back: #000018;
+
+    --s-mmkr-back: #10001b;
+    --s-mmna-back: #170017;
+    --s-krna-back: #1a0202;
+    --s-ptcc-back: #10031d;
+
+    --s-chui-back: #150420;
+    --s-siro-back: #1e020b;
+    --s-yuco-back: #030e21;
+
+    --s-ycmm-back: #190016;
+    --s-yckr-back: #1d0000;
+	
+    --empty-cell: #3f3f3f;
+}
 
 html, body {
 	padding : 0;
@@ -231,10 +268,6 @@ input[type=text], textarea {
 	color: var(--input-text);
 }
 
-.hidden {
-	display : none !important;
-}
-
 .blank {
 	opacity : 0 !important;
 }
@@ -273,7 +306,7 @@ body.post_switch {
 
 #nav_menu:not(.menu_opened) {
 	padding: 1vw 1vw 1vw 2vw;
-	content : url("icon/menu.png");
+	content : var(--ico-menu);
 	width : 8vw;
 	height : 8vw;
 	filter: var(--white-icon);
@@ -281,7 +314,7 @@ body.post_switch {
 
 #nav_menu.menu_opened {
 	padding: 1vw 1vw 1vw 2vw;
-	content : url("icon/cross.png");
+	content : var(--ico-cross);
 	width : 8vw;
 	height : 8vw;
 	filter: var(--white-icon);
@@ -317,21 +350,21 @@ body.post_switch {
 #nav_search_random {
 	grid-column : 1;
 	grid-row : 1;
-	content : url("icon/random.png");
+	content : var(--ico-random);
 	filter: var(--white-icon);
 }
 
 #nav_share {
 	grid-column : 1;
 	grid-row : 1;
-	content : url("icon/share.png");
+	content : var(--ico-share);
 	filter: var(--share-icon);
 }
 
 #nav_to_top {
 	grid-column : 2;
 	grid-row : 1;
-	content : url("icon/to_top.png");
+	content : var(--ico-totop);
 	filter: var(--white-icon);
 }
 
@@ -473,7 +506,7 @@ body.post_switch {
 #menu_setting_icon {
 	position : relative;
 	padding: 1vw;
-	content : url("icon/setting.png");
+	content : var(--ico-gear);
 	width : 8vw;
 	height : 8vw;
 	filter: var(--white-icon);
@@ -482,7 +515,7 @@ body.post_switch {
 #menu_count_icon {
 	position : relative;
 	padding: 1vw;
-	content : url("icon/sigma.png");
+	content : var(--ico-sigma);
 	width : 8vw;
 	height : 8vw;
 	filter: var(--white-icon);
@@ -491,7 +524,7 @@ body.post_switch {
 #menu_info_icon {
 	position : relative;
 	padding: 1vw;
-	content : url("icon/info.png");
+	content : var(--ico-info);
 	width : 8vw;
 	height : 8vw;
 	filter: var(--white-icon);
@@ -574,7 +607,7 @@ body.post_switch {
 #memcount_table {
 	margin-left: auto;
 	margin-right: auto;
-	background-color : var(--dialog-text);
+	background-color : var(--dialog-back-alt);
 	padding : 1.2vw;
 	border-radius : 2vw;
 	font-weight : bold;
@@ -583,7 +616,7 @@ body.post_switch {
 
 #memcount_table th {
 	min-width : 13.6vw;
-	color: var(--dialog-back);
+	color: var(--dialog-text-alt);
 }
 
 .memcount_row>td {
@@ -597,8 +630,8 @@ body.post_switch {
 
 .memcount_row>.memcount_empty {
 	background-color : var(--empty-cell) !important;
-	color : rgba(0, 0, 0, 0) !important;
-	background-image: linear-gradient(to bottom right, transparent calc(50% - 1px), AliceBlue, transparent calc(50% + 1px)); 
+	color : var(--trnsp) !important;
+	background-image: linear-gradient(to bottom right, transparent calc(50% - 1px), var(--dialog-back-alt), transparent calc(50% + 1px)); 
 }
 
 .memcount_name {
@@ -625,7 +658,7 @@ body.post_switch {
 }
 
 .memcount_sum_icon {
-	content : url("icon/sigma.png");
+	content : var(--ico-sigma);
 	width : 6vw;
 	height : 6vw;
 }
@@ -682,7 +715,7 @@ body.post_switch {
 }
 
 .memcount_rep_sum {
-	content : url("icon/sigma.png");
+	content : var(--ico-sigma);
 	width : 6vw;
 	height : 6vw;
 	block-size : fit-content;
@@ -754,7 +787,7 @@ body.post_switch {
 	padding: 0.1vw 2vw 2vw 2vw;
 	background-color: var(--dialog-back-alt);
 	border-radius: 3.2vw;
-	color: var(--dialog-text-alt);
+	color: var(--dialog-text);
 
 	overflow-y: scroll;
 }
@@ -954,7 +987,7 @@ body.post_switch {
 	margin : -2vw 1vw;
 	padding : 1.6vw 1.2vw;
 	position : relative;
-	content : url("icon/link.png");
+	content : var(--ico-link);
 	width : 4.8vw;
 	height : 4.8vw;
 	filter: var(--black-icon);
@@ -964,7 +997,7 @@ body.post_switch {
 	margin : -2.2vw -.4vw;
 	padding : 1.6vw 1.2vw;
 	position : relative;
-	content : url("icon/schedule.png");
+	content : var(--ico-sched);
 	width : 4.8vw;
 	height : 4.8vw;
 	filter: var(--black-icon);

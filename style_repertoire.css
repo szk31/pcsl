@@ -36,7 +36,7 @@
 }
 
 #filter_close {
-	content : url("icon/list.png");
+	content : var(--ico-arrow-alt);
 	width : 6vw;
 	height : 6vw;
 	align-items : center;
@@ -271,17 +271,17 @@
 }
 
 #rep_share_search .rep_share_icon {
-	content: url(icon/to_yt.png);
+	content: var(--ico-toyt);
 	filter: var(--white-icon);
 }
 
 #rep_share_tweet .rep_share_icon {
-	content: url(icon/birb.png);
+	content: var(--ico-birb);
 	filter: var(--white-icon);
 }
 
 #rep_share_link .rep_share_icon {
-	content: url(icon/link.png);
+	content: var(--ico-link);
 	filter: var(--share-icon);
 }
 
@@ -351,14 +351,14 @@
 }
 
 .rep_tweet_birb {
-	content: url(icon/birb.png);
+	content: var(--ico-birb);
 	height: 4vw;
 	width: 4vw;
 	filter: var(--white-icon);
 }
 
 .rep_tweet_copy {
-	content: url(icon/copy.png);
+	content: var(--ico-copy);
 	height: 4vw;
 	width: 4vw;
 	filter: var(--share-icon);
@@ -451,21 +451,21 @@
 }
 
 .checkbox.selected {
-	content : url("icon/cbx_check.png");
+	content : var(--cbx-check);
 }
 
 .checkbox:not(.selected) {
-	content : url("icon/cbx_minus.png");
+	content : var(--cbx-minus);
 }
 
 .search_grid_2 .checkbox:not(.selected),
 .sort3_checkbox:not(.selected),
 #list_artist_cb:not(.selected) {
-	content : url("icon/cbx_cross.png");
+	content : var(--cbx-cross);
 }
 
 .switch {
-	content : url("icon/cbx_switch.png");
+	content : var(--cbx-switch);
 }
 
 .radio {

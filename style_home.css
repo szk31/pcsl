@@ -37,6 +37,7 @@
 	margin : 2vw auto 4vw 8vw;
 	font-size : 6vw;
 	font-weight : bold;
+	display: flex;
 }
 
 .home_general_title {

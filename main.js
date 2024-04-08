@@ -84,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.7.3";
+const version = "1.7.3a";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -525,7 +525,7 @@ $(function() {
 			for (let i in member_display_order) {
 				let mem_id = member_display_order[i];
 				// new row, name
-				new_html += `<tr class=\"memcount_row singer_${mem_id}\"><td><div class=\"memcount_name\">${singer_lookup[mem_id]}</div></td>`;
+				new_html += `<tr class=\"memcount_row singer_${mem_id}\"><td class=\"memcount_name\"><div>${singer_lookup[mem_id]}</div></td>`;
 				for (let j = 0; j < 3; ++j) {
 					new_html += `<td${entry_count[mem_id][j] === 0 ? ` class="memcount_empty"` : ""}>${entry_count[mem_id][j]}</td>`;
 				}

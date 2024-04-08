@@ -3,24 +3,24 @@
 }
 
 #rep_input {
-    width: 92vw;
-    padding: 0 1.8vw;
-    margin: 1.5vw 2vw;
+	width: 96vw;
+    padding: 5vw 2vw;
+    margin: 2vw 2vw 0;
     height: 10vw;
     font-size: 5vw;
 	border-radius : 2vw;
 }
 
 #filter_container {
-	margin : 0.5vw 2vw 1.8vw;
-	padding : 1.6vw;
-	width : 92vw;
-	background-color : var(--filter-back);
-	color : var(--filter-text);
-	font-size : 3.2vw;
-	font-weight : bold;
-	border: 0.36vw solid var(--filter-border);
-	border-radius : 4vw;
+	margin: 2vw;
+	padding: 1.6vw;
+	width: 96vw;
+	background-color: var(--filter-back);
+	color: var(--filter-text);
+	font-size: 3.2vw;
+	font-weight: bold;
+	border: 0.5vw solid var(--filter-border);
+	border-radius: 4vw;
 }
 
 #filter_title {
@@ -70,7 +70,7 @@
 }
 
 .filter_icon_bg {
-	margin : 0 1.2vw;
+	margin : 0 0.6vw;
 	border-width :  0.5vw;
 	border-radius : 4vw;
 	width : 17vw;
@@ -78,24 +78,24 @@
 }
 
 .filter_icon {
-	padding : 0.5vw;
-	border-radius : 4vw;
+	margin: 0.5vw;
+	border-radius : 3.5vw;
 	width : 16vw;
 	height : 16vw;
 }
 
 .filter_icon_bg_extra {
-	margin : 0.5vw;
-	border-radius : 3.6vw;
-	width : 13.8vw;
-	height : 13.8vw;
+	margin : 0 0.29vw;
+	border-radius : 4vw;
+	width : 14.2vw;
+	height : 14.2vw;
 }
 
 .filter_icon_extra {
-	padding : 0.4vw;
+	margin: 0.4vw;
 	border-radius : 3.6vw;
-	width : 13vw;
-	height : 13vw;
+	width : 13.4vw;
+	height : 13.4vw;
 }
 
 .filter_icon:not(.selected),
@@ -115,7 +115,7 @@
 .rep_item {
 	display : flex;
 	align-items: center;
-	padding-left: 2.4vw;
+	padding-left: 1.6vw;
 	height: 6vw;
 }
 
@@ -138,16 +138,14 @@
 .rep_song_container {
 	font-weight : bold;
 	font-size : 3.2vw;
-	margin : 1.5vw 3.6vw;
-	padding : .8vw 1.2vw 0 1.2vw;
-	border-radius : 1.6vw;
-	border : 0.6vw solid var(--trnsp);
-	outline : .2vw solid var(--song-border);
+	margin : 1.6vw 3.2vw;
+	padding : 1.2vw 1.6vw 0.6vw;
+	border-radius : 2vw;
 	color: var(--song-text);
 }
 
 .rep_song_container.selected {
-	border : 0.6vw solid var(--song-selected);
+	outline : 0.5vw solid var(--song-selected);
 }
 
 .rep_song_container.rep_mem_only {
@@ -470,8 +468,8 @@
 
 .radio {
 	margin : 0.8vw 1vw 0.6vw;
-	width : 3vw;
-	height : 3vw;
+	width : 4.4vw;
+	height : 4.4vw;
 	border-radius : 3vw;
 	border : 0.8vw solid var(--radio-border);
 	outline : 0.3vw solid var(--radio-outline);

@@ -239,16 +239,12 @@ function auto_search() {
 			let f = song[i][song_idx.reading].indexOf(e);
 			switch (f) {
 				case  0 : // found, from beginning
-					if (entry_proc[i].length > 0) {
-						auto_exact[auto_exact_count++] = i;
-					}
+					auto_exact[auto_exact_count++] = i;
 					break;
 				case -1 : // not found
 					break;
 				default : // found, not from beginning
-					if (entry_proc[i].length > 0) {
-						auto_other[auto_other_count++] = i;
-					}
+					auto_other[auto_other_count++] = i;
 					break;
 			}
 			if (auto_exact_count >= auto_display_max) {
@@ -277,16 +273,12 @@ function auto_search() {
 			}
 			switch (f) {
 				case  0 : // found, from beginning
-					if (entry_proc[i].length > 0) {
-						auto_exact[auto_exact_count++] = i;
-					}
+					auto_exact[auto_exact_count++] = i;
 					break;
 				case -1 : // not found
 					break;
 				default : // found, not from beginning
-					if (entry_proc[i].length > 0) {
-						auto_other[auto_other_count++] = i;
-					}
+					auto_other[auto_other_count++] = i;
 					break;
 			}
 			if (auto_exact_count >= auto_display_max) {
@@ -512,13 +504,13 @@ function update_display(force = false) {
 	if (!hits.length) {
 		new_html += `<div class="search_no_result">曲検索結果なし`;
 	}
-	// only private songs are found / singer deselected
-	else if (!found_entries) {
-		new_html += `<div class="search_no_result">非表示動画のみ`;
-	}
 	// only never sang songs are found
-	else if (new_html === "") {
+	else if (!found_entries) {
 		new_html += `<div class="search_no_result">歌記録なし`;
+	}
+	// only private songs are found / singer deselected
+	else if (new_html === "") {
+		new_html += `<div class="search_no_result">非表示動画のみ`;
 	}
 	
 	$("#search_display").html(new_html + `</div><div class="general_vertical_space"></div>`);

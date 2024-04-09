@@ -142,6 +142,7 @@
 	padding : 1.2vw 1.6vw 0.6vw;
 	border-radius : 2vw;
 	color: var(--song-text);
+	outline : 0.25vw solid var(--dialog-border);
 }
 
 .rep_song_container.selected {
@@ -175,7 +176,7 @@
 }
 
 .rep_song_info {
-	margin-top : 0.8vw;
+	margin: 0.8vw 0 0 0.4vw;
 }
 
 .rep_song_singer {
@@ -187,43 +188,14 @@
 	margin-top : -1.1vw;
 }
 
-.rep_song_singer div {
+.rep_song_singer div[class] {
 	margin : 0.2vw;
 	border-radius : 1.6vw;
+	border: 0.4vw solid currentColor;
 }
 
 .rep_singer_2rows div {
 	aspect-ratio: 1 / 1;
-}
-
-.rep_song_kirara {
-	background-color : var(--s-krr-back);
-	border : max(2px, 0.4vw) solid var(--s-krr-text);
-}
-
-.rep_song_momo {
-	background-color : var(--s-momo-back);
-	border : max(2px, 0.4vw) solid var(--s-momo-text);
-}
-
-.rep_song_nia {
-	background-color : var(--s-nia-back);
-	border : max(2px, 0.4vw) solid var(--s-nia-text);
-}
-
-.rep_song_chui {
-	background-color : var(--s-chui-back);
-	border : max(2px, 0.4vw) solid var(--s-chui-text);
-}
-
-.rep_song_shiro {
-	background-color : var(--s-siro-back);
-	border : max(2px, 0.4vw) solid var(--s-siro-text);
-}
-
-.rep_song_yuco {
-	background-color : var(--s-yuco-back);
-	border : max(2px, 0.4vw) solid var(--s-yuco-text);
 }
 
 .rep_extra_info {

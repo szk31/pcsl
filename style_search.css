@@ -383,14 +383,16 @@ input[type=text]::placeholder {
 
 .auto_reading {
 	position: relative;
-	transform: translateY(40%);
+	transform: translateY(36%);
 	padding : 0.5vw;
+	margin: 0.4vw;
 	font-size : 3.2vw;
 	height : 4vw;
 }
 
 .auto_display {
-	padding : 0.25vw;
+	margin: 0.2vw;
+	padding: 0.4vw;
 	font-size : 4.8vw;
 	height : 6vw;
 }

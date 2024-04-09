@@ -61,14 +61,16 @@
 }
 
 .home_general_content {
-	text-align : center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #home_key_reset {
 	background-color : Crimson;
 	color : White;
 	border-radius : 2vw;
-	width : 16vw;
+	width : 20vw;
 	margin : 6vh auto 10vh auto;
 	padding : 2vw;
 	font-size : 3.6vw;

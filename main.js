@@ -54,13 +54,13 @@ let member_display_order = [
 
 // series search
 const series_lookup = {
-	"マクロス" : ["マクロス", "まくろす"],
-	"ラブライブ" : ["ラブライブ", "らぶらいぶ", "LL", "ll"],
-	"アイマス" : ["アイマス", "あいます", "デレマス", "でれます"],
-	"ジブリ" : ["ジブリ", "じぶり"],
-	"物語シリーズ" : ["物語シリーズ", "ものがたりしりーず", "ものがたりシリーズ"],
-	"まどマギ" : ["まどマギ", "まどまぎ", "まどか"],
-	"disney" : ["disney", "ディズニー", "でぃずにー", "Disney"]
+	"マクロス" : "マクロスまくろす",
+	"ラブライブ" : "ラブライブらぶらいぶll",
+	"アイマス" : "アイマスあいますデレマスでれます",
+	"ジブリ" : "ジブリじぶり",
+	"物語シリーズ" : "物語シリーズものがたりしりーず",
+	"まどマギ" : "まどマギまどまぎ",
+	"disney" : "disneyディズニーでぃずにー"
 };
 
 // indices lookup
@@ -84,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.7.3b";
+const version = "1.7.4";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -106,6 +106,7 @@ let setting = {
 	// search
 	show_hidden : true,				// if display private video
 	select_input : true,			// select input on click
+	changeless_auto : false,		// config: show auto even input is the same
 	show_random : false,			// display random button
 	random_ignore : true,			// bypass random rule:(input being empty)
 	search_by_song : true,			// config: searching by song name
@@ -120,7 +121,7 @@ let setting = {
 	rep_sort_asd : true,			// config: sort ascendingly
 	rep_selected_first : false,		// config: display selecetd songs on top
 	rep_show_artist : true,			// hidden: rep-share include artist name
-	longPress_time : 600			// conifg: long press copy time (ms)
+	longPress_time : 600			// config: long press copy time (ms)
 };
 
 // ram for searching (entry_processed)
@@ -131,6 +132,9 @@ let memcount_rep_int;
 
 // pre-process song names
 let processed_song_name = [""];
+
+// pre-process song to be skipped
+let auto_skips = [];
 
 {	// theme
 	let theme = ls("theme");
@@ -252,6 +256,7 @@ function process_data() {
 	const lookup = [
 		["pcsl_s_showHidden", 1],
 		["pcsl_s_selecInput", 1],
+		["pcsl_s_autoAnyway", 0],
 		["pcsl_s_showRandom", 0],
 		["pcsl_s_ignoreRule", 0],
 		["pcsl_s_rep_select", 1],
@@ -268,6 +273,7 @@ function process_data() {
 	// read from local storage
 	setting.show_hidden     = ls("pcsl_s_showHidden") == 1;
 	setting.select_input    = ls("pcsl_s_selecInput") == 1;
+	setting.changeless_auto = ls("pcsl_s_autoAnyway") == 1;
 	setting.show_random     = ls("pcsl_s_showRandom") == 1;
 	setting.random_ignore   = ls("pcsl_s_ignoreRule") == 1;
 	setting.rep_select_input= ls("pcsl_s_rep_select") == 1;
@@ -282,6 +288,9 @@ function process_data() {
 	}
 	if (!setting.select_input) {
 		$("#setting_select>div").toggleClass("selected");
+	}
+	if (setting.changeless_auto) {
+		$("#setting_auto>div").toggleClass("selected");
 	}
 	if (setting.show_random) {
 		$("#setting_random>div").toggleClass("selected");
@@ -605,6 +614,7 @@ $(function() {
 			$(this).addClass("selected");
 		});
 
+		// settings - other options
 		$(document).on("click", ".two_way:not(.disabled)", function() {
 			$(this).children().toggleClass("selected");
 			switch (this.id) {
@@ -621,6 +631,10 @@ $(function() {
 				case "setting_select":
 					setting.select_input ^= 1;
 					ls("pcsl_s_selecInput", setting.select_input ? "1" : "0");
+					break;
+				case "setting_auto":
+					setting.changeless_auto ^= 1;
+					ls("pcsl_s_autoAnyway", setting.changeless_auto ? "1" : "0");
 					break;
 				case "setting_random":
 					setting.show_random ^= 1;
@@ -731,7 +745,7 @@ function init() {
 	$("#info_version").html(version);
 	$("#info_last-update").html(video[video.length - 1][video_idx.date]);
 	// get screen size
-	auto_display_max = Math.floor(5 * Math.pow(window.innerHeight / window.innerWidth, 1.41421356237));
+	auto_display_max = Math.floor(7 * window.innerHeight / window.innerWidth);
 	
 	// rep
 	let rep_solo_temp = [];
@@ -739,6 +753,9 @@ function init() {
 	// process song names
 	for (let i = 1; i < song.length; ++i) {
 		processed_song_name.push(song[i][song_idx.name].toLowerCase().normalize("NFKC"));
+		if (i > 2 && song[i][song_idx.name].trim() === song[i - 1][song_idx.name].trim()) {
+			auto_skips.push(i);
+		}
 	}
 	
 	// get each member's repertoire
@@ -819,7 +836,7 @@ function display_date(input) {
 
 // add 0 in front of a number
 function fill_digit(input, length) {
-	e = "" + input;
+	let e = "" + input;
 	while (e.length < length) {
 		e = "0" + e;
 	}
@@ -885,9 +902,7 @@ function get_date_different(date1, date2 = today) {
 
 // get entry count of all entry and member-only entry that fufills mask
 function get_sang_count(id, mask = [4, 2, 1, 32, 16, 8]) {
-	
-	let count = 0,
-		mem_count = 0;
+	let count = mem_count = 0;
 	for (let i in entry_proc[id]) {
 		if (mask.some((x) => (x & entry[entry_proc[id][i]][entry_idx.type]) === x)) {
 			count++;
@@ -928,7 +943,6 @@ function jump2page(target) {
 			$("#input").val("");
 			search();
 			break;
-		case "rep" :
 		case "repertoire" : 
 			// show section
 			$("#repertoire_section").removeClass("hidden");
@@ -940,7 +954,7 @@ function jump2page(target) {
 			rep_search();
 			break;
 		default :
-			// error
+			// error **this is used code**
 			return -1;
 	}
 	$(window).scrollTop(0);
@@ -961,21 +975,20 @@ function split_to_solo(input) {
 			return [2, 8];
 		case 12:
 			return [4, 8];
-		default:
-			return [input];
 	}
+	return [input];
 }
 
-let copy_popup_is_displaying = false;
+let copy_popup_flag = false;
 
 function copy_popup() {
-	if (copy_popup_is_displaying) {
+	if (copy_popup_flag) {
 		return;
 	}
-	copy_popup_is_displaying = true;
+	copy_popup_flag = true;
 	$("#copy_popup").attr("class", "fade_out");
 	setTimeout(() => {
-		copy_popup_is_displaying = false;
+		copy_popup_flag = false;
 		$("#copy_popup").attr("class", "hidden");
 	}, 1500);
 }
@@ -1003,6 +1016,6 @@ function refresh_bgColour() {
 	document.documentElement.setAttribute("theme", ls("theme"));
 }
 
-function ls(a, b) {
-	return b === undefined ? localStorage.getItem(a) : localStorage.setItem(a, b);
+function ls(key, value) {
+	return value === undefined ? localStorage.getItem(key) : localStorage.setItem(key, value);
 }

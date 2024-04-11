@@ -10,6 +10,8 @@ let hide_song = new Array();
 // max display boxes of autocomplete
 let auto_display_max;
 
+let auto_display_count;
+
 // flag : is loading songs from rep selected
 let is_searching_from_rep = false;
 
@@ -60,6 +62,21 @@ $(function() {
 			// input on blur fires after this so no need to run search here
 		});
 
+		let auto_pointer = 0;	// will be using for nth-child, 0: not using; 1+: pointer pos
+		// search - input - auto-complete - arrow keys
+		$(document).on("keydown", function(e) {
+			// 38: up-arrow, 40: down-arrow
+			let dir = Object({38 : -1, 40 : 1})[e.keyCode];
+			// pressing up first, wrong key, still in ime, not in search
+			if ((!auto_pointer && dir === -1) || dir === undefined || auto_input_memory !== get_search_input() || $("#search_auto").hasClass("hidden")) {
+				return;
+			}
+			// such that 1 <= pointer_position <= max display
+			auto_pointer = Math.max(1, Math.min(auto_display_max, auto_display_count, auto_pointer + dir));
+			$("#search_auto>div").removeClass("selected");
+			$(`#search_auto>div:nth-child(${auto_pointer})`).addClass("selected");
+		});
+
 		// search - input - submit
 		$(document).on("blur", "#input", function() {
 			$("#search_auto").addClass("hidden");
@@ -70,7 +87,12 @@ $(function() {
 		
 		// search - input::enter -> blur
 		$(document).on("keydown", function(e) {
+
 			if (e.keyCode === 13 && current_page === "search") {
+				if (auto_pointer) {
+					auto_pointer = 0;
+					$("#input").val($(".auto_panel.selected")[0].id);
+				}
 				$("#input").blur();
 			}
 		});
@@ -188,12 +210,12 @@ $(function() {
 			.then(res => res.json())
 			.then(function(data) {
 				// title of unlisted / private video are returned a 401 error
-				if (data.title === undefined) {
+				if (!data.title) {
 					alert("動画タイトル取得できませんでした。");
 					return;
 				}
 				let tweet;
-				if (entry[entry_id][entry_idx.time] === 0) {
+				if (!entry[entry_id][entry_idx.time]) {
 					tweet = data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + ")";
 				} else {
 					tweet = song[entry[entry_id][entry_idx.song_id]][song_idx.name].trim() + " / " + song[entry[entry_id][entry_idx.song_id]][song_idx.artist] + " @" + data.title + "\n(youtu.be/" + video[entry[entry_id][entry_idx.video]][video_idx.id] + timestamp(entry_id) + ")";
@@ -205,117 +227,80 @@ $(function() {
 });
 
 let hits = [];
+let auto_input_memory = "";
 
 function auto_search() {
-	let e = $("#input").val().normalize("NFKC").toLowerCase().trim();
-	if (e === "" || !setting.search_by_song) {
+	let input = get_search_input();
+	if (auto_input_memory === input && !setting.changeless_auto) {
+		return;
+	}
+	auto_input_memory = input;
+	if (!input || !setting.search_by_song) {
 		$("#search_auto").addClass("hidden");
 		return;
 	}
 	let auto_exact = [],
-		auto_other = [],
-		auto_exact_count = 0,
-		auto_other_count = 0;
-	// search for series name
-	for (let i in series_lookup) {
-		for (let j in series_lookup[i]) {
-			let f = series_lookup[i][j].indexOf(e);
-			if (f !== -1) {
-				// if string exist in series variations
-				auto_exact[auto_exact_count++] = i;
-				break;
-			}
+		auto_other = [];
+	
+	function add_song(id, found_pos) {
+		if (!found_pos) {			// from beginning
+			auto_exact.push(id);
+		}
+		else if (found_pos > 0) {	// exist but not from beginning
+			auto_other.push(id);
 		}
 	}
-	// if input consist of only hiragana, "ー" or "ヴ"
-	if (!/[^\u3040-\u309F\u30FC\u30F4]/.test(e)) {
-		// search for reading
-		// should search for index of 1st char -> 2nd then try to fill up auto_exact first but who cares about loading time anyway
-		for (let i = 1; i < song.length; ++i) {
-			// skip if same song name
-			if (i > 2 && song[i][song_idx.name].trim() === song[i - 1][song_idx.name].trim()) {
-				continue;
-			}
-			let f = song[i][song_idx.reading].indexOf(e);
-			switch (f) {
-				case  0 : // found, from beginning
-					auto_exact[auto_exact_count++] = i;
-					break;
-				case -1 : // not found
-					break;
-				default : // found, not from beginning
-					auto_other[auto_other_count++] = i;
-					break;
-			}
-			if (auto_exact_count >= auto_display_max) {
-				break;
-			}
+
+	// search for series name (allows multiple)
+	for (let i in series_lookup) {
+		if (series_lookup[i].includes(input)) {
+			// if string exist in series variations
+			auto_exact.push(i);
 		}
-	} else {
-		// search for song name
-		for (let i = 1; i < song.length; ++i) {
-			// skip if same song name
-			if (i > 2 && song[i][song_idx.name].trim() === song[i - 1][song_idx.name].trim()) {
-				continue;
+	}
+	// if input not consist of only hiragana, "ー" or "ヴ"
+	const auto_thru_name = /[^\u3040-\u309F\u30FC\u30F4]/.test(input);
+	for (let i = 1; i < song.length && auto_exact.length < auto_display_max; ++i) {
+		// skip if same song name
+		if (auto_skips.includes(i)) {
+			continue;
+		}
+		if (auto_thru_name) {
+			let name_pos = processed_song_name[i].indexOf(input);
+			// check for special notation in reading
+			if (name_pos === -1 && song[i][song_idx.reading].includes(" ") && song[i][song_idx.reading].includes(input)) {
+				name_pos = 1;
 			}
-			let f = song[i][song_idx.name].toLowerCase().indexOf(e);
-			// special notation in reading
-			if (f === -1) {
-				// get reading first space position
-				let space_pos = song[i][song_idx.reading].indexOf(" ");
-				if (space_pos > 0) {
-					//  position of searching string
-					if (song[i][song_idx.reading].indexOf(e) > space_pos) {
-						// hit
-						f = 1;
-					}
-				}	
-			}
-			switch (f) {
-				case  0 : // found, from beginning
-					auto_exact[auto_exact_count++] = i;
-					break;
-				case -1 : // not found
-					break;
-				default : // found, not from beginning
-					auto_other[auto_other_count++] = i;
-					break;
-			}
-			if (auto_exact_count >= auto_display_max) {
-				break;
-			}
+			add_song(i, name_pos);
+		} else {
+			add_song(i, song[i][song_idx.reading].indexOf(input));
 		}
 	}
 	// display
-	let auto_display_count = 0;
+	auto_display_count = 0;
 	let new_html = "";
 	for (let i in auto_exact) {
 		// data being number (song id) or string (series name)
-		let auto_reading, auto_display, song_name;
-		if (isNaN(parseInt(auto_exact[i]))) {
+		let auto_reading =  auto_display =  song_name = "";
+		if (typeof auto_exact[i] === "string") {
 			// series name
-			auto_reading = "";
 			auto_display = song_name = auto_exact[i];
 		} else {
-			// song reading
-			let song_reading = song[auto_exact[i]][song_idx.reading];
-			auto_reading = bold(song_reading.indexOf(" ") === -1 ? song_reading : song_reading.substring(0, song_reading.indexOf(" ")), e);
-			// song name
+			auto_reading = bold(song[auto_exact[i]][song_idx.reading].split(" ")[0], input);
 			song_name = song[auto_exact[i]][song_idx.name];
-			auto_display = bold(song_name, e);
+			auto_display = bold(song_name, input);
 		}
-		new_html += `<div id="${to_html(song_name)}" class="auto_panel${auto_display_count === 0 ? " auto_first" : ""}"><div class="auto_reading">${auto_reading}</div><div class="auto_display">${auto_display}</div></div>`;
-		auto_display_count++;
+		new_html += `<div id="${to_html(song_name)}" class="auto_panel${auto_display_count++ === 0 ? " auto_first" : ""}"><div class="auto_reading">${auto_reading}</div><div class="auto_display">${auto_display}</div></div>`;
 	}
 	for (let i in auto_other) {
-		new_html += `<div id="${to_html(song[auto_other[i]][song_idx.name])}" class="auto_panel${(auto_display_count === 0 ? " auto_first" : "")}"><div class="auto_reading"></div><div class="auto_display">${bold(song[auto_other[i]][song_idx.name], e)}</div></div>`;
-		
-		if (++auto_display_count >= auto_display_max) {
+		if (auto_display_count++ >= auto_display_max) {
 			break;
 		}
+		new_html += `<div id="${to_html(song[auto_other[i]][song_idx.name])}" class="auto_panel${(auto_display_count === 0 ? " auto_first" : "")}"><div class="auto_reading"></div><div class="auto_display">${bold(song[auto_other[i]][song_idx.name], input)}</div></div>`;
 	}
 	$("#search_auto").html(new_html);
-	$("#search_auto").toggleClass("hidden", new_html === "");
+	$("#search_auto").toggleClass("hidden", !new_html);
+	auto_pointer = 0;
 }
 
 function search() {
@@ -324,12 +309,12 @@ function search() {
 		update_display();
 		return;
 	}
-	let search_value = $("#input").val().trim();
+	let search_value = get_search_input();
 	if (search_value === loading) {
 		return;
 	}
 	loading = search_value;
-	if (search_value === "") {
+	if (!search_value) {
 		// clear current list
 		$("#search_display").html("");
 		// enable random
@@ -337,79 +322,28 @@ function search() {
 		return;
 	}
 	// not empty input
-	// disable random
-	if (!setting.random_ignore) {
-		$("#nav_search_random").addClass("disabled");
-	}
-	// replace wchar w/ char
-	search_value = search_value.normalize("NFKC").toLowerCase();
-	let series_name = "";
-	for (let i in series_lookup) {
-		for (let j in series_lookup[i]) {
-			if (series_lookup[i].includes(search_value)) {
-				series_name = i;
-				break;
-			}
-		}
-		if (series_name !== "") {
-			break;
-		}
-	}
-	// search for series in attr
-	let attr_series = 0;
-	if (series_name != "") {
-		let using_attr = [2, 3, 4, 7];
-		for (let i in using_attr) {
-			if (attr_idx[using_attr[i]] === series_name) {
-				attr_series = using_attr[i];
-				break;
-			}
-		}
-	}
+	$("#nav_search_random").toggleClass("disabled", !setting.random_ignore);
+	
+	// series
+	const series_name = search_value in series_lookup ? search_value : "",
+		  attr_series = attr_idx.includes(search_value) ? attr_idx.indexOf(search_value) : 0;
 
 	hits = [];
-	for (let i = 1; i < song.length; ++i) {
-		if (hits.length === 200) {
-			break;
-		}
-		if (setting.search_by_song) {
-			if (series_name !== "") {
-				if (song[i][song_idx.reading].includes(series_name)) {
-					hits.push(i);
-					continue;
-				}
-				// check in attr index
-				if (attr_series) {	// default 0 if not needed
-					if ((1 << attr_series) & song[i][song_idx.attr]) {
-						hits.push(i);
-					}
-				}
-			} else {
-				if (processed_song_name[i].includes(search_value) ||
-					song[i][song_idx.reading].toLowerCase().includes(search_value)
-				) {
-					hits.push(i);
-				}
-			}
-		} else {
-			if (song[i][song_idx.artist].toLowerCase().includes(search_value)) {
-				hits.push(i);
+	if (series_name) {	// get song with series
+		song.forEach((val, i) => (i ? ((attr_series ? val[song_idx.attr] & (1 << attr_series) : val[song_idx.reading].includes(search_value)) ? hits.push(i) : null) : null));
+	} else {			// get song by search
+		const max_hit = 200;
+		for (var i = 1; i < song.length && hits.length < max_hit; ++i) {
+			if (setting.search_by_song ? 
+				processed_song_name[i].includes(search_value) ||
+				song[i][song_idx.reading].toLowerCase().includes(search_value) :
+				song[i][song_idx.artist].toLowerCase().includes(search_value)
+			) {
+				// put in front if song name is exactly the same as searched value
+				processed_song_name[i] === search_value ? hits.unshift(i) : hits.push(i);
 			}
 		}
 	}
-	$("#nav_share").toggleClass("disabled", setting.search_by_song || hits === 0);
-	// sort exact song name to top
-	hits.sort(function (a, b) {
-		let song_b_name = song[b][song_idx.name].trim().toLowerCase();
-		if (song[a][song_idx.name].trim().toLowerCase() === search_value) {
-			// exist a record same to input
-			return song_b_name === search_value ? 0 : -1;
-		} else {
-			if (song_b_name === search_value) {
-				return 1;
-			}
-		}
-	});
 	update_display();
 }
 
@@ -418,15 +352,15 @@ function update_display(force = false) {
 	force |= is_searching_from_rep;
 	
 	$("#search_auto").addClass("hidden");
-	if (loading === "" && !force) {
+	if (!loading && !force) {
 		return;
 	}
 	let current_song = -1;
 	// record loaded song (for un-hiding song thats no longer loaded)
 	let loaded_song = [];
-	let loaded_count = displayed = found_entries = 0;
+	let displayed = found_entries = 0;
 	let new_html = "";
-	for (let i = 0; i < hits.length; ++i) {
+	for (let i = 0; i < hits.length && i <= 200; ++i) {
 		// sort according to settings
 		let sorted_enrties = [];
 		if (setting.search_sort_by_date) {
@@ -445,22 +379,16 @@ function update_display(force = false) {
 		for (let j = 0; j < sorted_enrties.length; ++j) {
 			let cur_entry = sorted_enrties[j];
 			// get part filter
-			let no_selected_found = true;
-			for (let k in part_filter) {
-				if (part_filter[k] && (part_rom[k] & entry[cur_entry][entry_idx.type])){
-					no_selected_found = false;
-					break;
-				}
-			}
+			let no_selected_found = !part_filter.some((val, i) => (val && (part_rom[i] & entry[cur_entry][entry_idx.type])));
 			// if hit on previous module or private
 			if (no_selected_found || ((!setting.show_hidden) && is_private(cur_entry))) {
 				continue;
 			}
 			// if new song
-			if (current_song !== entry[cur_entry][entry_idx.song_id]) {
+			if (current_song !== hits[i]) {
 				new_html += ((current_song !== -1 ? "</div>" : "") + `<div class="song_container">`);
-				current_song = entry[cur_entry][entry_idx.song_id];
-				loaded_song[loaded_count++] = current_song;
+				current_song = hits[i];
+				loaded_song.push(current_song);
 				// if hide the song
 				let show = !hide_song.includes(current_song);
 				// check song name
@@ -470,10 +398,11 @@ function update_display(force = false) {
 					song_name_length += /[ -~]/.test(song_name.charAt(k)) ? 1 : 2;
 				}
 				// you know what fuck this shit i will just add exception
-				if (song_name === "secret base ~君がくれたもの~" ||
-					song_name === "かくしん的☆めたまるふぉ～ぜっ！" ||
-					song_name === "ススメ☆オトメ ~jewel parade~" ||
-					song_name === "Time after time ～花舞う街で～"
+				if (["secret base ~君がくれたもの~",
+					 "かくしん的☆めたまるふぉ～ぜっ！",
+					 "ススメ☆オトメ ~jewel parade~",
+					 "Time after time ～花舞う街で～"
+					].includes(song_name)
 				) {
 					song_name_length = 0;
 				}
@@ -486,13 +415,12 @@ function update_display(force = false) {
 				}
 				new_html += `<div class="song_name_container" id="${current_song}"><div class="song_rap"><div class="song_name">${song_name}</div><div class="song_credit${show ? "" : " hidden"}${song[current_song][song_idx.artist].length > 30 ? " long_credit" : ""} song_${current_song}">${song[current_song][song_idx.artist]}</div></div><div class="song_icon_container"><div id="fold_${current_song}" class="song_fold_icon${show ? "" : " closed"}"></div><div id="copy_name_${current_song}" class="song_copy_icon song_${current_song}${show ? "" : " hidden"}"></div></div></div>`;
 			}
-			let is_mem = entry[cur_entry][entry_idx.note].includes("【メン限");
-			let no_note = entry[cur_entry][entry_idx.note] === "" || entry[cur_entry][entry_idx.note] === "【メン限】" || entry[cur_entry][entry_idx.note] === "【メン限アーカイブ】";
 			let note = entry[cur_entry][entry_idx.note];
+			const is_mem = note.includes("【メン限");
 			if (is_mem) {
 				note = note.replace(/【メン限アーカイブ】|【メン限】/g, "");
 			}
-			new_html += `<div class="entry_container singer_${entry[cur_entry][entry_idx.type]}${is_mem ? "m" : ""} song_${current_song}${hide_song.includes(current_song) ? " hidden" : ""}"><a href="https://youtu.be/${video[entry[cur_entry][entry_idx.video]][video_idx.id]}${timestamp(cur_entry)}" target="_blank"><div class="entry_primary"><div class="entry_date">${display_date(video[entry[cur_entry][entry_idx.video]][video_idx.date])}</div><div class="entry_singer">${singer_lookup[entry[cur_entry][entry_idx.type]]}</div><div class="mem_display">${is_mem ? "メン限" : ""}</div><div class="entry_share" id="entry_${cur_entry}"></div></div>${no_note ? "" : `<div class="entry_note">${note}</div>`}</a></div>`;
+			new_html += `<div class="entry_container singer_${entry[cur_entry][entry_idx.type]}${is_mem ? "m" : ""} song_${current_song}${hide_song.includes(current_song) ? " hidden" : ""}"><a href="https://youtu.be/${video[entry[cur_entry][entry_idx.video]][video_idx.id]}${timestamp(cur_entry)}" target="_blank"><div class="entry_primary"><div class="entry_date">${display_date(video[entry[cur_entry][entry_idx.video]][video_idx.date])}</div><div class="entry_singer">${singer_lookup[entry[cur_entry][entry_idx.type]]}</div><div class="mem_display">${is_mem ? "メン限" : ""}</div><div class="entry_share" id="entry_${cur_entry}"></div></div>${note ? `<div class="entry_note">${note}</div>` : ""}</a></div>`;
 			if (++displayed >= 400) {	// hardcoded max_display
 				i = 200;
 				break;
@@ -526,4 +454,8 @@ function update_display(force = false) {
 function timestamp(id) {
 	let e = entry[id][entry_idx.time];
 	return e ? "?t=" + e : "";
+}
+
+function get_search_input() {
+	return $("#input").val().normalize("NFKC").toLowerCase().trim();
 }

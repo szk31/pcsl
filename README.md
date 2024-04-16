@@ -539,7 +539,7 @@ This site uses the following libraries / resources.
   - overhauled rep-share
   - refactored some functions
   - added setting-rep-longPress-time
-- v1.7.1 (12023-03-21)
+- v1.7.1 (12024-03-21)
   - added name for home icons
   - added yucomomo and yucokira support
   - made some corners rounder
@@ -565,7 +565,7 @@ This site uses the following libraries / resources.
   - added keyboard arrow control for auto search
   - renamed some variables into more meaningful names
   - refactored some old functions
-- v1.7.5 (12023-04-15)
+- v1.7.5 (12024-04-15)
   - fixed some song having attr of 0
   - reduced index.html size
   - fixed memcount table edge bleeding

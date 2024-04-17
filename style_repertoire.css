@@ -318,7 +318,7 @@ label div:nth-child(2) {
 
 .grid_block-4 {
 	display : grid;
-	grid-template-columns: 20% 35% 10% 35%;
+	grid-template-columns: 20% 35% 9.875% 35%;
 }
 
 .rowspan-2 {

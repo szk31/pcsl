@@ -349,7 +349,7 @@ function process_data() {
 				if (member_name[i] === "") {
 					continue;
 				}
-				$(`.filter_icon${key_valid ? "_extra" : ""}.icon_` + member_name[i]).click();
+				$(`#filter_icon_container .icon_` + member_name[i]).click();
 			}
 		}
 		//search

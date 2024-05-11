@@ -84,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.7.5";
+const version = "1.7.6";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -331,7 +331,7 @@ function process_data() {
 
 	// processing url para
 	init();
-	if (url_para.get("sfilter") !== null) {
+	if (url_para.get("sfilter")) {
 		// extract member data
 		let ext = parseInt(url_para.get("sfilter"));
 		// bit and = true => default 
@@ -344,28 +344,17 @@ function process_data() {
 			ext & 32 ? "" : "chui"
 		];
 		// rep
-		if (url_para.get("page") === ("rep" || "repertoire") || url_para.get("rfilter") !== null) {
-			for (let i in member_name) {
-				if (member_name[i] === "") {
-					continue;
-				}
-				$(`#filter_icon_container .icon_` + member_name[i]).click();
-			}
+		if (url_para.get("page") === "rep" || url_para.get("rfilter")) {
+			member_name.forEach(x => x ? $(`#filter_icon_container .icon_${x}`).click() : null);
 		}
 		//search
-		if (url_para.get("page") === "search" || url_para.get("search") !== null) {
-			for (let i in member_name) {
-				if (member_name[i].length) {
-					$(".singer_icon.icon_" + member_name[i]).click();
-				}
-			}
+		if (url_para.get("page") === "search" || url_para.get("search")) {
+			member_name.forEach(x => x ? $(`.singer_icon.icon_${x}`).click() : null);
 		}
 	}
 	let target_page = url_para.get("page");
-	if (target_page !== "home") {
-		if (jump2page(target_page) === -1) {
-			jump2page("home");
-		}
+	if (target_page && target_page !== "home") {
+		jump2page(target_page);
 	}
 	if (url_para.get("search") !== null) {
 		if (current_page !== "search") {
@@ -685,6 +674,13 @@ $(function() {
 		}
 	});
 	
+	// home - member icon
+	$(document).on("click", ".home_member_icon_bg", function() {
+		jump2page("rep");
+		$(".filter_icon.selected").click();
+		$(`.filter_icon.${$(this).children().attr("class")}`).click();
+	})
+
 	// key reset
 	$(document).on("click", "#home_key_reset", function() {
 		$("#popup_container").removeClass("hidden");
@@ -916,17 +912,17 @@ function get_sang_count(id, mask = [4, 2, 1, 32, 16, 8]) {
 }
 
 function jump2page(target) {
-	target = target === "rep" ? "repertoire" : target;
+	target = new Object({"rep": "repertoire", "repertoire": target, "search": target, "home": target})[target];
+	if (!target) {
+		return;
+	}
 	current_page = target;
 	$(".menu2page_selected").removeClass("menu2page_selected");
 	$("#menu2page_" + target).addClass("menu2page_selected");
 	// show / hide section
 	$(".section_container").addClass("hidden");
 	$("#" + target + "_section").removeClass("hidden");
-	$("#nav_dummy").addClass("hidden");
-	$("#nav_search_random").addClass("hidden");
-	$("#nav_bulk_search").addClass("hidden");
-	$("#nav_share").addClass("hidden");
+	$("#nav_control_group div:not(#nav_to_top)").addClass("hidden");
 	// remove previously generated comtent
 	$("#search_display").html("");
 	$("#rep_display").html("");

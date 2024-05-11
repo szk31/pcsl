@@ -571,7 +571,14 @@ This site uses the following libraries / resources.
   - fixed memcount table edge bleeding
   - added rep-hit_count
   - added method to search for songs with no entry
-
+- v1.7.6 (12024-05-12)
+  - fixed rep-song being very slightly higher than normal when key is active
+  - added redirect pages
+  - fixed sfilter not working on rep
+  - added pressing home member icon loads rep w/ said member's repertoire
 # Future Version / to-do list
+also search \[a-z\] input as if kanas were input
+<!---
 nothing here but us chickens!\
 (nothing is planned for the moment)
+--->

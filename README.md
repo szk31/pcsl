@@ -577,7 +577,8 @@ This site uses the following libraries / resources.
   - fixed sfilter not working on rep
   - added pressing home member icon loads rep w/ said member's repertoire
 # Future Version / to-do list
-also search \[a-z\] input as if kanas were input
+also search \[a-z\] input as if kanas were input\
+make readings in search-suto_search an options, show or not
 <!---
 nothing here but us chickens!\
 (nothing is planned for the moment)

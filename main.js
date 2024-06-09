@@ -108,6 +108,7 @@ let setting = {
 	select_input : true,			// select input on click
 	changeless_auto : false,		// config: show auto even input is the same
 	show_random : false,			// display random button
+	show_reading : true,			// config: show reading on auto-search
 	random_ignore : true,			// bypass random rule:(input being empty)
 	search_by_song : true,			// config: searching by song name
 	search_sort_by_date : true,		// config: display sort by date
@@ -258,6 +259,7 @@ function process_data() {
 		["pcsl_s_selecInput", 1],
 		["pcsl_s_autoAnyway", 0],
 		["pcsl_s_showRandom", 0],
+		["pcsl_s_shwReading", 1],
 		["pcsl_s_ignoreRule", 0],
 		["pcsl_s_rep_select", 1],
 		["pcsl_s_showReleas", 0],
@@ -275,6 +277,7 @@ function process_data() {
 	setting.select_input    = ls("pcsl_s_selecInput") == 1;
 	setting.changeless_auto = ls("pcsl_s_autoAnyway") == 1;
 	setting.show_random     = ls("pcsl_s_showRandom") == 1;
+	setting.show_reading    = ls("pcsl_s_shwReading") == 1;
 	setting.random_ignore   = ls("pcsl_s_ignoreRule") == 1;
 	setting.rep_select_input= ls("pcsl_s_rep_select") == 1;
 	setting.show_release    = ls("pcsl_s_showReleas") == 1;
@@ -294,6 +297,9 @@ function process_data() {
 	}
 	if (setting.show_random) {
 		$("#setting_random>div").toggleClass("selected");
+	}
+	if (!setting.show_reading) {
+		$("#setting_reading>div").toggleClass("selected");
 	}
 	if (setting.random_ignore) {
 		$("#setting_ignore>div").toggleClass("selected");
@@ -617,6 +623,10 @@ $(function() {
 					setting.show_hidden ^= 1;
 					ls("pcsl_s_showHidden", setting.show_hidden ? "1" : "0");
 					update_display(1);
+					break;
+				case "setting_reading":
+					setting.show_reading ^= 1;
+					ls("pcsl_s_shwReading", setting.show_reading ? "1" : "0");
 					break;
 				case "setting_select":
 					setting.select_input ^= 1;

@@ -576,7 +576,7 @@ This site uses the following libraries / resources.
   - added redirect pages
   - fixed sfilter not working on rep
   - added pressing home member icon loads rep w/ said member's repertoire
-- v1.7.7 (12024-06-??)
+- v1.7.7 (12024-06-10)
   - added option for show / hide reading in auto-search
   - auto-search and search also search \[a-z\] input as if kanas were input
 # Future Version / to-do list

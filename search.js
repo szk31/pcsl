@@ -260,6 +260,7 @@ function auto_search() {
 	}
 	// if input not consist of only hiragana, "ー" or "ヴ"
 	const auto_thru_name = /[^\u3040-\u309F\u30FC\u30F4]/.test(input);
+	const roman_kana = r2k(input);
 	for (let i = 1; i < song.length && auto_exact.length < auto_display_max; ++i) {
 		// skip if same song name
 		if (auto_skips.includes(i)) {
@@ -271,6 +272,9 @@ function auto_search() {
 			if (name_pos === -1 && song[i][song_idx.reading].includes(" ") && song[i][song_idx.reading].includes(input)) {
 				name_pos = 1;
 			}
+			if (name_pos === -1 && roman_kana) {
+				name_pos = song[i][song_idx.reading].indexOf(roman_kana);
+			}
 			add_song(i, name_pos);
 		} else {
 			add_song(i, song[i][song_idx.reading].indexOf(input));
@@ -281,7 +285,7 @@ function auto_search() {
 	let new_html = "";
 	for (let i in auto_exact) {
 		// data being number (song id) or string (series name)
-		let auto_reading =  auto_display =  song_name = "";
+		let auto_reading = auto_display = song_name = "";
 		if (typeof auto_exact[i] === "string") {
 			// series name
 			auto_display = song_name = auto_exact[i];
@@ -290,13 +294,13 @@ function auto_search() {
 			song_name = song[auto_exact[i]][song_idx.name];
 			auto_display = bold(song_name, input);
 		}
-		new_html += `<div id="${to_html(song_name)}" class="auto_panel${auto_display_count++ === 0 ? " auto_first" : ""}"><div class="auto_reading">${auto_reading}</div><div class="auto_display">${auto_display}</div></div>`;
+		new_html += `<div id="${to_html(song_name)}" class="auto_panel${auto_display_count++ === 0 ? " auto_first" : ""}"><div class="auto_reading${!auto_reading || !setting.show_reading ? " auto_no_reading" : ""}">${auto_reading}</div><div class="auto_display">${auto_display}</div></div>`;
 	}
 	for (let i in auto_other) {
 		if (auto_display_count++ >= auto_display_max) {
 			break;
 		}
-		new_html += `<div id="${to_html(song[auto_other[i]][song_idx.name])}" class="auto_panel${(auto_display_count === 0 ? " auto_first" : "")}"><div class="auto_reading"></div><div class="auto_display">${bold(song[auto_other[i]][song_idx.name], input)}</div></div>`;
+		new_html += `<div id="${to_html(song[auto_other[i]][song_idx.name])}" class="auto_panel${(auto_display_count === 0 ? " auto_first" : "")}"><div class="auto_reading${setting.show_reading ? "" : " auto_no_reading"}">${song[auto_other[i]][song_idx.reading].split(" ")[0]}</div><div class="auto_display">${bold(song[auto_other[i]][song_idx.name], input)}</div></div>`;
 	}
 	$("#search_auto").html(new_html);
 	$("#search_auto").toggleClass("hidden", !new_html);
@@ -334,10 +338,12 @@ function search() {
 		song.forEach((val, i) => (i ? ((attr_series ? val[song_idx.attr] & (1 << attr_series) : val[song_idx.reading].includes(search_value)) ? hits.push(i) : null) : null));
 	} else {			// get song by search
 		const max_hit = 200;
+		const roman_kana = r2k(search_value);
 		for (var i = 1; i < song.length && hits.length < max_hit; ++i) {
 			if (setting.search_by_song ? 
 				processed_song_name[i].includes(search_value) ||
-				song[i][song_idx.reading].toLowerCase().includes(search_value) :
+				song[i][song_idx.reading].toLowerCase().includes(search_value) ||
+				song[i][song_idx.reading].includes(roman_kana) :
 				song[i][song_idx.artist].toLowerCase().includes(search_value)
 			) {
 				// put in front if song name is exactly the same as searched value

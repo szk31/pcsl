@@ -9,11 +9,11 @@
 		<title>ぷちここ歌まとめ</title>
 		<link rel="icon" type="image/png" href="icon/icon.png">
 		<!-- css -->
-		<link rel="stylesheet" href="style_min.css">
-		<!--link rel="stylesheet" href="style_general.css">
+		<!--link rel="stylesheet" href="style_min.css"-->
+		<link rel="stylesheet" href="style_general.css">
 		<link rel="stylesheet" href="style_home.css">
 		<link rel="stylesheet" href="style_search.css">
-		<link rel="stylesheet" href="style_repertoire.css"-->
+		<link rel="stylesheet" href="style_repertoire.css">
 		<link rel="stylesheet" href="icon.css" defer>
 		<!-- using libraries -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
@@ -22,10 +22,11 @@
 		<script type="text/javascript" src="data.js"></script>
 		<script type="text/javascript" src="version_hash.js"></script>
 		<!-- script -->
-		<script type="text/javascript" src="scr_min.js"></script>
-		<!--script type="text/javascript" src="main.js"></script>
+		<!--script type="text/javascript" src="scr_min.js"></script-->
+		<script type="text/javascript" src="r2k_min.js"></script>
+		<script type="text/javascript" src="main.js"></script>
 		<script type="text/javascript" src="search.js"></script>
-		<script type="text/javascript" src="rep.js"></script-->
+		<script type="text/javascript" src="rep.js"></script>
 		<style>
 			#loading_overlay {
 				position: fixed;
@@ -426,13 +427,6 @@
 						</div>
 					</div>
 					<div class="settings_option">
-						<div>変更なし予想表示</div>
-						<div id="setting_auto" class="two_way">
-							<div>する</div>
-							<div class="selected">しない</div>
-						</div>
-					</div>
-					<div class="settings_option">
 						<div>ランダムボタン表示</div>
 						<div id="setting_random" class="two_way">
 							<div>表示</div>
@@ -444,6 +438,21 @@
 						<div id="setting_ignore" class="two_way setting_req_random">
 							<div>する</div>
 							<div class="selected">しない</div>
+						</div>
+					</div>
+					<div class="settings_inner_title">入力予想</div>
+					<div class="settings_option">
+						<div>変更なし予想表示</div>
+						<div id="setting_auto" class="two_way">
+							<div>する</div>
+							<div class="selected">しない</div>
+						</div>
+					</div>
+					<div class="settings_option">
+						<div>読み仮名表示</div>
+						<div id="setting_reading" class="two_way">
+							<div class="selected">する</div>
+							<div>しない</div>
 						</div>
 					</div>
 					<div class="settings_inner_title">レパートリー</div>

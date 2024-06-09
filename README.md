@@ -576,9 +576,14 @@ This site uses the following libraries / resources.
   - added redirect pages
   - fixed sfilter not working on rep
   - added pressing home member icon loads rep w/ said member's repertoire
+- v1.7.7 (12024-06-??)
+  - added option for show / hide reading in auto-search
+  - auto-search and search also search \[a-z\] input as if kanas were input
 # Future Version / to-do list
-also search \[a-z\] input as if kanas were input\
-make readings in search-suto_search an options, show or not
+- re-add union / intersection for rep as an option, default off
+- unselecting the last member will auto re-select all member in all member selection
+- adding no song found error message to rep
+- adding hidden option for "copy song name after selecting with auto-search"
 <!---
 nothing here but us chickens!\
 (nothing is planned for the moment)

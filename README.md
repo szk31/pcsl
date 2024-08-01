@@ -1,5 +1,5 @@
 # [P]etit♡[C]ocotte [S]ong [L]ist <a name="title"></a>
-ぷちここ歌まとめ (v1.7.5)
+ぷちここ歌まとめ (v1.7.7)
 
 逢魔きらら、胡桃澤もも、看谷にぃあ＋αの歌一覧\
 ここでは曲名検索から歌った枠(TS付き)に直接飛べます。\
@@ -579,11 +579,13 @@ This site uses the following libraries / resources.
 - v1.7.7 (12024-06-10)
   - added option for show / hide reading in auto-search
   - auto-search and search also search \[a-z\] input as if kanas were input
+- v1.7.8 (12024-08-??)
+  - unselecting the last member will auto re-select all member in all member selection
 # Future Version / to-do list
 - re-add union / intersection for rep as an option, default off
-- unselecting the last member will auto re-select all member in all member selection
 - adding no song found error message to rep
 - adding hidden option for "copy song name after selecting with auto-search"
+- fixing search-exact_result_to_top only moves the 1st song even if multiple song have the same name (after triming)
 <!---
 nothing here but us chickens!\
 (nothing is planned for the moment)

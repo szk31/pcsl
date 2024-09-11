@@ -579,13 +579,20 @@ This site uses the following libraries / resources.
 - v1.7.7 (12024-06-10)
   - added option for show / hide reading in auto-search
   - auto-search and search also search \[a-z\] input as if kanas were input
-- v1.7.8 (12024-08-??)
-  - unselecting the last member will auto re-select all member in all member selection
+- v1.8.0 (12024-??-??)
+  - unselecting the last member will auto re-select all members in all member selections
+  - reworked settings internally
+  - added settings-show_hidden
+  - moved settings-extra_dark from settings-theme to settings-show_hidden
+  - added settings-rep-union_inter under settings-show_hidden
+  - added settings-auto_search-copy under settings-show_hidden
+
 # Future Version / to-do list
 - re-add union / intersection for rep as an option, default off
 - adding no song found error message to rep
 - adding hidden option for "copy song name after selecting with auto-search"
 - fixing search-exact_result_to_top only moves the 1st song even if multiple song have the same name (after triming)
+- adding video ID search
 <!---
 nothing here but us chickens!\
 (nothing is planned for the moment)

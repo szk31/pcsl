@@ -84,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.7.7";
+const version = "1.8.0";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -99,31 +99,120 @@ let prevent_menu_popup = false;
 let current_page = "home";
 
 // key inputed check
-let key_valid = 0;
+let key_valid = false;
 
 /* setting section */
-let setting = {
-	// search
-	show_hidden : true,				// if display private video
-	select_input : true,			// select input on click
-	changeless_auto : false,		// config: show auto even input is the same
-	show_random : false,			// display random button
-	show_reading : true,			// config: show reading on auto-search
-	random_ignore : true,			// bypass random rule:(input being empty)
-	search_by_song : true,			// config: searching by song name
-	search_sort_by_date : true,		// config: display sort by date
-	search_sort_asd : true,			// config: sort ascendingly 
-
-	// rep
-	show_release : false,			// if display release date
-	longPress_copy : true,			// if long press on song name copies
-	rep_select_input : true,		// select input on click
-	rep_sort : "50",				// config: display sort by method
-	rep_sort_asd : true,			// config: sort ascendingly
-	rep_selected_first : false,		// config: display selecetd songs on top
-	rep_show_artist : true,			// hidden: rep-share include artist name
-	longPress_time : 600			// config: long press copy time (ms)
+let settings = {
+	set_hidden_unlocked: {			// setting: if hidden options are unlocked
+		value: false,
+		req_LS: true
+	},
+	set_show_hidden: {				// setting: if hidden options are displayed
+		value: false,
+		req_LS: true
+	},
+	ser_show_private: {				// setting: do display private video
+		value: true,
+		req_LS: true,
+		prv_name: ["pcsl_s_showHidden"]
+	},
+	ser_select_input: {				// setting: highlight input on click
+		value: true,
+		req_LS: true,
+		prv_name: ["pcsl_s_selecInput"]
+	},
+	ser_via_song_name: {			// search: if search is searching song name
+		value: true,
+		req_LS: false
+	},
+	ser_sort_by_date: {				// search: if results are sorted by date
+		value: true,
+		req_LS: false
+	},
+	ser_sort_asd: {					// serach: if results are sorted ascendingly
+		value: true,
+		req_LS: false
+	},
+	ser_rand_show: {				// setting: if random button is shown
+		value: false,
+		req_LS: true,
+		prv_name: ["pcsl_s_showRandom"]
+	},
+	ser_rand_req_empty: {			// setting: if random is pressable when input is not empty
+		value: false,
+		req_LS: true,
+		prv_name: ["pcsl_s_ignoreRule"]
+	},
+	pdt_on_change_only: {			// setting: if predict only shows once input changed
+		value: true,
+		req_LS: true,
+		prv_name: ["pcsl_s_autoAnyway"]
+	},
+	pdt_reading: {					// setting: display reading in predict
+		value: true,
+		req_LS: true,
+		prv_name: ["pcsl_s_shwReading"]
+	},
+	pdt_copy_on_select: {			// setting: if song name copied on select\
+		value: false,
+		req_LS: true
+	},
+	rep_show_release: {				// setting: display release date in rep
+		value: false,
+		req_LS: true,
+		prv_name: ["pcsl_s_showReleas"]
+	},
+	rep_long_press_copy: {			// setting: if long press song copies song name
+		value: true,
+		req_LS: true,
+		prv_name: ["pcsl_s_LPressCopy"]
+	},
+	rep_long_press_time: {			// setting: long press react time (ms)
+		value: 600,
+		req_LS: true,
+		prv_name: ["pcsl_s_longP_time"]
+	},
+	rep_select_input: {				// setting: highlight input on click
+		value: true,
+		req_LS: true,
+		prv_name: ["pcsl_s_rep_select"]
+	},
+	rep_show_group: {
+		value: false,
+		req_LS: true
+	},
+	rep_is_union: {
+		value: true,
+		req_LS: false
+	},
+	rep_sort_method: {				// rep: sort
+		value: "50",
+		req_LS: false
+	},
+	rep_sort_asd: {					// rep: if results are sorted ascendingly
+		value: true,
+		req_LS: false
+	},
+	rep_selected_first: {			// rep: if selected songs are moved to top
+		value: false,
+		req_LS: false
+	},
+	rep_show_artist: {				// hidden: if rep-share includes artist name
+		value: true,
+		req_LS: true,
+		prv_name: ["pcsl_s_rep_artist"]
+	}
 };
+
+function update_setting(key) {
+	ls(`pcsl_${key}`, settings[key].value);
+	return settings[key].value;
+}
+
+function toggle_setting(key) {
+	settings[key].value ^= 1;
+	return update_setting(key);
+}
 
 // ram for searching (entry_processed)
 let entry_proc = [];
@@ -169,8 +258,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 	function decrypt(input) {
 		return content_level ? CryptoJS.AES.decrypt(input, key).toString(CryptoJS.enc.Utf8) : input;
 	}
-	// change settings selected theme
-	$(`#three_way_${ls("theme") === "extra" ? "dark" : ls("theme")}`).addClass("selected");
 	// check url para first
 	let url_para = new URLSearchParams(window.location.search);
 	key = url_para.get("key");
@@ -198,7 +285,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		load_from_storage = false;
 		ls("pcsl_key", key);
 	}
-	key_valid = content_level ? 1 : 0;
+	key_valid = Boolean(content_level);
 	// load data
 	let local_version_hash = ls("pcsl_version_hash");
 	//  data version is up to date             key did not update
@@ -207,7 +294,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 		let ls_data = ls("pcsl_data").split("\n");
 		video = JSON.parse(decrypt(ls_data[0]));
 		entry = JSON.parse(decrypt(ls_data[1]));
-		process_data();
+		init();
 	} else {
 		// need to refresh data
 		$("#loading_text").html("Downloading data...");
@@ -227,7 +314,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 			// save to local storage
 			ls("pcsl_data", data);
 			ls("pcsl_version_hash", version_hash);
-			process_data();
+			init();
 		});
 	}
 	
@@ -246,97 +333,191 @@ document.addEventListener('DOMContentLoaded', async function() {
 	}
 });
 
-function process_data() {
+function init() {
 	$("#loading_text").html("Processing data...");
-	let url_para = new URLSearchParams(window.location.search);
-	// remove key
-	url_para.delete("key");
-	window.history.pushState(null, null, `${document.location.href.split('?')[0]}${url_para.size ? `?${url_para}` : ""}`);
-	
-	// ad local storage if not exist
-	const lookup = [
-		["pcsl_s_showHidden", 1],
-		["pcsl_s_selecInput", 1],
-		["pcsl_s_autoAnyway", 0],
-		["pcsl_s_showRandom", 0],
-		["pcsl_s_shwReading", 1],
-		["pcsl_s_ignoreRule", 0],
-		["pcsl_s_rep_select", 1],
-		["pcsl_s_showReleas", 0],
-		["pcsl_s_LPressCopy", 1],
-		["pcsl_s_longP_time", 600]
-	];
-	for (let i in lookup) {
-		if (ls(lookup[i][0]) === null) {
-			ls(lookup[i][0], lookup[i][1]);
+
+	load_setting_flags();
+	process_data();
+	load_url_para();
+
+	// remove loading screen
+	$("#loading_text").html("Loading Complete.<br />You can't see this tho");
+	$("#loading_overlay").addClass("hidden");
+	$("body").removeClass("allow_reload");
+}
+
+function load_setting_flags() {
+	// change settings selected theme
+	$(`#three_way_${ls("theme") === "extra" ? "dark" : ls("theme")}`).addClass("selected");
+
+	function new_key(key, val) {
+		ls(key, typeof val === "number" ? val : val ? 1 : 0);
+	}
+
+	const do_default = new URLSearchParams(window.location.search).has("reset_settings");
+	if (do_default) {
+		ls("theme", "mixed");
+	}
+	Object.entries(settings).forEach(([index, item]) => {
+		if (!item.req_LS) {
+			return;
 		}
-	}
+		const key = `pcsl_${index}`;
+		if (do_default) {
+			localStorage.removeItem(key);
+			ls(key, typeof item.value === "number" ? item.value : item.value ? 1 : 0);
+			return;
+		}
 
-	// read from local storage
-	setting.show_hidden     = ls("pcsl_s_showHidden") == 1;
-	setting.select_input    = ls("pcsl_s_selecInput") == 1;
-	setting.changeless_auto = ls("pcsl_s_autoAnyway") == 1;
-	setting.show_random     = ls("pcsl_s_showRandom") == 1;
-	setting.show_reading    = ls("pcsl_s_shwReading") == 1;
-	setting.random_ignore   = ls("pcsl_s_ignoreRule") == 1;
-	setting.rep_select_input= ls("pcsl_s_rep_select") == 1;
-	setting.show_release    = ls("pcsl_s_showReleas") == 1;
-	setting.longPress_copy  = ls("pcsl_s_LPressCopy") == 1;
-	setting.rep_show_artist = ls("pcsl_s_rep_artist") == 1;
-	setting.longPress_time  = parseInt(ls("pcsl_s_longP_time"));
-
-	// switch display in settings according to saved settings
-	if (!setting.show_hidden) {
-		$("#setting_hidden>div").toggleClass("selected");
-	}
-	if (!setting.select_input) {
-		$("#setting_select>div").toggleClass("selected");
-	}
-	if (setting.changeless_auto) {
-		$("#setting_auto>div").toggleClass("selected");
-	}
-	if (setting.show_random) {
-		$("#setting_random>div").toggleClass("selected");
-	}
-	if (!setting.show_reading) {
-		$("#setting_reading>div").toggleClass("selected");
-	}
-	if (setting.random_ignore) {
-		$("#setting_ignore>div").toggleClass("selected");
-	}
-	if (!setting.rep_select_input) {
-		$("#setting_rep_select>div").toggleClass("selected");
-	}
-	if (setting.show_release) {
-		$("#setting_release>div").toggleClass("selected");
-	}
-	if (!setting.longPress_copy) {
-		$("#setting_copy>div").toggleClass("selected");
-	}
-	if (!setting.rep_show_artist) {
-		$(".rep_tweet_a").toggleClass("selected");
-	}
-	$("#three_way_time>div").removeClass("selected");
-	$(`#three_way_${setting.longPress_time}`).addClass("selected");
-
-	$("#nav_search_random").toggleClass("blank", !setting.show_random);
-	$(".setting_req_random").toggleClass("disabled", !setting.show_random);
-	$(".setting_copy_time").toggleClass("disabled", !setting.longPress_copy);
-
-	if (ls("pcsl_s_show_extra")) {
-		$("#setting_extra_container").removeClass("hidden");
-	}
+		let result = ls(key);
+		if (!result) {
+			// check if no older key
+			if (!settings[index].prv_name?.length) {
+				// new user, add new key
+				new_key(key, item.value);
+				return; 
+			}
+			// old user, yes older key
+			const old_setting = settings[index].prv_name.find(x => ls(x));
+			if (old_setting) {
+				result = ls(old_setting);
+				localStorage.removeItem(old_setting);
+				ls(key, result);
+			} else {
+				new_key(key, item.value);
+				return;
+			}
+		}
+		const dflt = settings[index].value;
+		// read key if exist
+		switch (result) {
+			case "0":
+			case "1":
+				settings[index].value = result == 1;
+				break;
+			default: 
+			settings[index].value = parseInt(result);
+		}
+		result = settings[index].value;
+		const changed = settings[index].value !== dflt;
+		// change the selected option insetting menu as well
+		let target = `#setting_${index}>div`;
+		switch (index) {	// non-default: special case
+			case "set_hidden_unlocked":
+				if (settings[index].value) {
+					$("#setting_extra_container").removeClass("hidden");
+				}
+				return;
+			case "set_show_hidden":
+				if (changed) {
+					$(".settings_extra").removeClass("hidden");
+				}
+				break;
+			case "ser_rand_show":
+				$("#nav_search_random").toggleClass("blank", !result);
+				$(".setting_req_random").toggleClass("disabled", !result);
+				break;
+			case "rep_long_press_time":
+				if (changed) {
+					$("#three_way_time>div").removeClass("selected");
+					$(`#three_way_${result}`).addClass("selected");
+				}
+				return;
+			case "rep_show_artist":
+				target = ".rep_tweet_a";
+				break;
+			case "rep_long_press_copy":
+				$("#three_way_time").toggleClass("disabled", !result);
+				break;
+			case "rep_show_group":
+				$("#filter_set").toggleClass("hidden", !result)
+				break;
+		}
+		if (changed) {
+			$(target).toggleClass("selected");
+		}
+	});
 	switch (ls("theme")) {
 		case "light":
 		case "mixed":
-			$("#setting_extra_container>div").addClass("disabled");
+			$("#setting_dark_container>div").addClass("disabled");
 			break;
 		case "extra":
-			$("#setting_extra").click();
-	}
+			$("#setting_dark").click();
+	}	  
+}
 
-	// processing url para
-	init();
+function process_data() {
+	$("#input").val("");
+	// process data
+	{
+		// reverse video dates
+		const date_start = new Date("2021-01-01");
+
+		function getDateText(passed) {
+			let result = new Date(date_start);
+			result.setDate(date_start.getDate() + passed);
+			return result.toISOString().slice(0, 10);
+		}
+		
+		for (let i in video) {
+			video[i][video_idx.date] = getDateText(video[i][video_idx.date]);
+		}
+		
+		// reverse note
+		for (let i in entry) {
+			entry[i][entry_idx.note] = note_index[entry[i][entry_idx.note]];
+		}
+		// remove note index
+		note_index = null;
+	}
+	for (let i in song) {
+		entry_proc[i] = [];
+	}
+	for (let i = 0; i < entry.length; ++i) {
+		if (entry[i][entry_idx.type]) {
+			entry_proc[entry[i][0]].push(i);
+		}
+	}
+	$("#info_version").html(version);
+	$("#info_last-update").html(video[video.length - 1][video_idx.date]);
+	// get screen size
+	auto_display_max = Math.floor(7 * window.innerHeight / window.innerWidth);
+	
+	// rep
+	let rep_solo_temp = [];
+	
+	// process song names
+	for (let i = 1; i < song.length; ++i) {
+		processed_song_name.push(song[i][song_idx.name].toLowerCase().normalize("NFKC").trim());
+		if (i > 2 && song[i][song_idx.name].trim() === song[i - 1][song_idx.name].trim()) {
+			auto_skips.push(i);
+		}
+	}
+	
+	// get each member's repertoire
+	for (let i = 0; i < song.length; ++i) {
+		rep_list[i] = 0;
+		for (let j in entry_proc[i]) {
+			// or is faster than checking then add (i think)
+			rep_list[i] |= entry[entry_proc[i][j]][entry_idx.type];
+		}
+		
+		rep_solo_temp[i] = [...new Set(entry_proc[i])];
+		rep_hits_solo[i] = [];
+		for (let j in rep_solo_temp[i]) {
+			rep_hits_solo[i] = rep_hits_solo[i].concat(split_to_solo(entry[rep_solo_temp[i][j]][entry_idx.type]));
+		}
+		rep_hits_solo[i] = [...new Set(rep_hits_solo[i])].filter(Number);
+	}
+}
+
+function load_url_para() {
+	let url_para = new URLSearchParams(window.location.search);
+	// remove key
+	url_para.delete("key");
+	url_para.delete("reset_settings");
+	window.history.pushState(null, null, `${document.location.href.split('?')[0]}${url_para.size ? `?${url_para}` : ""}`);
 	if (url_para.get("sfilter")) {
 		// extract member data
 		let ext = parseInt(url_para.get("sfilter"));
@@ -418,10 +599,6 @@ function process_data() {
 			}
 		}
 	}
-	// remove loading screen
-	$("#loading_text").html("Loading Complete.<br />You can't see this tho");
-	$("#loading_overlay").addClass("hidden");
-	$("body").removeClass("allow_reload");
 }
 
 $(function() {
@@ -453,7 +630,7 @@ $(function() {
 					clearInterval(id)
 			}
 			let id = setInterval(frame, 1);
-			if (current_page === "repertoire" && setting.rep_selected_first) {
+			if (current_page === "repertoire" && settings.rep_selected_first.value) {
 				rep_display();
 			}
 		});
@@ -578,34 +755,42 @@ $(function() {
 	
 	{ // settings
 
-		let dark_clicked = 0;
+		// unlock hidden settings
+		let title_clicked = 0;
+		$(document).on("click", function(e) {
+			if ($(e.target).closest(".settings_title").length) {
+				if (++title_clicked === 5) {
+					ls("pcsl_set_hidden_unlocked", 1);
+					// show settings here
+					$("#setting_extra_container").removeClass("hidden");
+				}
+			} else {
+				title_clicked = 0;
+			}
+		})
+
 		// general - display_theme
 		$(document).on("click", "#three_way_theme>div", function() {
 			let selected = this.id.replace("three_way_", "");
-			$("#setting_extra_container>div").toggleClass("disabled", selected !== "dark");
-			if (selected === "dark") {
-				selected = $("#dark_extra").hasClass("selected") ? "extra" : "dark";
+			$("#setting_dark").toggleClass("disabled", selected !== "dark");
+			if (selected !== "dark") {
+				$("#setting_dark>div").removeClass("selected");
+				$("#dark_normal").addClass("selected");
 			}
 			document.documentElement.setAttribute("theme", selected);
 			ls("theme", selected);
 			$("#three_way_theme>div").removeClass("selected");
 			$(this).addClass("selected");
-			// set post-switch bg colour
-			// does not account for cross origin, not needed anyways
-			parent.refresh_bgColour();
-			dark_clicked = selected === "dark" ? ++dark_clicked : 0;
-			if (dark_clicked === 5) {
-				$("#setting_extra_container").removeClass("hidden");
-				ls("pcsl_s_show_extra", 1);
-			}
-			
 		});
 
 		// rep - long press length
 		$(document).on("click", "#three_way_time>div", function() {
+			if ($(".setting_copy_time").hasClass("disabled")) {
+				return;
+			}
 			let time = parseInt(this.id.replace("three_way_", ""));
-			ls("pcsl_s_longP_time", time);
-			setting.longPress_time = time;
+			ls("pcsl_rep_long_press_time", time);
+			settings.rep_long_press_time.value = time;
 			$("#three_way_time>div").removeClass("selected");
 			$(this).addClass("selected");
 		});
@@ -613,57 +798,63 @@ $(function() {
 		// settings - other options
 		$(document).on("click", ".two_way:not(.disabled)", function() {
 			$(this).children().toggleClass("selected");
-			switch (this.id) {
-				case "setting_extra":
-					let cur_state = $("#dark_extra").hasClass("selected");
-					ls("theme", cur_state ? "extra" : "dark");
-					document.documentElement.setAttribute("theme", ls("theme"));
+			const key = this.id.replace("setting_", "");
+			switch (key) {
+				case "set_show_hidden":
+					$(".settings_extra").toggleClass("hidden", toggle_setting(key));
 					break;
-				case "setting_hidden":
-					setting.show_hidden ^= 1;
-					ls("pcsl_s_showHidden", setting.show_hidden ? "1" : "0");
+				case "dark":
+					let cur_state = $("#dark_extra").hasClass("selected") ? "extra" : "dark";
+					ls("theme", cur_state);
+					document.documentElement.setAttribute("theme", cur_state);
+					break;
+				case "ser_show_private":
+					toggle_setting(key);
 					update_display(1);
 					break;
-				case "setting_reading":
-					setting.show_reading ^= 1;
-					ls("pcsl_s_shwReading", setting.show_reading ? "1" : "0");
+				case "ser_rand_show":
+					const rs = toggle_setting(key);	// *r*and_*s*how
+					$("#nav_search_random").toggleClass("blank", rs);
+					$(".setting_req_random").toggleClass("disabled", !rs);
 					break;
-				case "setting_select":
-					setting.select_input ^= 1;
-					ls("pcsl_s_selecInput", setting.select_input ? "1" : "0");
+				case "ser_rand_req_empty":
+					toggle_setting(key);
+					$("#nav_search_random").toggleClass("disabled", settings.ser_via_song_name.value ? (settings.ser_rand_req_empty.value ? false : search_memory !== "") : true);
 					break;
-				case "setting_auto":
-					setting.changeless_auto ^= 1;
-					ls("pcsl_s_autoAnyway", setting.changeless_auto ? "1" : "0");
-					break;
-				case "setting_random":
-					setting.show_random ^= 1;
-					$("#nav_search_random").toggleClass("blank", setting.show_random);
-					ls("pcsl_s_showRandom", setting.show_random ? "1" : "0");
-					$(".setting_req_random").toggleClass("disabled", !setting.show_random);
-					break;
-				case "setting_ignore":
-					setting.random_ignore ^= 1;
-					$("#nav_search_random").toggleClass("disabled", setting.search_by_song ? (setting.random_ignore ? false : search_memory !== "") : true);
-					ls("pcsl_s_ignoreRule", setting.random_ignore ? "1" : "0");
-					break;
-				case "setting_release":
-					setting.show_release ^= 1;
-					ls("pcsl_s_showReleas", setting.show_release ? "1" : "0");
+				case "rep_show_release":
+					toggle_setting(key);
 					if (current_page === "repertoire") {
 						rep_display();
 					}
 					break;
-				case "setting_rep_select":
-					setting.rep_select_input ^= 1;
-					ls("pcsl_s_rep_select", setting.rep_select_input ? "1" : "0");
+				case "rep_long_press_copy":
+					$(".setting_copy_time").toggleClass("disabled", !toggle_setting(key));
 					break;
-				case "setting_copy":
-					setting.longPress_copy ^= 1;
-					ls("pcsl_s_LPressCopy", setting.longPress_copy ? "1" : "0");
-					$(".setting_copy_time").toggleClass("disabled", !setting.longPress_copy);
+				case "rep_show_group":
+					$("#filter_set").toggleClass("hidden", !toggle_setting(key));
+					break;
+				case "ser_select_input":
+				case "pdt_on_change_only":
+				case "pdt_reading":
+				case "pdt_copy_on_select":
+				case "rep_select":
+					toggle_setting(key);
+					break;
 			}
-		})
+		});
+
+		// settings - reset button, reset cancel
+		$(document).on("click", "#settings_reset_button, #settings_reset_nah", function() {
+			$(".settings_reset>span").toggleClass("hidden");
+			$("#settings_reset_confirm").toggleClass("blank");
+		});
+
+		// settings - reset confirm
+		$(document).on("click", "#settings_reset_yes", function() {
+			const currentUrl = new URL(window.location.href);
+			currentUrl.searchParams.set("reset_settings", "");
+			window.location.href = currentUrl.toString();
+		});
 	}
 
 	// memcount swap content
@@ -687,7 +878,9 @@ $(function() {
 	// home - member icon
 	$(document).on("click", ".home_member_icon_bg", function() {
 		jump2page("rep");
-		$(".filter_icon.selected").click();
+
+		$(".filter_icon").removeClass("selected");
+		rep_singer.fill(0);
 		$(`.filter_icon.${$(this).children().attr("class")}`).click();
 	})
 
@@ -703,8 +896,8 @@ $(function() {
 	
 	// key reset - yes
 	$(document).on("click", "#remove_key_yes", function() {
-		ls("pcsl_version_hash", "");
-		ls("pcsl_key", "");
+		localStorage.removeItem("pcsl_version_hash");
+		localStorage.removeItem("pcsl_key");
 		window.location = window.location.href.split("?")[0];
 	});
 	
@@ -717,70 +910,6 @@ $(function() {
 	});
 });
 
-function init() {
-	$("#input").val("");
-	// process data
-	{
-		// reverse video dates
-		const date_start = new Date("2021-01-01");
-
-		function getDateText(passed) {
-			let result = new Date(date_start);
-			result.setDate(date_start.getDate() + passed);
-			return result.toISOString().slice(0, 10);
-		}
-		
-		for (let i in video) {
-			video[i][video_idx.date] = getDateText(video[i][video_idx.date]);
-		}
-		
-		// reverse note
-		for (let i in entry) {
-			entry[i][entry_idx.note] = note_index[entry[i][entry_idx.note]];
-		}
-		// remove note index
-		note_index = null;
-	}
-	for (let i in song) {
-		entry_proc[i] = [];
-	}
-	for (let i = 0; i < entry.length; ++i) {
-		if (entry[i][entry_idx.type]) {
-			entry_proc[entry[i][0]].push(i);
-		}
-	}
-	$("#info_version").html(version);
-	$("#info_last-update").html(video[video.length - 1][video_idx.date]);
-	// get screen size
-	auto_display_max = Math.floor(7 * window.innerHeight / window.innerWidth);
-	
-	// rep
-	let rep_solo_temp = [];
-	
-	// process song names
-	for (let i = 1; i < song.length; ++i) {
-		processed_song_name.push(song[i][song_idx.name].toLowerCase().normalize("NFKC"));
-		if (i > 2 && song[i][song_idx.name].trim() === song[i - 1][song_idx.name].trim()) {
-			auto_skips.push(i);
-		}
-	}
-	
-	// get each member's repertoire
-	for (let i = 0; i < song.length; ++i) {
-		rep_list[i] = 0;
-		for (let j in entry_proc[i]) {
-			// or is faster than checking then add (i think)
-			rep_list[i] |= entry[entry_proc[i][j]][entry_idx.type];
-		}
-		
-		rep_solo_temp[i] = [...new Set(entry_proc[i])];
-		rep_hits_solo[i] = [];
-		for (let j in rep_solo_temp[i]) {
-			rep_hits_solo[i] = rep_hits_solo[i].concat(split_to_solo(entry[rep_solo_temp[i][j]][entry_idx.type]));
-		}
-		rep_hits_solo[i] = [...new Set(rep_hits_solo[i])].filter(Number);
-	}
-}
 
 // memcount - loading rep part in background
 function memcount_load_rep() {
@@ -829,7 +958,7 @@ function memcount_load_rep() {
 			new_html += `<div class="memcount_rep_block_sum memcount_rep_singer_${display_lookup[i]}"><div>${display_number[i]}</div></div>`;
 		}
 	}
-	$("#memcount_rep_content").toggleClass("extra_content", key_valid === 1);
+	$("#memcount_rep_content").toggleClass("extra_content", key_valid);
 	$("#memcount_rep_content").html(new_html);
 }
 
@@ -838,22 +967,12 @@ function memcount_load_rep() {
 // display date in yyyy-MM-dd format
 function display_date(input) {
 	let e = typeof(input) === "string" ? new Date(input) : input;
-	return (e.getFullYear() + "-" + fill_digit(e.getMonth() + 1, 2) + "-" + fill_digit(e.getDate(), 2));
+	return (e.getFullYear() + "-" + String(e.getMonth() + 1).padStart(2, "0") + "-" + String(e.getDate()).padStart(2, "0"));
 }
 
-// add 0 in front of a number
-function fill_digit(input, length) {
-	let e = "" + input;
-	while (e.length < length) {
-		e = "0" + e;
-	}
-	return e;
-}
-
+const private_regex = /非公開|記録用|アーカイブなし/;
 function is_private(index) {
-	return entry[index][entry_idx.note].includes("非公開") ||
-		   entry[index][entry_idx.note].includes("記録用") ||
-		   entry[index][entry_idx.note].includes("アーカイブなし");
+	return private_regex.test(entry[index][entry_idx.note]);
 }
 
 // rap the `selc` section in bold tag if exist in `org`

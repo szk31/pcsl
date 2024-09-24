@@ -579,20 +579,26 @@ This site uses the following libraries / resources.
 - v1.7.7 (12024-06-10)
   - added option for show / hide reading in auto-search
   - auto-search and search also search \[a-z\] input as if kanas were input
-- v1.8.0 (12024-??-??)
+- v1.8.0 (12024-09-24)
+  - fixed rep-selected song are not removed from non-selected list correctly for empty input
+  - fixed search-exact_result_to_top only moves the 1st song even if multiple song have the same name
+  - fixed search-sort-asd display text not updating
   - unselecting the last member will auto re-select all members in all member selections
   - reworked settings internally
-  - added settings-show_hidden
+  - added settings-show_hidden, unlock via tapping settings title 5 times
   - moved settings-extra_dark from settings-theme to settings-show_hidden
-  - added settings-rep-union_inter under settings-show_hidden
-  - added settings-auto_search-copy under settings-show_hidden
+  - changing theme to non-dark will reset extra dark to normal dark
+  - renamed auto-search to predict 
+  - added settings-predict-copy under settings-show_hidden
+  - added settings-rep-show_group under settings-show_hidden
+  - re-added union / intersection for rep (default hidden/union)
+  - added no song found error message to rep
+  - added reset to default settings (via url para, require reload)
 
 # Future Version / to-do list
-- re-add union / intersection for rep as an option, default off
-- adding no song found error message to rep
-- adding hidden option for "copy song name after selecting with auto-search"
-- fixing search-exact_result_to_top only moves the 1st song even if multiple song have the same name (after triming)
 - adding video ID search
+- rework key removal like setting reset
+
 <!---
 nothing here but us chickens!\
 (nothing is planned for the moment)

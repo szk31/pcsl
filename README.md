@@ -598,6 +598,7 @@ This site uses the following libraries / resources.
 # Future Version / to-do list
 - adding video ID search
 - rework key removal like setting reset
+- fix search copy are trimmed (which should not be trimmed)
 
 <!---
 nothing here but us chickens!\

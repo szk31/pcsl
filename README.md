@@ -1,5 +1,5 @@
 # [P]etit♡[C]ocotte [S]ong [L]ist <a name="title"></a>
-ぷちここ歌まとめ (v1.7.7)
+ぷちここ歌まとめ (v1.8.1)
 
 逢魔きらら、胡桃澤もも、看谷にぃあ＋αの歌一覧\
 ここでは曲名検索から歌った枠(TS付き)に直接飛べます。\
@@ -130,27 +130,34 @@ PCの場合↓と↑キーで移動、Enterで決定できます。
    * テキストとしてコピー
 
 # 設定 <a name="setting"></a>
+- 全般 - エキストラ設定表示\
+普段使われないものを表示/非表示(下記\[EX\]の項目)
+タイトルの「設定」を5回押すことで表示されます。
 - 全般 - 表示色\
 いわゆるライトモード、ダークモード
-- 全般 - ダークモード\
-表示色の「D」を5回押すことで表示されます。\
+- 全般 - \[EX\]ダークモード\
 画面をさらに暗くすることができます。
-
 
 - 曲検索 - 非公開動画表示\
 非公開中の枠も表示されますが、見れません。
 - 曲検索 - 入力自動選択\
 入力欄タップするとき値が全選択されます。
-- 曲検索 - 変更なし予想表示\
-一度検索したうえで入力欄タップすると直ちに自動検索が表示されます。
 - 曲検索 - ランダムボタン表示\
 ランダムボタンが表示されます。
 - 曲検索 - ランダム条件無視\
 ランダムの条件「入力欄が空欄」が無視されます。
 
+- 入力予想 - 変更時のみ表示\
+入力欄が変更された場合のみ予想が表示されます。
+- 入力予想 - 読み仮名表示\
+曲名の読み仮名が表示されます。
+- 入力予想 - \[EX\]選択コピー\
+予想から曲名を選択した時、曲名がコピーされます。
 
 - レパートリー - 入力自動選択\
 上記　曲検索 - 入力自動選択　と同じ
+- レパートリー - \[EX\]集合選択表示\
+メンバーの集合選択が表示されます。
 - レパートリー - リリース日付表示\
 曲のリリース日付が表示されます。
 - レパートリー - 曲名長押しコピー\
@@ -594,11 +601,13 @@ This site uses the following libraries / resources.
   - re-added union / intersection for rep (default hidden/union)
   - added no song found error message to rep
   - added reset to default settings (via url para, require reload)
-
+- v1.8.1 (12024-11-24)
+  - reworked key removal sequence
+  - fixed rep-inter not working on key level 0
+  - added pressing Tab to focus on search bar
+  
 # Future Version / to-do list
 - adding video ID search
-- rework key removal like setting reset
-- fix search copy are trimmed (which should not be trimmed)
 
 <!---
 nothing here but us chickens!\

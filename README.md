@@ -131,12 +131,13 @@ PCの場合↓と↑キーで移動、Enterで決定できます。
 
 # 設定 <a name="setting"></a>
 - 全般 - エキストラ設定表示\
-普段使われないものを表示/非表示(下記\[EX\]の項目)
+普段使われないものを表示/非表示(下記\[EX\]の項目)\
 タイトルの「設定」を5回押すことで表示されます。
 - 全般 - 表示色\
 いわゆるライトモード、ダークモード
 - 全般 - \[EX\]ダークモード\
 画面をさらに暗くすることができます。
+
 
 - 曲検索 - 非公開動画表示\
 非公開中の枠も表示されますが、見れません。
@@ -147,12 +148,14 @@ PCの場合↓と↑キーで移動、Enterで決定できます。
 - 曲検索 - ランダム条件無視\
 ランダムの条件「入力欄が空欄」が無視されます。
 
+
 - 入力予想 - 変更時のみ表示\
 入力欄が変更された場合のみ予想が表示されます。
 - 入力予想 - 読み仮名表示\
 曲名の読み仮名が表示されます。
 - 入力予想 - \[EX\]選択コピー\
 予想から曲名を選択した時、曲名がコピーされます。
+
 
 - レパートリー - 入力自動選択\
 上記　曲検索 - 入力自動選択　と同じ
@@ -605,9 +608,16 @@ This site uses the following libraries / resources.
   - reworked key removal sequence
   - fixed rep-inter not working on key level 0
   - added pressing Tab to focus on search bar
+- v1.8.2 (1202?-??-??)
+  - sfilter and rfilter now support non decimal input (0b, 0x and etc)
+  - changed rep-song-member display badge shape (key Lv. 0, 1, 2) and position (key Lv. 0)
+  - r2k will also search as if all trailing \[a-z\] is removed
+  - fixing setting-hidden-extra_dark being available right after unlocking hidden settings despite theme is not dark
   
 # Future Version / to-do list
 - adding video ID search
+- tuned down white and black
+- adding intent:// opt-in option for mobile user
 
 <!---
 nothing here but us chickens!\

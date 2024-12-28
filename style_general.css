@@ -558,7 +558,7 @@ body.post_switch {
 	transform: translate(-50%, 0);
 }
 
-#info_bug-report {
+#info_feedback {
 	margin-top : 2vh;
 }
 
@@ -765,7 +765,7 @@ body.post_switch {
 	left : 50%;
 	top : 50%;
 	transform: translate(-50%, -50%);
-	width : 85vw;
+	width : 86vw;
 	height: 72vh;
 	background-color : var(--dialog-back);
 	text-align : center;

@@ -84,7 +84,7 @@ const entry_idx = {
 
 let video, entry;
 
-const version = "1.8.1";
+const version = "1.8.2";
 const key_hash = [
 	"473c05c1ae8349a187d233a02c514ac73fe08ff4418429806a49f7b2fe4ba0b7a36ba95df1d58b8e84a602258af69194", //thereIsNoPassword
 	"3f01e53f1bcee58f6fb472b5d2cf8e00ce673b13599791d8d2d4ddcde3defbbb4e0ab7bc704538080d704d87d79d0410"
@@ -108,6 +108,10 @@ let settings = {
 		req_LS: true
 	},
 	set_show_hidden: {				// setting: if hidden options are displayed
+		value: false,
+		req_LS: true
+	},
+	use_intent: {					// setting: [mobile] if uses intent:// instead of https:// for URLs
 		value: false,
 		req_LS: true
 	},
@@ -414,6 +418,9 @@ function load_setting_flags() {
 			case "set_show_hidden":
 				if (changed) {
 					$(".settings_extra").removeClass("hidden");
+					if (!/Android/i.test(navigator.userAgent)) {
+						$("#setting_intent_container").addClass("hidden");
+					}
 				}
 				break;
 			case "ser_rand_show":
@@ -523,7 +530,7 @@ function load_url_para() {
 	window.history.pushState(null, null, `${document.location.href.split('?')[0]}${url_para.size ? `?${url_para}` : ""}`);
 	if (url_para.get("sfilter")) {
 		// extract member data
-		let ext = parseInt(url_para.get("sfilter"));
+		let ext = Number(url_para.get("sfilter"));
 		// bit and = true => default 
 		const member_name = [
 			ext & 1 ? "" : "nia",
@@ -579,7 +586,7 @@ function load_url_para() {
 		}
 		// extract bits
 		let selected_bits = [];
-		let temp = parseInt(url_para.get("rfilter"));
+		let temp = Number(url_para.get("rfilter"));
 		let counter = 0;
 		while (temp) {
 			// test if last bit is 1
@@ -762,10 +769,12 @@ $(function() {
 		let title_clicked = 0;
 		$(document).on("click", function(e) {
 			if ($(e.target).closest(".settings_title").length) {
-				if (++title_clicked === 5) {
+				if (++title_clicked === 5 && ls("pcsl_set_hidden_unlocked") !== "1") {
 					ls("pcsl_set_hidden_unlocked", 1);
 					// show settings here
 					$("#setting_extra_container").removeClass("hidden");
+					// disable extra dark if not already in dark mode
+					$("#setting_dark").toggleClass("disabled", settings.theme !== "dark");
 				}
 			} else {
 				title_clicked = 0;
@@ -805,11 +814,17 @@ $(function() {
 			switch (key) {
 				case "set_show_hidden":
 					$(".settings_extra").toggleClass("hidden", toggle_setting(key));
+					if (!/Android/i.test(navigator.userAgent)) {
+						$("#setting_intent_container").addClass("hidden");
+					}
 					break;
 				case "dark":
 					let cur_state = $("#dark_extra").hasClass("selected") ? "extra" : "dark";
 					ls("theme", cur_state);
 					document.documentElement.setAttribute("theme", cur_state);
+					break;
+				case "use_intent":
+					intent_update(toggle_setting(key));
 					break;
 				case "ser_show_private":
 					toggle_setting(key);
@@ -951,6 +966,21 @@ function memcount_load_rep() {
 	}
 	$("#memcount_rep_content").toggleClass("extra_content", key_valid);
 	$("#memcount_rep_content").html(new_html);
+}
+
+// setting - intent switch
+function intent_update(use_intent) {
+	console.log(use_intent);
+	if (use_intent) {
+		$(`a[href*="youtu"], a[href*="twitter"]`).each(function() {
+			$(this).attr("href", `${$(this).attr("href").replace("https", "intent")}#Intent;` +
+			`package=com.example.app;scheme=https;S.browser_fallback_url=${$(this).attr("href")};end`);
+		});
+	} else {
+		$(`a[href^="intent"]`).each(function() {
+			$(this).attr("href", $(this).attr("href").replace("intent", "https").replace(/#Intent.*/, ""));
+		});
+	}
 }
 
 // functional functions

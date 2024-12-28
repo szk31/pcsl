@@ -1,5 +1,5 @@
 # [P]etit♡[C]ocotte [S]ong [L]ist <a name="title"></a>
-ぷちここ歌まとめ (v1.8.1)
+ぷちここ歌まとめ (v1.8.2)
 
 逢魔きらら、胡桃澤もも、看谷にぃあ＋αの歌一覧\
 ここでは曲名検索から歌った枠(TS付き)に直接飛べます。\
@@ -608,16 +608,19 @@ This site uses the following libraries / resources.
   - reworked key removal sequence
   - fixed rep-inter not working on key level 0
   - added pressing Tab to focus on search bar
-- v1.8.2 (1202?-??-??)
+- v1.8.2 (12024-12-28)
   - sfilter and rfilter now support non decimal input (0b, 0x and etc)
   - changed rep-song-member display badge shape (key Lv. 0, 1, 2) and position (key Lv. 0)
   - r2k will also search as if all trailing \[a-z\] is removed
   - fixing setting-hidden-extra_dark being available right after unlocking hidden settings despite theme is not dark
-  
+  - adding intent:// opt-in option for mobile user (a new tab will be opened anyway even if intent app being launched)
+  - setting popup is now 1vw wider as some devices has 9 chaeacters items in 2 lines
+
 # Future Version / to-do list
 - adding video ID search
-- tuned down white and black
-- adding intent:// opt-in option for mobile user
+- tune down white and black
+  - also make icons into frames / monochrome
+- (if possible?) prevent intent from opening a new tab if intent app launched correctly
 
 <!---
 nothing here but us chickens!\

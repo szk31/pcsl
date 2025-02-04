@@ -195,6 +195,7 @@ This site uses the following libraries / resources.
 1. [JS minify](https://go.tacodewolff.nl/minify)
 1. [Lightning CSS](https://lightningcss.dev/playground)
 1. [MD editor](https://markdown.pioul.fr/)
+1. [Maskable](https://maskable.app/)
 
 # Update Note <a name="update_note"></a>
 
@@ -615,12 +616,19 @@ This site uses the following libraries / resources.
   - fixing setting-hidden-extra_dark being available right after unlocking hidden settings despite theme is not dark
   - adding intent:// opt-in option for mobile user (a new tab will be opened anyway even if intent app being launched)
   - setting popup is now 1vw wider as some devices has 9 chaeacters items in 2 lines
+- v1.8.3 (12025-02-04)
+  - updated icon into a simpler design.
+  - fixed post-switch bg colour not updating.
+  - Predict no longer copies series name.
+  - Predict no longer copies song name where multiple songs have the same name.
+  - added PWA from browser menu.
 
 # Future Version / to-do list
 - adding video ID search
 - tune down white and black
   - also make icons into frames / monochrome
 - (if possible?) prevent intent from opening a new tab if intent app launched correctly
+- add in-site PWA prompt
 
 <!---
 nothing here but us chickens!\

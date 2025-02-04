@@ -6,8 +6,10 @@
 		<meta name="MobileOptimized" content="320" />
 		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width, user-scalable=no" />
 		<meta name="description" content="PCSL is a webapp that provides users a search engine for songs in thousands of videos and repertoire of included members." />
+		<meta name="mobile-web-app-capable" content="yes" />
 		<title>ぷちここ歌まとめ</title>
 		<link rel="icon" type="image/png" href="icon/icon.png">
+		<link rel="manifest" href="manifest.json" />
 		<!-- css -->
 		<link rel="stylesheet" href="style_min.css">
 		<!--link rel="stylesheet" href="style_general.css">
@@ -279,7 +281,7 @@
 					<div class="filter_subblock grid_block-3">
 						<p class="filter_title rowspan-3">ジャンル - アニソン</p>
 						<label id="anisong_all" class="filter_anisong">
-							<div class="checkbox selected"></div>
+							<div class="cbx_all checkbox selected"></div>
 							<div>全部</div>
 						</label>
 						<label id="anisong_lovelive" class="filter_anisong">
@@ -302,7 +304,7 @@
 						<div class="general_vertical_space rowspan-3"></div>
 						<p class="filter_title rowspan-3">ジャンル - その他</p>
 						<label id="genre_all" class="filter_genre">
-							<div class="checkbox selected"></div>
+							<div class="cbx_all checkbox selected"></div>
 							<div>全部</div>
 						</label>
 						<label id="genre_jpop" class="filter_genre">

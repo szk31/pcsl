@@ -104,7 +104,7 @@ URLパラメータとは、szk31<area>.github.io/pcsl/?**page=search&hfilter=4**
 入力する度に、可能な曲がリストされます。\
 PCの場合↓と↑キーで移動、Enterで決定できます。
 
-曲名を押すとその曲のエントリーを収納できます。もう一度押すと元に戻ります。<img src="https://szk31.github.io/pcsl/icon/copy_border.png" width="20px" height="20px" alt="copy_icon"> を押すと曲名がコピーされます。\
+曲名を押すとその曲のエントリーを収納できます。もう一度押すと元に戻ります。<img src="https://szk31.github.io/pcsl/icon/copy.png" width="20px" height="20px" alt="copy_icon"> を押すと曲名がコピーされます。\
 エントリーの右にある <img src="https://szk31.github.io/pcsl/icon/share.png" width="20px" height="20px" alt="share_icon"> を押すとツイート用の文章でTwitterが開きます。動画を共有するとき、共有する曲が検索されている状態で検索ページを開けます。他のSNSに対応する予定は今のところありません。
 
 # レパートリー一覧 <a name="rep"></a>
@@ -178,13 +178,14 @@ anything that has a owner / is copyrighted belongs to their owner / holder.\
 anything else that's made by me is copyleft, do whatever you want with it.
 
 Content keys (Level2) are only distributed to selected individuals.\
-Feel free to request via twitter, though there is no guarantee on anything.\
+Feel free to request via twitter, though there is no guarantee on anything.
 
 This site is ONLY tested in the following conditions.
 1. Key level 2
 1. Dark theme (extra dark)
 1. Chrome (pc)
 1. Live server (VS code ext.)
+1. Chrome (Android) (for mobile exclusive feature)
 
 This site uses the following libraries / resources.
 1. [Jquery](https://jquery.com/)
@@ -622,13 +623,15 @@ This site uses the following libraries / resources.
   - Predict no longer copies series name.
   - Predict no longer copies song name where multiple songs have the same name.
   - added PWA from browser menu.
+- v1.8.4 (12025-02-07)
+  - reworked all icons into white, 64x64 icons
+  - screen size up to 10:16 will no longer be iframe-ed
+  - added in-site PWA prompt
 
 # Future Version / to-do list
 - adding video ID search
 - tune down white and black
-  - also make icons into frames / monochrome
 - (if possible?) prevent intent from opening a new tab if intent app launched correctly
-- add in-site PWA prompt
 
 <!---
 nothing here but us chickens!\

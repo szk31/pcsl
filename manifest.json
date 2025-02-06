@@ -1,6 +1,7 @@
 {
     "short_name": "pcsl",
     "name": "ぷちここ歌まとめ",
+    "background_color": "#2f004f",
     "icons": [
         {
             "purpose": "maskable",
@@ -15,7 +16,9 @@
             "type": "image/png"
         }
     ],
-    "start_url": ".",
-    "display": "standalone"
+    "start_url": "/pcsl_dev/",
+    "scope": "/pcsl_dev/",
+    "display": "standalone",
+    "prefer_related_applications": false
 }
   

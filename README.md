@@ -618,15 +618,23 @@ This site uses the following libraries / resources.
   - adding intent:// opt-in option for mobile user (a new tab will be opened anyway even if intent app being launched)
   - setting popup is now 1vw wider as some devices has 9 chaeacters items in 2 lines
 - v1.8.3 (12025-02-04)
-  - updated icon into a simpler design.
-  - fixed post-switch bg colour not updating.
-  - Predict no longer copies series name.
-  - Predict no longer copies song name where multiple songs have the same name.
-  - added PWA from browser menu.
+  - updated icon into a simpler design
+  - fixed post-switch bg colour not updating
+  - Predict no longer copies series name
+  - Predict no longer copies song name where multiple songs have the same name
+  - added PWA from browser menu
 - v1.8.4 (12025-02-07)
   - reworked all icons into white, 64x64 icons
   - screen size up to 10:16 will no longer be iframe-ed
   - added in-site PWA prompt
+- v1.8.5 (12025-02-14)
+  - fixed install button not showing up right after uninstalling
+  - fixed search-song-collapse and search-song-copy not inverted correctly on light and mixed theme
+  - fixed search doesn't correctly "re-search" previously searched item when switched
+  - reworked entry colouring code
+  - search-share button now uses currentColor instead of white / black
+  - when search-predict is present, the screen is now longer able to scroll
+  - pressing Esc in predict now hides prediction and enable scrolling until next input
 
 # Future Version / to-do list
 - adding video ID search
